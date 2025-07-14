@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app:*)",
+      "Bash(npm install:*)",
+      "Bash(mkdir:*)",
+      "Bash(npx shadcn:*)",
+      "Bash(npm run dev:*)",
+      "mcp__figma-dev-mode-mcp-server__get_variable_defs",
+      "mcp__figma-dev-mode-mcp-server__get_image",
+      "mcp__figma-dev-mode-mcp-server__get_code",
+      "Bash(npx tailwindcss:*)",
+      "mcp__cloudflare-playwright__browser_navigate",
+      "Bash(lsof:*)",
+      "mcp__cloudflare-playwright__browser_install",
+      "Bash(curl:*)",
+      "mcp__cloudflare-playwright__browser_take_screenshot",
+      "mcp__cloudflare-playwright__browser_snapshot",
+      "Bash(npx:*)",
+      "Bash(grep:*)",
+      "Bash(node:*)",
+      "Bash(rm:*)",
+      "Bash(pkill:*)",
+      "Bash(npm run build:*)",
+      "Bash(git branch:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": []
+  }
+}

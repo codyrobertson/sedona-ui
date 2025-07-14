@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light theme - Zeus design system inverse (light mode) */
+    --background: 0 0% 100%; /* White background in light mode */
+    --foreground: 12 5% 11%; /* Zeus text-inverted #1e1c17 */
+    --card: 0 0% 100%;
+    --card-foreground: 12 5% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 12 5% 11%;
+    --primary: 0 0% 20%; /* Dark gray for light mode */
+    --primary-foreground: 0 0% 100%; /* White text */
+    --secondary: 0 0% 94.1%; /* Light gray for secondary */
+    --secondary-foreground: 12 5% 11%;
+    --muted: 0 0% 94.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 94.1%;
+    --accent-foreground: 12 5% 11%;
+    --destructive: 4 87% 56%; /* Red #e6483d */
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 25 100% 43.3%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    /* Dark theme - Zeus design system from Figma */
+    --background: 12 5% 11%; /* Zeus surface-default #1e1c17 */
+    --foreground: 0 0% 100%; /* Zeus text-primary #ffffff */
+    --card: 20 8% 16%; /* Zeus surface-neutral #2e2b24 */
+    --card-foreground: 0 0% 100%;
+    --popover: 20 8% 16%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 0 0% 95%; /* Light gray for dark mode */
+    --primary-foreground: 0 0% 10%; /* Dark text */
+    --secondary: 20 8% 16%; /* Zeus surface-neutral */
+    --secondary-foreground: 0 0% 100%;
+    --muted: 26 12% 24%; /* Zeus surface-neutral-subtle #3e3a31 */
+    --muted-foreground: 0 0% 60%; /* Zeus text-secondary with 60% opacity */
+    --accent: 26 12% 24%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 6 91% 46%; /* Zeus destructive-accent #ea1e04 */
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 100% / 0.14; /* Zeus border-alpha #ffffff24 */
+    --input: 0 0% 100% / 0.18; /* Zeus border-normal #ffffff2e */
+    --ring: 25 100% 43.3%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+}
