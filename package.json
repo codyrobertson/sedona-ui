@@ -13,11 +13,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yourusername/sedona-ui.git"
+    "url": "git+https://github.com/codyrobertson/sedona-ui.git"
   },
-  "homepage": "https://github.com/yourusername/sedona-ui#readme",
+  "homepage": "https://github.com/codyrobertson/sedona-ui#readme",
   "bugs": {
-    "url": "https://github.com/yourusername/sedona-ui/issues"
+    "url": "https://github.com/codyrobertson/sedona-ui/issues"
   },
   "keywords": [
     "react",
