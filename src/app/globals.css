@@ -33,7 +33,7 @@
 
   .dark {
     /* Dark theme - Zeus design system from Figma */
-    --background: 12 5% 11%; /* Zeus surface-default #1e1c17 */
+    --background: 20 8% 7%; /* Zeus surface-default #141310 */
     --foreground: 0 0% 100%; /* Zeus text-primary #ffffff */
     --card: 20 8% 16%; /* Zeus surface-neutral #2e2b24 */
     --card-foreground: 0 0% 100%;

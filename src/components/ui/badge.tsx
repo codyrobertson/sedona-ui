@@ -76,33 +76,32 @@ export interface BadgeGroupProps extends React.HTMLAttributes<HTMLDivElement> {
 function BadgeGroup({ className, icon, label, value, variant = 'info', ...props }: BadgeGroupProps) {
   const variantStyles = {
     info: 'text-zeus-accent-blue',
-    success: 'text-zeus-status-success', 
+    success: 'text-zeus-status-success',
     warning: 'text-zeus-accent-orange',
     danger: 'text-zeus-status-destructive'
   }
 
   return (
-    <div 
+    <div
       className={cn(
-        "inline-flex items-center gap-[5px] px-1 py-0.5 rounded text-[12px] leading-4 h-6",
-        // Theme-aware backgrounds using proper semantic colors
-        "bg-background border border-border dark:bg-zeus-surface-default dark:border-zeus-border-alpha",
+        "inline-flex items-center gap-[5px] px-2 py-1 rounded text-[12px] leading-4",
+        "bg-zeus-surface-neutral border border-zeus-border-alpha",
         className
-      )} 
+      )}
       {...props}
     >
       {icon && (
-        <div className={cn("flex items-center justify-center w-5 h-[14px] text-[14px] leading-[14px]", variantStyles[variant])}>
+        <div className={cn("flex items-center justify-center", variantStyles[variant])}>
           {icon}
         </div>
       )}
       {label && (
-        <span className="font-medium text-muted-foreground dark:text-zeus-text-secondary font-sans">
+        <span className="font-medium text-zeus-text-secondary font-sans">
           {label}
         </span>
       )}
       {value && (
-        <span className="font-medium text-foreground dark:text-zeus-text-primary font-sans">
+        <span className="font-medium text-zeus-text-primary font-sans">
           {value}
         </span>
       )}

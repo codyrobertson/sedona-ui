@@ -9,6 +9,7 @@
     "src/components",
     "src/lib",
     "tailwind.config.ts",
+    "figma-plugin",
     "README.md"
   ],
   "repository": {
@@ -29,7 +30,9 @@
     "shadcn-ui",
     "zeus-design",
     "trading-ui",
-    "ai-agents"
+    "ai-agents",
+    "figma-plugin",
+    "react-figma"
   ],
   "author": "Sedona Team",
   "license": "MIT",
@@ -42,7 +45,11 @@
     "type-check": "tsc --noEmit",
     "build-lib": "tsc && cp -r src/components dist/ && cp -r src/lib dist/",
     "prepublishOnly": "npm run build-lib",
-    "test": "echo \"Tests coming soon\" && exit 0"
+    "test": "echo \"Tests coming soon\" && exit 0",
+    "analyze-components": "npx ts-node scripts/analyze-components.ts",
+    "figma:install": "cd figma-plugin/sedona-sync && npm install",
+    "figma:build": "cd figma-plugin/sedona-sync && npm run build",
+    "figma:dev": "cd figma-plugin/sedona-sync && npm run dev"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.14",
@@ -62,9 +69,11 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.525.0",
     "next": "14.2.5",
+    "ogl": "^1.0.11",
     "playwright": "^1.54.1",
     "react": "^18",
     "react-dom": "^18",
+    "react-figma": "^0.28.0",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7"
   },

@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 
@@ -125,11 +126,14 @@ const TableRow = React.forwardRef<HTMLDivElement, TableRowProps>(
         {avatar && (
           <div className="flex-shrink-0">
             {avatar.image ? (
-              <img 
-                src={avatar.image} 
-                alt={title}
-                className="w-10 h-10 rounded-lg border border-border object-cover dark:border-zeus-border-alpha"
-              />
+              <div className="relative w-10 h-10 rounded-lg border border-border overflow-hidden dark:border-zeus-border-alpha">
+                <Image 
+                  src={avatar.image} 
+                  alt={title}
+                  fill
+                  className="object-cover"
+                />
+              </div>
             ) : (
               <div className="w-10 h-10 bg-muted border border-border rounded-lg flex items-center justify-center dark:bg-zeus-surface-neutral-subtle dark:border-zeus-border-alpha">
                 <span className="text-body-s font-medium text-foreground tracking-[-0.2px] font-sans dark:text-zeus-text-primary">

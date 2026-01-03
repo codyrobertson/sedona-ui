@@ -40,8 +40,9 @@ const config: Config = {
         // Zeus color system - COMPLETE palette from Figma
         zeus: {
           // Surface colors
-          "surface-default": "#1e1c17",
-          "surface-neutral": "#2e2b24", 
+          "surface-default": "#141310",
+          "surface-elevated": "#1e1c17",
+          "surface-neutral": "#2e2b24",
           "surface-neutral-subtle": "#3e3a31",
           "surface-warning": "#2e2319",
           "surface-warning-accent": "#fb9704",
@@ -243,10 +244,15 @@ const config: Config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "marquee": {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-33.33%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "marquee": "marquee 20s linear infinite",
       },
     },
   },
