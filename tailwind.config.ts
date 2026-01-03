@@ -248,11 +248,21 @@ const config: Config = {
           from: { transform: "translateX(0)" },
           to: { transform: "translateX(-33.33%)" },
         },
+        "scan-x": {
+          "0%": { left: "0%" },
+          "100%": { left: "100%" },
+        },
+        "scan-y": {
+          "0%": { top: "0%" },
+          "100%": { top: "100%" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "marquee": "marquee 20s linear infinite",
+        "scan-x": "scan-x 1.5s ease-in-out infinite alternate",
+        "scan-y": "scan-y 2s ease-in-out infinite alternate",
       },
     },
   },

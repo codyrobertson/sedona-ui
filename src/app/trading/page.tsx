@@ -37,6 +37,7 @@ export default function TradingDemoPage() {
   const [showModal, setShowModal] = React.useState(false)
   const [sortBy, setSortBy] = React.useState("Highest Market Capitalization")
   const [showHero, setShowHero] = React.useState(true)
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false)
 
   return (
     <div className="min-h-screen bg-zeus-surface-default">
@@ -78,9 +79,14 @@ export default function TradingDemoPage() {
       <AgentLaunchModal
         open={showModal}
         onOpenChange={setShowModal}
-        isAuthenticated={false}
-        onSignIn={() => console.log("Sign in with Hugging Face")}
+        isAuthenticated={isAuthenticated}
+        onSignIn={() => {
+          setIsAuthenticated(true)
+        }}
         onSelectModel={(id) => console.log("Selected:", id)}
+        onCreateAgent={(data) => {
+          console.log("Creating agent:", data)
+        }}
         onLaunch={(id) => {
           setShowModal(false)
           console.log("Launching agent:", id)
