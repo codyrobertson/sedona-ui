@@ -5,38 +5,40 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 rounded",
   {
     variants: {
       variant: {
-        // Primary button - Dark bg with white text in light, light bg with dark text in dark
+        // Primary button - Sedona orange
         default:
-          "bg-primary shadow-sm rounded-full hover:bg-primary/90 text-white dark:text-black !text-white dark:!text-black",
-        // Brand button - Sedona orange with proper contrast
+          "bg-sedona-500 text-white shadow-sm hover:bg-sedona-600",
+        // Brand button - Sedona orange (alias for default)
         brand:
-          "bg-sedona-500 text-white shadow-sm rounded-full hover:bg-sedona-600",
-        // Secondary button - Light gray 200 with dark text in light mode
+          "bg-sedona-500 text-white shadow-sm hover:bg-sedona-600",
+        // Secondary button - Muted style with white text
         secondary:
-          "bg-secondary text-secondary-foreground shadow-sm rounded-full hover:bg-secondary/80 dark:bg-zeus-surface-neutral dark:text-zeus-text-primary dark:hover:bg-zeus-surface-neutral/80",
+          "bg-zeus-surface-neutral-subtle text-white border border-zeus-border-alpha hover:bg-zeus-surface-neutral",
         // Danger button - Using Zeus destructive colors
         destructive:
-          "bg-destructive text-destructive-foreground shadow-sm rounded-full hover:bg-destructive/90 dark:bg-zeus-status-destructive dark:text-primary-foreground dark:hover:bg-zeus-status-destructive/90",
+          "bg-zeus-status-destructive text-white shadow-sm hover:bg-zeus-status-destructive/90",
         // SAFE status - Using Zeus success colors
         safe:
-          "bg-zeus-status-success text-primary-foreground shadow-sm rounded-full hover:bg-zeus-status-success/90 dark:bg-zeus-status-success dark:text-primary-foreground dark:hover:bg-zeus-status-success/90",
+          "bg-zeus-status-success text-white shadow-sm hover:bg-zeus-status-success/90",
         // CLOSE status - Using Zeus warning colors
         close:
-          "bg-zeus-accent-orange text-primary-foreground shadow-sm rounded-full hover:bg-zeus-accent-orange/90 dark:bg-zeus-accent-orange dark:text-primary-foreground dark:hover:bg-zeus-accent-orange/90",
+          "bg-zeus-accent-orange text-white shadow-sm hover:bg-zeus-accent-orange/90",
         // AT RISK status - Using Zeus destructive colors
         risk:
-          "bg-zeus-status-destructive text-primary-foreground shadow-sm rounded-full hover:bg-zeus-status-destructive/90 dark:bg-zeus-status-destructive dark:text-primary-foreground dark:hover:bg-zeus-status-destructive/90",
-        // Outline variant - Theme-aware border and text colors
+          "bg-zeus-status-destructive text-white shadow-sm hover:bg-zeus-status-destructive/90",
+        // Outline variant - Border only
         outline:
-          "border border-input bg-transparent text-foreground shadow-sm rounded-full hover:bg-accent hover:text-accent-foreground dark:border-zeus-border-normal dark:text-zeus-text-primary dark:hover:bg-zeus-surface-neutral",
-        // Ghost variant - Theme-aware colors
-        ghost: "bg-transparent text-foreground rounded-full hover:bg-accent hover:text-accent-foreground dark:text-zeus-text-primary dark:hover:bg-zeus-surface-neutral",
-        // Link variant - Sedona with Zeus fallback
-        link: "!text-sedona-500 underline-offset-4 hover:underline bg-transparent dark:!text-sedona-400",
+          "border border-zeus-border-normal bg-transparent text-zeus-text-primary shadow-sm hover:bg-zeus-surface-neutral",
+        // Ghost variant - No background
+        ghost:
+          "bg-transparent text-zeus-text-primary hover:bg-zeus-surface-neutral",
+        // Link variant - Text only
+        link:
+          "text-sedona-500 underline-offset-4 hover:underline bg-transparent",
       },
       size: {
         default: "h-10 px-2.5 py-1.5 text-caption-l gap-0.5",
