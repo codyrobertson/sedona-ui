@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Image from "next/image"
 import { cn } from "@/lib/utils"
 
 export interface AgentAvatarProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -39,14 +40,15 @@ const AgentAvatar = React.forwardRef<HTMLDivElement, AgentAvatarProps>(
       >
         {/* Avatar */}
         <div className={cn(
-          "rounded-full bg-zeus-surface-neutral-subtle border border-zeus-border-alpha flex items-center justify-center overflow-hidden",
+          "relative rounded-full bg-zeus-surface-neutral-subtle border border-zeus-border-alpha flex items-center justify-center overflow-hidden",
           sizes[size]
         )}>
           {src ? (
-            <img 
+            <Image 
               src={src} 
               alt={name}
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
             />
           ) : (
             <span className="font-medium text-zeus-text-primary font-sans">
