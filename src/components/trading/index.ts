@@ -39,3 +39,12 @@ export type { TopPoolsSidebarProps } from "./TopPoolsSidebar"
 
 export { Footer } from "./Footer"
 export type { FooterProps } from "./Footer"
+
+export { TokenInfoPanel } from "./TokenInfoPanel"
+export type { TokenInfoPanelProps } from "./TokenInfoPanel"
+
+export { TransactionsTable } from "./TransactionsTable"
+export type { TransactionsTableProps, Transaction } from "./TransactionsTable"
+
+export { TokenSwapCard } from "./TokenSwapCard"
+export type { TokenSwapCardProps } from "./TokenSwapCard"
