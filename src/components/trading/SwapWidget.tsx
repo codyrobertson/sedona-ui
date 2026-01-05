@@ -2,17 +2,22 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { RefreshCw, Settings, ChevronDown, ArrowUpDown, Wallet } from "lucide-react"
 
 export interface SwapWidgetProps extends React.HTMLAttributes<HTMLDivElement> {
   ticker: string
-  isActive?: boolean
+  payToken?: string
+  payBalance?: string
+  receiveBalance?: string
+  slippage?: string
   fee?: string
-  onBuy?: (amount: string) => void
-  onSell?: (amount: string) => void
-  onSetMaxSlippage?: () => void
+  isActive?: boolean
+  onRefresh?: () => void
+  onSlippageSettings?: () => void
+  onSwap?: (payAmount: string, receiveAmount: string) => void
 }
 
 const SwapWidget = React.forwardRef<HTMLDivElement, SwapWidgetProps>(
@@ -20,25 +25,34 @@ const SwapWidget = React.forwardRef<HTMLDivElement, SwapWidgetProps>(
     {
       className,
       ticker,
-      isActive = false,
+      payToken = "SOL",
+      payBalance = "200",
+      receiveBalance = "0",
+      slippage = "Auto",
       fee = "0.5%",
-      onBuy,
-      onSell,
-      onSetMaxSlippage,
+      isActive = true,
+      onRefresh,
+      onSlippageSettings,
+      onSwap,
       ...props
     },
     ref
   ) => {
-    const [mode, setMode] = React.useState<"buy" | "sell">("buy")
     const [payAmount, setPayAmount] = React.useState("")
     const [receiveAmount, setReceiveAmount] = React.useState("")
 
-    const handleSubmit = () => {
-      if (mode === "buy") {
-        onBuy?.(payAmount)
-      } else {
-        onSell?.(receiveAmount)
+    const handleQuickAmount = (percent: number) => {
+      const balance = parseFloat(payBalance.replace(/,/g, ""))
+      if (!isNaN(balance)) {
+        const amount = (balance * percent / 100).toFixed(2)
+        setPayAmount(amount)
       }
+    }
+
+    const handleFlip = () => {
+      const temp = payAmount
+      setPayAmount(receiveAmount)
+      setReceiveAmount(temp)
     }
 
     return (
@@ -50,95 +64,135 @@ const SwapWidget = React.forwardRef<HTMLDivElement, SwapWidgetProps>(
         )}
         {...props}
       >
-        <CardHeader className="pb-2">
+        <CardContent className="p-3 space-y-2.5">
+          {/* Header Row: Refresh + Slippage */}
           <div className="flex items-center justify-between">
-            <CardTitle className="text-lg text-zeus-text-primary">Swap</CardTitle>
-            <div className="flex items-center gap-1 bg-zeus-surface-default rounded-full p-1">
-              <button
-                onClick={() => setMode("buy")}
-                className={cn(
-                  "px-4 py-1.5 rounded-full text-caption-l font-medium transition-colors",
-                  mode === "buy"
-                    ? "bg-sedona-500 text-white"
-                    : "text-zeus-text-secondary hover:text-zeus-text-primary"
-                )}
-              >
-                Buy
+            <button
+              onClick={onRefresh}
+              className="p-1 rounded-lg hover:bg-zeus-surface-elevated transition-colors"
+            >
+              <RefreshCw className="w-3.5 h-3.5 text-zeus-text-tertiary" />
+            </button>
+            <button
+              onClick={onSlippageSettings}
+              className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-zeus-surface-elevated text-[10px] transition-colors"
+            >
+              <span className="text-zeus-text-tertiary">Slippage:</span>
+              <span className="text-sedona-500 font-medium">{slippage}</span>
+              <Settings className="w-3 h-3 text-zeus-text-tertiary" />
+            </button>
+          </div>
+
+          {/* Pay With Section */}
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between">
+              <span className="text-zeus-text-primary text-caption-s font-medium">Pay With</span>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => handleQuickAmount(25)}
+                  className="px-1.5 py-0.5 rounded bg-zeus-surface-elevated border border-zeus-border-alpha text-[10px] text-zeus-text-tertiary hover:text-zeus-text-secondary transition-colors"
+                >
+                  25%
+                </button>
+                <button
+                  onClick={() => handleQuickAmount(50)}
+                  className="px-1.5 py-0.5 rounded bg-zeus-surface-elevated border border-zeus-border-alpha text-[10px] text-zeus-text-tertiary hover:text-zeus-text-secondary transition-colors"
+                >
+                  50%
+                </button>
+                <button
+                  onClick={() => handleQuickAmount(100)}
+                  className="px-1.5 py-0.5 rounded bg-zeus-surface-elevated border border-zeus-border-alpha text-[10px] text-zeus-text-tertiary hover:text-zeus-text-secondary transition-colors flex items-center gap-0.5"
+                >
+                  <span>🚀</span> Full Stack
+                </button>
+              </div>
+            </div>
+
+            {/* Pay Input with Token Selector */}
+            <div className="relative">
+              <Input
+                type="text"
+                placeholder="0.00"
+                value={payAmount}
+                onChange={(e) => setPayAmount(e.target.value)}
+                className="bg-zeus-surface-default border-zeus-border-alpha text-zeus-text-primary text-body-s h-10 pr-20"
+              />
+              <button className="absolute right-1.5 top-1/2 -translate-y-1/2 flex items-center gap-1 px-1.5 py-1 rounded-lg bg-zeus-surface-elevated transition-colors">
+                <div className="w-4 h-4 rounded-full bg-gradient-to-br from-[#9945FF] to-[#14F195] flex items-center justify-center">
+                  <span className="text-[7px] font-bold text-white">◎</span>
+                </div>
+                <span className="text-zeus-text-primary text-caption-s font-medium">{payToken}</span>
+                <ChevronDown className="w-3 h-3 text-zeus-text-tertiary" />
               </button>
-              <button
-                onClick={() => setMode("sell")}
-                className={cn(
-                  "px-4 py-1.5 rounded-full text-caption-l font-medium transition-colors",
-                  mode === "sell"
-                    ? "bg-zeus-surface-neutral-subtle text-zeus-text-primary"
-                    : "text-zeus-text-secondary hover:text-zeus-text-primary"
-                )}
-              >
-                Sell
-              </button>
+            </div>
+
+            {/* Balance */}
+            <div className="flex items-center gap-1 text-[10px] text-zeus-text-tertiary">
+              <Wallet className="w-3 h-3" />
+              <span>Balance: {payBalance} {payToken}</span>
             </div>
           </div>
 
-          {/* Warning message when not active */}
-          {!isActive && (
-            <p className="text-zeus-status-warning text-caption-m mt-2">
-              Game is no longer active. Trades will fail.
-            </p>
-          )}
-        </CardHeader>
+          {/* Swap Direction Toggle with lines */}
+          <div className="flex items-center gap-2">
+            <div className="flex-1 h-px bg-zeus-border-alpha" />
+            <button
+              onClick={handleFlip}
+              className="p-1.5 rounded-full bg-zeus-surface-elevated border border-zeus-border-alpha hover:bg-zeus-surface-neutral-subtle transition-all"
+            >
+              <ArrowUpDown className="w-3.5 h-3.5 text-zeus-text-secondary" />
+            </button>
+            <div className="flex-1 h-px bg-zeus-border-alpha" />
+          </div>
 
-        <CardContent className="space-y-4">
-          {/* Pay Input */}
-          <div>
-            <div className="flex items-center justify-between mb-1">
-              <label className="text-zeus-text-secondary text-caption-m">
-                You Pay (SOL)
-              </label>
-              <button
-                onClick={onSetMaxSlippage}
-                className="text-zeus-text-secondary text-caption-s underline hover:text-zeus-text-primary transition-colors"
-              >
-                Set Max Slippage
+          {/* To Receive Section */}
+          <div className="space-y-1.5">
+            <span className="text-zeus-text-primary text-caption-s font-medium">To Receive</span>
+
+            {/* Receive Input with Token Selector */}
+            <div className="relative">
+              <Input
+                type="text"
+                placeholder="0.00"
+                value={receiveAmount}
+                onChange={(e) => setReceiveAmount(e.target.value)}
+                className="bg-zeus-surface-default border-zeus-border-alpha text-zeus-text-primary text-body-s h-10 pr-20"
+              />
+              <button className="absolute right-1.5 top-1/2 -translate-y-1/2 flex items-center gap-1 px-1.5 py-1 rounded-lg bg-zeus-surface-elevated transition-colors">
+                <div className="w-4 h-4 rounded-full bg-gradient-to-br from-sedona-500 to-sedona-600 flex items-center justify-center">
+                  <span className="text-[7px] font-bold text-white">{ticker.charAt(0)}</span>
+                </div>
+                <span className="text-zeus-text-primary text-caption-s font-medium">{ticker}</span>
+                <ChevronDown className="w-3 h-3 text-zeus-text-tertiary" />
               </button>
             </div>
-            <Input
-              type="text"
-              placeholder="0.00"
-              value={payAmount}
-              onChange={(e) => setPayAmount(e.target.value)}
-              className="bg-zeus-surface-default border-zeus-border-alpha text-zeus-text-primary text-body-s"
-            />
+
+            {/* Balance */}
+            <div className="flex items-center gap-1 text-[10px] text-zeus-text-tertiary">
+              <Wallet className="w-3 h-3" />
+              <span>Balance: {receiveBalance} {ticker}</span>
+            </div>
           </div>
 
-          {/* Receive Input */}
-          <div>
-            <label className="text-zeus-text-secondary text-caption-m block mb-1">
-              You Receive ({ticker})
-            </label>
-            <Input
-              type="text"
-              placeholder="Enter an amount"
-              value={receiveAmount}
-              onChange={(e) => setReceiveAmount(e.target.value)}
-              className="bg-zeus-surface-default border-zeus-border-alpha text-zeus-text-primary text-body-s"
-            />
-          </div>
-
-          {/* Buy/Sell Button */}
+          {/* Swap Button */}
           <Button
-            variant="brand"
-            size="lg"
-            className="w-full"
-            onClick={handleSubmit}
-            disabled={!isActive}
+            variant="outline"
+            size="default"
+            className="w-full h-10 !bg-white hover:!bg-gray-100 !text-black !text-sm font-semibold"
+            onClick={() => onSwap?.(payAmount, receiveAmount)}
+            disabled={!isActive || !payAmount}
           >
-            {mode === "buy" ? "Buy" : "Sell"}
+            Swap Tokens
           </Button>
 
-          {/* Fee */}
-          <p className="text-zeus-text-tertiary text-caption-m">
-            Fee: {fee}
-          </p>
+          {/* Minimum Received */}
+          {payAmount && !isNaN(parseFloat(payAmount)) && (
+            <div className="flex items-center justify-center gap-1 text-[10px] text-zeus-text-tertiary">
+              <span>⊕</span>
+              <span>Minimum Received: {(parseFloat(payAmount) * 1000).toFixed(0)} {ticker}</span>
+            </div>
+          )}
         </CardContent>
       </Card>
     )
