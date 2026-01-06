@@ -7,15 +7,15 @@ const logoVariants = cva(
   {
     variants: {
       variant: {
-        logo: "gap-3",
+        logo: "gap-2",
         logomark: "",
         wordmark: "",
       },
       size: {
-        sm: "h-4",
-        md: "h-6", 
-        lg: "h-8",
-        xl: "h-12",
+        sm: "",
+        md: "",
+        lg: "",
+        xl: "",
       },
       color: {
         primary: "text-primary",
@@ -40,10 +40,10 @@ export interface SedonaLogoProps
 const SedonaLogo = React.forwardRef<HTMLDivElement, SedonaLogoProps>(
   ({ className, variant, size, color, ...props }, ref) => {
     const sizeClasses = {
-      sm: { logomark: "w-5 h-4", wordmark: "w-20 h-4" },
-      md: { logomark: "w-[30px] h-6", wordmark: "w-[79px] h-[14px]" },
-      lg: { logomark: "w-10 h-8", wordmark: "w-[105px] h-[18px]" },
-      xl: { logomark: "w-[60px] h-12", wordmark: "w-[158px] h-[27px]" },
+      sm: { logomark: "w-5 h-[18px]", wordmark: "w-20 h-[14px]", full: "h-[18px] w-auto" },
+      md: { logomark: "w-[30px] h-[27px]", wordmark: "w-[79px] h-[21px]", full: "h-[27px] w-auto" },
+      lg: { logomark: "w-10 h-9", wordmark: "w-[105px] h-7", full: "h-9 w-auto" },
+      xl: { logomark: "w-[60px] h-[54px]", wordmark: "w-[158px] h-[42px]", full: "h-[54px] w-auto" },
     }
 
     const currentSize = size || "md"
@@ -101,13 +101,13 @@ const SedonaLogo = React.forwardRef<HTMLDivElement, SedonaLogoProps>(
     )
 
     const FullLogoSVG = () => (
-      <svg 
-        width="103" 
-        height="18" 
-        viewBox="0 0 103 18" 
-        fill="none" 
+      <svg
+        width="103"
+        height="18"
+        viewBox="0 0 103 18"
+        fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className={cn("h-full w-auto")}
+        className={cn(sizeClasses[currentSize].full)}
       >
         <g clipPath="url(#clip0_708_602493)">
           <path 
@@ -145,12 +145,7 @@ const SedonaLogo = React.forwardRef<HTMLDivElement, SedonaLogoProps>(
         className={cn(logoVariants({ variant, size, color, className }))}
         {...props}
       >
-        {variant === "logo" && (
-          <>
-            <LogomarkSVG />
-            <WordmarkSVG />
-          </>
-        )}
+        {variant === "logo" && <FullLogoSVG />}
         {variant === "logomark" && <LogomarkSVG />}
         {variant === "wordmark" && <WordmarkSVG />}
       </div>
