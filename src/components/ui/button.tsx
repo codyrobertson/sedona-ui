@@ -7,40 +7,43 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 rounded",
+  "inline-flex items-center justify-center whitespace-nowrap font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:cursor-not-allowed rounded",
   {
     variants: {
       variant: {
-        // Primary button - Sedona orange
+        // Primary button - Sedona orange with full state handling
         default:
-          "bg-sedona-500 text-white shadow-sm hover:bg-sedona-600",
-        // Brand button - Sedona orange (alias for default)
+          "bg-sedona-500 text-white shadow-sm hover:bg-sedona-600 active:bg-sedona-700 focus-visible:ring-sedona-500/50 disabled:bg-sedona-500/50 disabled:text-white/70",
+        // Brand button - Alias for default
         brand:
-          "bg-sedona-500 text-white shadow-sm hover:bg-sedona-600",
-        // Secondary button - Muted style with white text
+          "bg-sedona-500 text-white shadow-sm hover:bg-sedona-600 active:bg-sedona-700 focus-visible:ring-sedona-500/50 disabled:bg-sedona-500/50 disabled:text-white/70",
+        // Secondary button - Visible raised surface (significantly lighter than bg)
         secondary:
-          "bg-zeus-surface-neutral-subtle text-white border border-zeus-border-alpha hover:bg-zeus-surface-neutral",
-        // Danger button - Using Zeus destructive colors
-        destructive:
-          "bg-zeus-status-destructive text-white shadow-sm hover:bg-zeus-status-destructive/90",
-        // SAFE status - Using Zeus success colors
-        safe:
-          "bg-zeus-status-success text-white shadow-sm hover:bg-zeus-status-success/90",
-        // CLOSE status - Using Zeus warning colors
-        close:
-          "bg-zeus-accent-orange text-white shadow-sm hover:bg-zeus-accent-orange/90",
-        // AT RISK status - Using Zeus destructive colors
-        risk:
-          "bg-zeus-status-destructive text-white shadow-sm hover:bg-zeus-status-destructive/90",
+          "bg-[#45413a] text-white border border-white/20 hover:bg-[#524e45] active:bg-[#3a3733] focus-visible:ring-white/20 disabled:bg-[#45413a]/50 disabled:text-white/50 disabled:border-white/10",
+        // Tertiary button - Frosted glass effect (clearly visible overlay)
+        tertiary:
+          "bg-white/[0.15] text-white hover:bg-white/[0.22] active:bg-white/[0.28] focus-visible:ring-white/20 disabled:bg-white/[0.08] disabled:text-white/40",
+        // Ghost button - Truly invisible until hover
+        ghost:
+          "bg-transparent text-white/70 hover:text-white hover:bg-white/[0.10] active:bg-white/[0.15] focus-visible:ring-white/20 disabled:text-white/40 disabled:hover:bg-transparent",
         // Outline variant - Border only
         outline:
-          "border border-zeus-border-normal bg-transparent text-zeus-text-primary shadow-sm hover:bg-zeus-surface-neutral",
-        // Ghost variant - No background
-        ghost:
-          "bg-transparent text-zeus-text-primary hover:bg-zeus-surface-neutral",
+          "bg-transparent border border-white/[0.18] text-white hover:bg-white/[0.08] active:bg-white/[0.12] focus-visible:ring-white/20 disabled:border-white/[0.08] disabled:text-white/40",
+        // Destructive button - Error red
+        destructive:
+          "bg-error-500 text-white shadow-sm hover:bg-error-700 active:bg-error-900 focus-visible:ring-error-500/50 disabled:bg-error-500/50 disabled:text-white/70",
+        // Success status button
+        safe:
+          "bg-success-500 text-white shadow-sm hover:bg-success-700 active:bg-success-900 focus-visible:ring-success-500/50 disabled:bg-success-500/50 disabled:text-white/70",
+        // Warning status button (yellow - needs dark text)
+        close:
+          "bg-warning-500 text-warning-900 shadow-sm hover:bg-warning-700 hover:text-white active:bg-warning-900 active:text-white focus-visible:ring-warning-500/50 disabled:bg-warning-500/50 disabled:text-warning-900/50",
+        // Risk status button (alias for destructive)
+        risk:
+          "bg-error-500 text-white shadow-sm hover:bg-error-700 active:bg-error-900 focus-visible:ring-error-500/50 disabled:bg-error-500/50 disabled:text-white/70",
         // Link variant - Text only
         link:
-          "text-sedona-500 underline-offset-4 hover:underline bg-transparent",
+          "bg-transparent text-sedona-500 underline-offset-4 hover:underline hover:text-sedona-600 active:text-sedona-700 disabled:text-sedona-500/50 disabled:no-underline",
       },
       size: {
         default: "h-10 px-2.5 py-1.5 text-caption-l gap-0.5",
