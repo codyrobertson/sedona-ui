@@ -114,19 +114,26 @@ const config: Config = {
           "accent-gray": "#6b7280",
           "accent-gray-secondary": "#ffffff80",
           "accent-gray-subtle": "#1f2228",
-          // Status colors (complete set)
-          "status-success": "#339965",
-          "status-success-secondary": "#33996599",
+          // Status colors (updated palette)
+          "status-success": "#87d68a",
+          "status-success-secondary": "#87d68a99",
           "status-success-subtle": "#1e2821",
-          "status-warning": "#f48e2f",
-          "status-warning-secondary": "#f48e2f99",
+          "status-warning": "#ffa55b",
+          "status-warning-secondary": "#ffa55b99",
           "status-warning-subtle": "#2e2319",
-          "status-destructive": "#e6483d",
-          "status-destructive-secondary": "#e6483db2",
+          "status-destructive": "#e75d57",
+          "status-destructive-secondary": "#e75d57b2",
           "status-destructive-subtle": "#2e1b19",
-          "status-info": "#397fb2",
-          "status-info-secondary": "#397fb299",
+          "status-info": "#6b9dd0",
+          "status-info-secondary": "#6b9dd099",
           "status-info-subtle": "#1e2228",
+          // Highlight
+          "highlight": "#f6e78a",
+          "highlight-secondary": "#f6e78a99",
+          // Special accents
+          "accent-purple-new": "#aa97d3",
+          "accent-cyan": "#81d9c3",
+          "accent-pink-new": "#fd5a91",
           // Overlay colors
           "overlay-light": "#ffffff0d", // 5% opacity
           "overlay-medium": "#ffffff1a", // 10% opacity
