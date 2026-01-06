@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { SedonaLogo } from "@/components/sedona/sedona-logo"
 import { NavLink } from "./nav-link"
 import { WalletButton } from "./wallet-button"
-import { Menu, Plus } from "lucide-react"
+import { Menu, Plus, ExternalLink } from "lucide-react"
 
 export interface NavItem {
   /** Link label */
@@ -80,7 +80,7 @@ const NavBar = React.forwardRef<HTMLElement, NavBarProps>(
       <nav
         ref={ref}
         className={cn(
-          "flex items-center justify-between px-4 lg:px-6 py-3",
+          "flex items-center justify-between px-4 lg:px-6 py-2",
           "bg-zeus-surface-elevated border-b border-zeus-border-alpha",
           className
         )}
@@ -91,34 +91,37 @@ const NavBar = React.forwardRef<HTMLElement, NavBarProps>(
         {/* Left: Logo + Tagline */}
         <div className="flex items-center gap-3">
           {logo || (
-            <SedonaLogo variant="logo" size="md" className="text-sedona-500" />
+            <SedonaLogo variant="logo" size="sm" className="text-sedona-500" />
           )}
           {showTagline && (
-            <span className="hidden sm:block text-caption-l text-zeus-text-tertiary">
+            <span className="hidden sm:block text-caption-m text-zeus-text-tertiary leading-none">
               {tagline}
             </span>
           )}
         </div>
 
-        {/* Center: Nav Links (desktop) */}
-        <div className="hidden md:flex items-center gap-6">
-          {items.map((item) => (
-            <NavLink
-              key={item.href}
-              href={item.href}
-              external={item.external}
-              disabled={item.disabled}
-              exact={item.exact}
-              variant="default"
-              size="md"
-            >
-              {item.label}
-            </NavLink>
-          ))}
-        </div>
-
         {/* Right: Actions */}
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1">
+          {/* Nav Links as buttons (desktop) */}
+          {items.map((item) => (
+            <Button
+              key={item.href}
+              variant="ghost"
+              size="sm"
+              asChild
+              className="hidden md:inline-flex h-7 px-2.5 text-[11px] text-zeus-text-secondary hover:text-zeus-text-primary"
+            >
+              <a
+                href={item.href}
+                target={item.external ? "_blank" : undefined}
+                rel={item.external ? "noopener noreferrer" : undefined}
+              >
+                {item.label}
+                {item.external && <ExternalLink className="w-3 h-3 ml-1" />}
+              </a>
+            </Button>
+          ))}
+
           {/* Create Agent Button (desktop) */}
           {!hideCreateButton && (
             <Button
@@ -127,8 +130,8 @@ const NavBar = React.forwardRef<HTMLElement, NavBarProps>(
               onClick={onCreateAgent}
               className="hidden sm:inline-flex h-7 px-2.5 text-[11px] bg-sedona-500 hover:bg-sedona-600 text-white"
             >
-              <Plus className="w-3.5 h-3.5 mr-1" />
-              Create
+              <Plus className="w-3 h-3 mr-1" />
+              Create Agent
             </Button>
           )}
 
@@ -151,7 +154,7 @@ const NavBar = React.forwardRef<HTMLElement, NavBarProps>(
             className="md:hidden p-1.5"
             aria-label="Toggle mobile menu"
           >
-            <Menu className="w-4.5 h-4.5" />
+            <Menu className="w-4 h-4" />
           </Button>
         </div>
       </nav>
