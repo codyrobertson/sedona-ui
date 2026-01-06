@@ -3,7 +3,7 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Clock, Trophy, BarChart3, TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight } from "lucide-react"
-import { BadgeGroup } from "@/components/ui/badge"
+import { Counter, TimeCounter, CurrencyCounter } from "@/components/ui/counter"
 
 export interface TopPoolItem {
   ticker: string
@@ -20,7 +20,9 @@ export interface TradeItem {
 
 export interface PlatformStatsProps extends React.HTMLAttributes<HTMLDivElement> {
   endsIn?: string
+  endsInSeconds?: number
   jackpot?: string
+  jackpotValue?: number
   tokens?: number
   topPools?: TopPoolItem[]
   recentTrades?: TradeItem[]
@@ -63,8 +65,48 @@ const TradeMarqueeItem = ({ type, amount, price, time }: TradeItem) => {
   )
 }
 
+// Stat badge component with animated counter
+interface StatBadgeProps {
+  icon: React.ReactNode
+  label: string
+  value?: string
+  numericValue?: number
+  type?: "time" | "currency" | "number"
+  variant?: "info" | "warning"
+}
+
+const StatBadge = ({ icon, label, value, numericValue, type = "number", variant = "info" }: StatBadgeProps) => {
+  const variantStyles = {
+    info: "bg-zeus-surface-info border-zeus-accent-blue/30",
+    warning: "bg-zeus-surface-warning border-zeus-accent-orange/30",
+  }
+
+  return (
+    <div className={cn(
+      "flex items-center gap-2 px-3 py-1.5 rounded-lg border",
+      variantStyles[variant]
+    )}>
+      <span className="text-zeus-text-tertiary">{icon}</span>
+      <span className="text-zeus-text-secondary text-caption-m">{label}</span>
+      <span className="text-zeus-text-primary text-caption-m font-semibold">
+        {numericValue !== undefined ? (
+          type === "time" ? (
+            <TimeCounter seconds={numericValue} fontSize={12} textColor="inherit" />
+          ) : type === "currency" ? (
+            <CurrencyCounter value={numericValue} fontSize={12} textColor="inherit" />
+          ) : (
+            <Counter value={numericValue} fontSize={12} textColor="inherit" fontWeight={600} />
+          )
+        ) : (
+          value
+        )}
+      </span>
+    </div>
+  )
+}
+
 const PlatformStats = React.forwardRef<HTMLDivElement, PlatformStatsProps>(
-  ({ className, endsIn = "0m 0s", jackpot = "$201", tokens = 1, topPools = [], recentTrades = [], ticker, ...props }, ref) => {
+  ({ className, endsIn = "0m 0s", endsInSeconds, jackpot = "$201", jackpotValue, tokens = 1, topPools = [], recentTrades = [], ticker, ...props }, ref) => {
     const showTrades = recentTrades.length > 0
     const showPools = topPools.length > 0 && !showTrades
 
@@ -83,24 +125,29 @@ const PlatformStats = React.forwardRef<HTMLDivElement, PlatformStatsProps>(
             Platform Stats
           </span>
 
-          <BadgeGroup
+          <StatBadge
             icon={<Clock className="w-3.5 h-3.5" />}
             label="Ends In:"
             value={endsIn}
+            numericValue={endsInSeconds}
+            type="time"
             variant="info"
           />
 
-          <BadgeGroup
+          <StatBadge
             icon={<Trophy className="w-3.5 h-3.5" />}
             label="Jackpot:"
             value={jackpot}
+            numericValue={jackpotValue}
+            type="currency"
             variant="warning"
           />
 
-          <BadgeGroup
+          <StatBadge
             icon={<BarChart3 className="w-3.5 h-3.5" />}
             label="Tokens:"
-            value={String(tokens)}
+            numericValue={tokens}
+            type="number"
             variant="info"
           />
         </div>
