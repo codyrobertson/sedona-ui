@@ -36,7 +36,7 @@ export interface WalletButtonProps {
   /** Custom class name */
   className?: string
   /** Size variant */
-  size?: "sm" | "md" | "lg"
+  size?: "xs" | "sm" | "md" | "lg"
   /** Show full address or truncated */
   showFullAddress?: boolean
 }
@@ -92,10 +92,17 @@ const WalletButton = React.forwardRef<HTMLButtonElement, WalletButtonProps>(
     }, [walletAddress])
 
     const sizeClasses = {
+      xs: "h-7 text-[11px] px-2.5",
       sm: "h-8 text-caption-s px-3",
       md: "h-9 text-caption-l px-4",
       lg: "h-10 text-body-s px-5",
     }
+
+    const iconSize = size === "xs" ? "w-3 h-3" : "w-4 h-4"
+    const iconGap = size === "xs" ? "mr-1.5" : "mr-2"
+    const dotSize = size === "xs" ? "w-1.5 h-1.5" : "w-2 h-2"
+    const chevronSize = size === "xs" ? "w-3 h-3" : "w-3.5 h-3.5"
+    const innerGap = size === "xs" ? "gap-1.5" : "gap-2"
 
     // Connecting state
     if (isConnecting) {
@@ -110,7 +117,7 @@ const WalletButton = React.forwardRef<HTMLButtonElement, WalletButtonProps>(
             className
           )}
         >
-          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+          <Loader2 className={cn(iconSize, iconGap, "animate-spin")} />
           Connecting...
         </Button>
       )
@@ -131,7 +138,7 @@ const WalletButton = React.forwardRef<HTMLButtonElement, WalletButtonProps>(
             className
           )}
         >
-          <Wallet className="w-4 h-4 mr-2" />
+          <Wallet className={cn(iconSize, iconGap)} />
           Connect
         </Button>
       )
@@ -156,11 +163,11 @@ const WalletButton = React.forwardRef<HTMLButtonElement, WalletButtonProps>(
               className
             )}
           >
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-zeus-status-success animate-pulse" />
+            <div className={cn("flex items-center", innerGap)}>
+              <div className={cn(dotSize, "rounded-full bg-zeus-status-success animate-pulse")} />
               <span className="font-medium">{formatBalance(balance)}</span>
               <span className="text-zeus-text-tertiary">SOL</span>
-              <ChevronDown className="w-3.5 h-3.5 text-zeus-text-tertiary" />
+              <ChevronDown className={cn(chevronSize, "text-zeus-text-tertiary")} />
             </div>
           </Button>
         </DropdownMenuTrigger>

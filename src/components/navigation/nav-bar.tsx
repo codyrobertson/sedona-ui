@@ -118,17 +118,17 @@ const NavBar = React.forwardRef<HTMLElement, NavBarProps>(
         </div>
 
         {/* Right: Actions */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
           {/* Create Agent Button (desktop) */}
           {!hideCreateButton && (
             <Button
               variant="default"
               size="sm"
               onClick={onCreateAgent}
-              className="hidden sm:inline-flex bg-sedona-500 hover:bg-sedona-600 text-white"
+              className="hidden sm:inline-flex h-7 px-2.5 text-[11px] bg-sedona-500 hover:bg-sedona-600 text-white"
             >
-              <Plus className="w-4 h-4 mr-1.5" />
-              Create Agent
+              <Plus className="w-3.5 h-3.5 mr-1" />
+              Create
             </Button>
           )}
 
@@ -140,7 +140,7 @@ const NavBar = React.forwardRef<HTMLElement, NavBarProps>(
             balance={balance}
             onConnect={onConnect}
             onDisconnect={onDisconnect}
-            size="sm"
+            size="xs"
           />
 
           {/* Mobile Menu Toggle */}
@@ -148,10 +148,10 @@ const NavBar = React.forwardRef<HTMLElement, NavBarProps>(
             variant="ghost"
             size="sm"
             onClick={onMobileMenuToggle}
-            className="md:hidden p-2"
+            className="md:hidden p-1.5"
             aria-label="Toggle mobile menu"
           >
-            <Menu className="w-5 h-5" />
+            <Menu className="w-4.5 h-4.5" />
           </Button>
         </div>
       </nav>
