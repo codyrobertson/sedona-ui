@@ -35,6 +35,7 @@ import { StatsGrid } from "@/components/ui/stats-grid"
 import { EmptyState } from "@/components/ui/empty-state"
 import { GridScan } from "@/components/ui/grid-scan"
 import { ElevatedBox, QuickButton, SlippageButton } from "@/components/ui/elevated"
+import { EliminationProgress } from "@/components/ui/elimination-progress"
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationPrevious, PaginationNext, PaginationEllipsis } from "@/components/ui/pagination"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import FaultyTerminal from "@/components/ui/faulty-terminal"
@@ -1962,6 +1963,68 @@ export default function StyleguidePage() {
                     ]}
                   />
                 </div>
+              </div>
+
+              {/* Elimination Progress */}
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Elimination Progress</h3>
+                <p className="text-muted-foreground mb-4">
+                  Status indicator showing rank position and elimination risk. Supports default card and inline arc gauge variants.
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Default variant */}
+                  <div className="space-y-3">
+                    <span className="text-caption-m text-muted-foreground">Default Variant</span>
+                    <EliminationProgress
+                      rank={12}
+                      totalAgents={47}
+                      marketCap="$45.2K"
+                      eliminationThreshold="$5K"
+                    />
+                    <EliminationProgress
+                      rank={35}
+                      totalAgents={47}
+                      marketCap="$8.5K"
+                      eliminationThreshold="$5K"
+                    />
+                    <EliminationProgress
+                      rank={44}
+                      totalAgents={47}
+                      marketCap="$3.2K"
+                      eliminationThreshold="$5K"
+                    />
+                  </div>
+                  {/* Inline variant */}
+                  <div className="space-y-3">
+                    <span className="text-caption-m text-muted-foreground">Inline Variant (Arc Gauge)</span>
+                    <div className="flex flex-col gap-3">
+                      <EliminationProgress
+                        variant="inline"
+                        rank={5}
+                        totalAgents={47}
+                        marketCap="$125K"
+                        eliminationThreshold="$5K"
+                      />
+                      <EliminationProgress
+                        variant="inline"
+                        rank={30}
+                        totalAgents={47}
+                        marketCap="$9K"
+                        eliminationThreshold="$5K"
+                      />
+                      <EliminationProgress
+                        variant="inline"
+                        rank={45}
+                        totalAgents={47}
+                        marketCap="$4K"
+                        eliminationThreshold="$5K"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <p className="text-caption-m text-muted-foreground mt-4">
+                  Status: SAFE (top 60% + above threshold) • CLOSE (60-80% or near threshold) • AT RISK (bottom 20% or below threshold)
+                </p>
               </div>
 
               {/* Empty State */}
