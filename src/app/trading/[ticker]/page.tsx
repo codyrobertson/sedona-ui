@@ -1,120 +1,87 @@
-"use client"
+import type { Metadata } from "next"
+import { AGENT_DETAILS, getAgentOrDefault } from "@/fixtures"
+import { JsonLd } from "@/components/seo"
+import AgentDetailClient from "./agent-detail-client"
+import { SEO_CONFIG } from "@/lib/seo-config"
 
-import * as React from "react"
-import { useParams } from "next/navigation"
-import {
-  Header,
-  PlatformStats,
-  PriceChart,
-  TokenSwapCard,
-  TransactionsTable,
-} from "@/components/trading"
-import { getAgentOrDefault, RECENT_TRADES, type ChartTimeframe } from "@/fixtures"
+type Props = {
+  params: Promise<{ ticker: string }>
+}
 
-export default function AgentDetailPage() {
-  const params = useParams()
-  const ticker = (params.ticker as string)?.toLowerCase() || "test"
-  const [timeframe, setTimeframe] = React.useState<ChartTimeframe>("1d")
-
-  const agent = getAgentOrDefault(ticker)
-
-  // Convert RECENT_TRADES to the format expected by PlatformStats
-  const recentTrades = RECENT_TRADES.map((trade) => ({
-    type: trade.type,
-    amount: trade.amount,
-    price: trade.price,
-    time: trade.time,
+export async function generateStaticParams() {
+  return Object.keys(AGENT_DETAILS).map((ticker) => ({
+    ticker,
   }))
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { ticker } = await params
+  const tickerUpper = ticker.toUpperCase()
+  const tickerLower = ticker.toLowerCase()
+
+  return {
+    title: `$${tickerUpper} - Trade on Sedona`,
+    description: `Trade $${tickerUpper} AI agent on Sedona. View real-time charts, price history, and swap tokens instantly on Solana.`,
+    alternates: {
+      canonical: `${SEO_CONFIG.baseUrl}/trading/${tickerLower}`,
+    },
+    openGraph: {
+      title: `$${tickerUpper} - Trade on Sedona`,
+      description: `Trade $${tickerUpper} AI agent on Sedona. View real-time charts, price history, and swap tokens instantly on Solana.`,
+      type: 'website',
+    },
+  }
+}
+
+export default async function AgentDetailPage({ params }: Props) {
+  const { ticker } = await params
+  const normalizedTicker = ticker?.toLowerCase() || "test"
+  const agent = getAgentOrDefault(normalizedTicker)
+
+  // Parse price string to get numeric value (e.g., "$0.0074" -> 0.0074)
+  const priceValue = parseFloat(agent.price.replace(/[^0-9.]/g, ""))
+
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: agent.name,
+    description: agent.description,
+    sku: agent.ticker,
+    brand: {
+      "@type": "Brand",
+      name: "Sedona",
+    },
+    offers: {
+      "@type": "Offer",
+      price: priceValue,
+      priceCurrency: "USD",
+      availability: "https://schema.org/InStock",
+      url: `${SEO_CONFIG.baseUrl}/trading/${agent.ticker.toLowerCase()}`,
+    },
+    category: "AI Trading Agent",
+    additionalProperty: [
+      {
+        "@type": "PropertyValue",
+        name: "Market Cap",
+        value: agent.marketCap,
+      },
+      {
+        "@type": "PropertyValue",
+        name: "24h Volume",
+        value: agent.volume24h,
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Model Types",
+        value: agent.modelTypes.join(", "),
+      },
+    ],
+  }
 
   return (
-    <div className="h-screen bg-zeus-surface-default flex flex-col overflow-hidden">
-      {/* Header */}
-      <Header
-        onCreateCoin={() => console.log("Create Agent clicked")}
-        onConnect={() => console.log("Connect clicked")}
-        onDisconnect={() => console.log("Disconnect clicked")}
-      />
-
-      {/* Platform Stats with Recent Trades for this ticker */}
-      <PlatformStats
-        endsInSeconds={754}
-        jackpotValue={2450}
-        tokens={47}
-        ticker={agent.ticker}
-        recentTrades={recentTrades}
-      />
-
-      {/* Main Content - Responsive Layout */}
-      <div className="flex flex-col lg:flex-row gap-4 px-4 pt-4 pb-16 flex-1 min-h-0 overflow-y-auto lg:overflow-hidden">
-        {/* Left Column - Chart + Transactions Table */}
-        <div className="flex-1 min-w-0 flex flex-col gap-4 lg:min-h-0">
-          <PriceChart
-            ticker={agent.ticker}
-            activeTimeframe={timeframe}
-            onTimeframeChange={setTimeframe}
-          />
-
-          {/* TokenSwapCard - Mobile only (under chart) */}
-          <div className="lg:hidden">
-            <TokenSwapCard
-              name={agent.name}
-              ticker={agent.ticker}
-              price={agent.price}
-              priceChange={agent.priceChange}
-              description={agent.description}
-              tokenAddress={agent.tokenAddress}
-              huggingFaceUrl={agent.huggingFaceUrl}
-              modelTypes={agent.modelTypes}
-              modelVersions={agent.modelVersions}
-              marketCap={agent.marketCap}
-              volume24h={agent.volume24h}
-              tvl={agent.tvl}
-              change1h={agent.change1h}
-              change24h={agent.change24h}
-              change7d={agent.change7d}
-              change30d={agent.change30d}
-              rank={agent.rank}
-              totalAgents={agent.totalAgents}
-              eliminationThreshold={agent.eliminationThreshold}
-              payBalance="200"
-              receiveBalance="0"
-              tradingStatus="active"
-              onSwap={async (params) => console.log("Swap:", params)}
-            />
-          </div>
-
-          <TransactionsTable ticker={agent.ticker} className="flex-1" />
-        </div>
-
-        {/* Right Column - Combined Token + Swap Card */}
-        <div className="hidden lg:flex lg:flex-col w-[380px] flex-shrink-0">
-          <TokenSwapCard
-            name={agent.name}
-            ticker={agent.ticker}
-            price={agent.price}
-            priceChange={agent.priceChange}
-            description={agent.description}
-            tokenAddress={agent.tokenAddress}
-            huggingFaceUrl={agent.huggingFaceUrl}
-            modelTypes={agent.modelTypes}
-            modelVersions={agent.modelVersions}
-            marketCap={agent.marketCap}
-            volume24h={agent.volume24h}
-            tvl={agent.tvl}
-            change1h={agent.change1h}
-            change24h={agent.change24h}
-            change7d={agent.change7d}
-            change30d={agent.change30d}
-            rank={agent.rank}
-            totalAgents={agent.totalAgents}
-            eliminationThreshold={agent.eliminationThreshold}
-            payBalance="200"
-            receiveBalance="0"
-            tradingStatus="active"
-            onSwap={async (params) => console.log("Swap:", params)}
-          />
-        </div>
-      </div>
-    </div>
+    <>
+      <JsonLd data={productSchema} />
+      <AgentDetailClient ticker={ticker} />
+    </>
   )
 }
