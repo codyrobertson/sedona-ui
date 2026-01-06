@@ -19,9 +19,6 @@ export type { AgentLaunchModalProps, AgentModel } from "./AgentLaunchModal"
 export { PriceChart } from "./PriceChart"
 export type { PriceChartProps } from "./PriceChart"
 
-export { SwapWidget } from "./SwapWidget"
-export type { SwapWidgetProps } from "./SwapWidget"
-
 export { YourTokens } from "./YourTokens"
 export type { YourTokensProps, TokenBalance } from "./YourTokens"
 

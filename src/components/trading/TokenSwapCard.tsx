@@ -9,7 +9,7 @@ import { Copy, Check } from "lucide-react"
 import { useClipboard } from "@/hooks/useClipboard"
 import { EliminationProgress } from "@/components/ui/elimination-progress"
 import { ModelHash, type ModelVersion } from "@/components/ui/model-hash"
-import { SwapWidget, type Token } from "@/components/ui/swap-widget"
+import { SwapWidget, type Token, type TradingStatus, type SwapQuote } from "@/components/ui/swap-widget"
 
 export interface TokenSwapCardProps extends React.HTMLAttributes<HTMLDivElement> {
   // Token info
@@ -38,23 +38,40 @@ export interface TokenSwapCardProps extends React.HTMLAttributes<HTMLDivElement>
   totalAgents?: number
   eliminationThreshold?: string
 
-  // Swap
+  // Swap configuration
   /** Pay token symbol */
   payTokenSymbol?: string
   /** Pay token balance */
   payBalance?: string
   /** Pay token price in USD */
   payTokenPrice?: number
+  /** Whether pay token is native (for gas reservation) */
+  payTokenIsNative?: boolean
   /** Receive token balance */
   receiveBalance?: string
   /** Receive token price in USD */
   receiveTokenPrice?: number
-  /** Whether swap is active/enabled */
-  isActive?: boolean
-  /** Callback when refresh is clicked */
-  onRefresh?: () => void
+  /** Trading status - controls if swaps are allowed */
+  tradingStatus?: TradingStatus
+  /** Custom message when trading is disabled */
+  tradingStatusMessage?: string
   /** Callback when swap is executed */
-  onSwap?: (payAmount: string, receiveAmount: string, minReceived: string) => void
+  onSwap?: (params: {
+    payToken: Token
+    receiveToken: Token
+    payAmount: string
+    receiveAmount: string
+    minReceived: string
+    slippage: string
+    quote: SwapQuote
+  }) => Promise<void>
+  /** Callback to fetch quote from API */
+  onQuoteRequest?: (params: {
+    payToken: Token
+    receiveToken: Token
+    payAmount: string
+    slippage: string
+  }) => Promise<SwapQuote | null>
 }
 
 const TokenSwapCard = React.forwardRef<HTMLDivElement, TokenSwapCardProps>(
@@ -82,12 +99,14 @@ const TokenSwapCard = React.forwardRef<HTMLDivElement, TokenSwapCardProps>(
       eliminationThreshold,
       payTokenSymbol = "SOL",
       payBalance = "200",
-      payTokenPrice = 100, // Default SOL price
+      payTokenPrice = 100,
+      payTokenIsNative = true,
       receiveBalance = "0",
-      receiveTokenPrice = 0.007, // Default token price
-      isActive = true,
-      onRefresh,
+      receiveTokenPrice = 0.007,
+      tradingStatus = "active",
+      tradingStatusMessage,
       onSwap,
+      onQuoteRequest,
       ...props
     },
     ref
@@ -95,19 +114,31 @@ const TokenSwapCard = React.forwardRef<HTMLDivElement, TokenSwapCardProps>(
     const { copy, copied } = useClipboard()
     const handleCopy = () => copy(tokenAddress)
 
+    // Track if tokens are flipped
+    const [isFlipped, setIsFlipped] = React.useState(false)
+
     // Build token objects for SwapWidget
-    const payToken: Token = {
+    const basePayToken: Token = {
       symbol: payTokenSymbol,
       name: payTokenSymbol === "SOL" ? "Solana" : payTokenSymbol,
       balance: payBalance,
       price: payTokenPrice,
+      isNative: payTokenIsNative,
     }
 
-    const receiveToken: Token = {
+    const baseReceiveToken: Token = {
       symbol: ticker,
       name: name,
       balance: receiveBalance,
       price: receiveTokenPrice,
+    }
+
+    // Swap tokens based on flip state
+    const payToken = isFlipped ? baseReceiveToken : basePayToken
+    const receiveToken = isFlipped ? basePayToken : baseReceiveToken
+
+    const handleFlip = () => {
+      setIsFlipped(!isFlipped)
     }
 
     return (
@@ -206,10 +237,11 @@ const TokenSwapCard = React.forwardRef<HTMLDivElement, TokenSwapCardProps>(
           <SwapWidget
             payToken={payToken}
             receiveToken={receiveToken}
-            isLoading={false}
-            isSwapping={!isActive}
-            onRefresh={onRefresh}
+            tradingStatus={tradingStatus}
+            tradingStatusMessage={tradingStatusMessage}
             onSwap={onSwap}
+            onQuoteRequest={onQuoteRequest}
+            onFlip={handleFlip}
           />
         </CardContent>
       </Card>
