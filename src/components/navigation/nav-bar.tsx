@@ -96,7 +96,7 @@ const NavBar = React.forwardRef<HTMLElement, NavBarProps>(
             )}
           </div>
           {showTagline && (
-            <span className="hidden sm:block text-[11px] text-zeus-text-tertiary leading-none">
+            <span className="hidden sm:block text-caption-s text-zeus-text-tertiary leading-none">
               {tagline}
             </span>
           )}
@@ -111,7 +111,7 @@ const NavBar = React.forwardRef<HTMLElement, NavBarProps>(
               variant="ghost"
               size="sm"
               asChild
-              className="hidden md:inline-flex h-6 px-2 text-[11px] text-zeus-text-secondary hover:text-zeus-text-primary"
+              className="hidden md:inline-flex h-6 px-2 text-caption-s text-zeus-text-secondary hover:text-zeus-text-primary"
             >
               <a
                 href={item.href}
@@ -130,7 +130,7 @@ const NavBar = React.forwardRef<HTMLElement, NavBarProps>(
               variant="default"
               size="sm"
               onClick={onCreateAgent}
-              className="hidden sm:inline-flex h-6 px-2 text-[11px] bg-sedona-500 hover:bg-sedona-600 text-white"
+              className="hidden sm:inline-flex h-6 px-2 text-caption-s bg-sedona-500 hover:bg-sedona-600 text-white"
             >
               <Plus className="w-2.5 h-2.5 mr-1" />
               Create Agent

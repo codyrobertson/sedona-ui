@@ -18,9 +18,9 @@ const logoVariants = cva(
         xl: "",
       },
       color: {
-        primary: "text-primary",
-        foreground: "text-foreground",
-        muted: "text-muted-foreground",
+        primary: "text-zeus-text-primary",
+        foreground: "text-zeus-text-secondary",
+        muted: "text-zeus-text-tertiary",
       },
     },
     defaultVariants: {

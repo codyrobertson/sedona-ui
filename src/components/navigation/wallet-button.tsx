@@ -92,7 +92,7 @@ const WalletButton = React.forwardRef<HTMLButtonElement, WalletButtonProps>(
     }, [walletAddress])
 
     const sizeClasses = {
-      xs: "h-6 text-[11px] px-2",
+      xs: "h-6 text-caption-s px-2",
       sm: "h-7 text-caption-s px-2.5",
       md: "h-8 text-caption-l px-3",
       lg: "h-9 text-body-s px-4",
