@@ -77,14 +77,18 @@ const AboutSedona = React.forwardRef<HTMLDivElement, AboutSedonaProps>(
             {/* Links */}
             <div className="flex items-center gap-4 pt-1">
               <a
-                href="#"
+                href="https://docs.sedona.io"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 text-sedona-500 hover:text-sedona-400 text-caption-m font-medium transition-colors"
               >
                 View Docs
                 <ExternalLink className="w-3 h-3" />
               </a>
               <a
-                href="#"
+                href="https://sedona.io/about"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 text-sedona-500 hover:text-sedona-400 text-caption-m font-medium transition-colors"
               >
                 Learn More

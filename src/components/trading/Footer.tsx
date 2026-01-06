@@ -22,21 +22,27 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
             Sedona
           </span>
           <a
-            href="#"
+            href="https://discord.gg/sedona"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 text-zeus-text-secondary hover:text-zeus-text-primary transition-colors text-caption-m ml-4"
           >
             <MessageCircle className="w-3.5 h-3.5" />
             Discord
           </a>
           <a
-            href="#"
+            href="https://docs.sedona.io/api"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 text-zeus-text-secondary hover:text-zeus-text-primary transition-colors text-caption-m ml-4"
           >
             <Terminal className="w-3.5 h-3.5" />
             API
           </a>
           <a
-            href="#"
+            href="https://docs.sedona.io/methodology"
+            target="_blank"
+            rel="noopener noreferrer"
             className="text-zeus-text-secondary hover:text-zeus-text-primary transition-colors text-caption-m ml-4"
           >
             Methodology
