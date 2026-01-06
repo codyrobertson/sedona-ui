@@ -29,12 +29,24 @@ const config: Config = {
         bold: '700',
       },
       fontSize: {
-        // Sedona typography scale
+        // Sedona typography scale - Complete hierarchy
+        // Captions
         'caption-s': ['10px', { lineHeight: '14px', letterSpacing: '0' }],
         'caption-m': ['12px', { lineHeight: '16px', letterSpacing: '0' }],
         'caption-l': ['14px', { lineHeight: '20px', letterSpacing: '-0.1px' }],
+        // Body
         'body-s': ['16px', { lineHeight: '24px', letterSpacing: '-0.2px' }],
         'body-m': ['18px', { lineHeight: '26px', letterSpacing: '-0.2px' }],
+        // Headings
+        'heading-xs': ['18px', { lineHeight: '24px', letterSpacing: '-0.3px', fontWeight: '600' }],
+        'heading-sm': ['20px', { lineHeight: '28px', letterSpacing: '-0.3px', fontWeight: '600' }],
+        'heading-md': ['24px', { lineHeight: '32px', letterSpacing: '-0.4px', fontWeight: '600' }],
+        'heading-lg': ['30px', { lineHeight: '36px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'heading-xl': ['36px', { lineHeight: '44px', letterSpacing: '-0.6px', fontWeight: '700' }],
+        // Display (hero text)
+        'display-sm': ['42px', { lineHeight: '48px', letterSpacing: '-0.8px', fontWeight: '700' }],
+        'display-md': ['48px', { lineHeight: '56px', letterSpacing: '-1px', fontWeight: '700' }],
+        'display-lg': ['60px', { lineHeight: '68px', letterSpacing: '-1.2px', fontWeight: '700' }],
       },
       colors: {
         // Zeus color system - COMPLETE palette from Figma
@@ -159,22 +171,85 @@ const config: Config = {
           // Design system semantic colors
           primary: "#de7001",
         },
-        // Button colors from design tokens  
-        'button-secondary': "#14151a", 
-        'button-tertiary': "rgba(10, 15, 41, 0.04)", // From Figma exactly
-        'button-ghost': "transparent",
-        // Status colors from design
+        // 5-step color scales for design system
+        neutral: {
+          50: "#4a463d",   // lightest
+          100: "#3e3a31",  // surface-neutral-subtle
+          200: "#363229",  //
+          300: "#2e2b24",  // surface-neutral
+          400: "#262320",  //
+          500: "#1e1c17",  // surface-elevated (default)
+          600: "#1a1915",  //
+          700: "#171512",  // dark
+          800: "#141210",  //
+          900: "#141310",  // surface-default
+          950: "#0d0c0a",  // darkest
+          DEFAULT: "#1e1c17",
+        },
         success: {
-          DEFAULT: "#10b981",
-          foreground: "#065f46",
+          50: "#f0fdf4",   // lightest
+          100: "#dcfce7",  // very light bg
+          200: "#bbf7d0",  //
+          300: "#86efac",  // light
+          400: "#4ade80",  //
+          500: "#22c55e",  // default
+          600: "#16a34a",  //
+          700: "#15803d",  // darker
+          800: "#166534",  //
+          900: "#14532d",  // darkest
+          950: "#052e16",  // near black
+          DEFAULT: "#22c55e",
+          foreground: "#ffffff",
         },
         warning: {
-          DEFAULT: "#f59e0b", 
-          foreground: "#92400e",
+          50: "#fefce8",   // lightest
+          100: "#fef9c3",  // very light yellow
+          200: "#fef08a",  //
+          300: "#fde047",  // bright yellow
+          400: "#facc15",  //
+          500: "#eab308",  // yellow (default)
+          600: "#ca8a04",  //
+          700: "#a16207",  // amber
+          800: "#854d0e",  //
+          900: "#713f12",  // dark amber
+          950: "#422006",  // near black
+          DEFAULT: "#eab308",
+          foreground: "#000000",
         },
+        error: {
+          50: "#fef2f2",   // lightest
+          100: "#fee2e2",  // very light bg
+          200: "#fecaca",  //
+          300: "#fca5a5",  // light red
+          400: "#f87171",  //
+          500: "#ef4444",  // red (default)
+          600: "#dc2626",  //
+          700: "#b91c1c",  // darker
+          800: "#991b1b",  //
+          900: "#7f1d1d",  // darkest
+          950: "#450a0a",  // near black
+          DEFAULT: "#ef4444",
+          foreground: "#ffffff",
+        },
+        info: {
+          50: "#eff6ff",   // lightest
+          100: "#dbeafe",  // very light bg
+          200: "#bfdbfe",  //
+          300: "#93c5fd",  // light blue
+          400: "#60a5fa",  //
+          500: "#3b82f6",  // blue (default)
+          600: "#2563eb",  //
+          700: "#1d4ed8",  // darker
+          800: "#1e40af",  //
+          900: "#1e3a8a",  // darkest
+          950: "#172554",  // near black
+          DEFAULT: "#3b82f6",
+          foreground: "#ffffff",
+        },
+        // Keep danger as alias for error
         danger: {
-          DEFAULT: "#e6483d", // From Figma disconnect button
-          foreground: "#991b1b",
+          DEFAULT: "#d9281c",
+          foreground: "#ffffff",
         },
         // Semantic colors using CSS variables
         border: "hsl(var(--border))",
@@ -223,15 +298,49 @@ const config: Config = {
         },
       },
       spacing: {
-        // Sedona spacing scale from design tokens
+        // Sedona spacing scale - Complete 4px grid system
         '0': '0',
+        '0.5': '2px',
         '1': '4px',
-        '2': '8px', 
+        '1.5': '6px',
+        '2': '8px',
+        '2.5': '10px',
         '3': '12px',
+        '3.5': '14px',
         '4': '16px',
+        '5': '20px',
         '6': '24px',
+        '7': '28px',
         '8': '32px',
+        '9': '36px',
+        '10': '40px',
+        '12': '48px',
+        '14': '56px',
+        '16': '64px',
+        '20': '80px',
+        '24': '96px',
+        '28': '112px',
+        '32': '128px',
         '36': '144px',
+        '40': '160px',
+      },
+      boxShadow: {
+        // Sedona elevation system
+        'xs': '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+        'sm': '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+        'DEFAULT': '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+        'md': '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+        'lg': '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+        'xl': '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+        '2xl': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+        // Glow effects for interactive states
+        'glow-sm': '0 0 10px 0 rgb(222 112 1 / 0.3)',
+        'glow': '0 0 20px 0 rgb(222 112 1 / 0.4)',
+        'glow-lg': '0 0 30px 0 rgb(222 112 1 / 0.5)',
+        // Inset shadows
+        'inner': 'inset 0 2px 4px 0 rgb(0 0 0 / 0.05)',
+        'inner-lg': 'inset 0 4px 8px 0 rgb(0 0 0 / 0.1)',
+        'none': 'none',
       },
       borderRadius: {
         none: '0',
