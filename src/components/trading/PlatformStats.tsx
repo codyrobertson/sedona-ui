@@ -2,8 +2,9 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { Clock, Trophy, BarChart3, TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight } from "lucide-react"
+import { Clock, Trophy, BarChart3 } from "lucide-react"
 import { Counter, TimeCounter, CurrencyCounter } from "@/components/ui/counter"
+import { TokenMarquee, TradeMarquee, type TokenMarqueeData, type TradeMarqueeData } from "@/components/ui/marquee"
 
 export interface TopPoolItem {
   ticker: string
@@ -27,42 +28,6 @@ export interface PlatformStatsProps extends React.HTMLAttributes<HTMLDivElement>
   topPools?: TopPoolItem[]
   recentTrades?: TradeItem[]
   ticker?: string
-}
-
-const MarqueeItem = ({ ticker, price, change }: TopPoolItem) => {
-  const isPositive = change >= 0
-  return (
-    <div className="inline-flex items-center gap-2 px-4 font-mono text-caption-m">
-      <span className="text-zeus-text-primary font-medium">${ticker}</span>
-      <span className="text-zeus-text-secondary">{price}</span>
-      <span className={cn(
-        "flex items-center gap-0.5",
-        isPositive ? "text-zeus-status-success" : "text-zeus-status-destructive"
-      )}>
-        {isPositive ? "+" : ""}{change.toFixed(2)}%
-        {isPositive ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
-      </span>
-    </div>
-  )
-}
-
-const TradeMarqueeItem = ({ type, amount, price, time }: TradeItem) => {
-  const isBuy = type === "buy"
-  return (
-    <div className="inline-flex items-center gap-2 px-4 font-mono text-caption-m">
-      <span className={cn(
-        "flex items-center gap-1 font-medium",
-        isBuy ? "text-zeus-status-success" : "text-zeus-status-destructive"
-      )}>
-        {isBuy ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
-        {isBuy ? "BUY" : "SELL"}
-      </span>
-      <span className="text-zeus-text-primary">{amount}</span>
-      <span className="text-zeus-text-tertiary">@</span>
-      <span className="text-zeus-text-secondary">{price}</span>
-      <span className="text-zeus-text-quaternary">{time}</span>
-    </div>
-  )
 }
 
 // Stat badge component with animated counter
@@ -161,21 +126,11 @@ const PlatformStats = React.forwardRef<HTMLDivElement, PlatformStatsProps>(
             <span className="text-zeus-text-secondary text-caption-m px-3 flex-shrink-0">
               {ticker ? `$${ticker} Activity` : "Recent Trades"}
             </span>
-
-            <div className="flex-1 overflow-hidden relative">
-              {/* Left scrim */}
-              <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-zeus-surface-elevated to-transparent z-10" />
-
-              {/* Marquee */}
-              <div className="flex items-center animate-marquee whitespace-nowrap py-2">
-                {[...recentTrades, ...recentTrades, ...recentTrades].map((trade, i) => (
-                  <TradeMarqueeItem key={`${trade.type}-${trade.time}-${i}`} {...trade} />
-                ))}
-              </div>
-
-              {/* Right scrim */}
-              <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-zeus-surface-elevated to-transparent z-10" />
-            </div>
+            <TradeMarquee
+              trades={recentTrades as TradeMarqueeData[]}
+              fadeColor="#1e1c17"
+              className="flex-1"
+            />
           </div>
         )}
 
@@ -185,21 +140,11 @@ const PlatformStats = React.forwardRef<HTMLDivElement, PlatformStatsProps>(
             <span className="text-zeus-text-secondary text-caption-m px-3 flex-shrink-0">
               Top Pools
             </span>
-
-            <div className="flex-1 overflow-hidden relative">
-              {/* Left scrim */}
-              <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-zeus-surface-elevated to-transparent z-10" />
-
-              {/* Marquee */}
-              <div className="flex items-center animate-marquee whitespace-nowrap py-2">
-                {[...topPools, ...topPools, ...topPools].map((pool, i) => (
-                  <MarqueeItem key={`${pool.ticker}-${i}`} {...pool} />
-                ))}
-              </div>
-
-              {/* Right scrim */}
-              <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-zeus-surface-elevated to-transparent z-10" />
-            </div>
+            <TokenMarquee
+              tokens={topPools as TokenMarqueeData[]}
+              fadeColor="#1e1c17"
+              className="flex-1"
+            />
           </div>
         )}
       </div>

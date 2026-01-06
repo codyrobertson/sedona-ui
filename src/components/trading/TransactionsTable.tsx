@@ -3,6 +3,12 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { FileText, ChevronLeft, ChevronRight } from "lucide-react"
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+} from "@/components/ui/pagination"
 
 export interface Transaction {
   id: string
@@ -136,36 +142,64 @@ const TransactionsTable = React.forwardRef<HTMLDivElement, TransactionsTableProp
             <span className="text-[10px] lg:text-caption-s text-zeus-text-tertiary">
               Page {currentPage} of {totalPages}
             </span>
-            <div className="flex items-center gap-1">
-              <button
-                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
-                className="p-1.5 rounded hover:bg-zeus-surface-elevated disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-              >
-                <ChevronLeft className="w-4 h-4 text-zeus-text-secondary" />
-              </button>
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                <button
-                  key={page}
-                  onClick={() => setCurrentPage(page)}
-                  className={cn(
-                    "w-7 h-7 rounded text-caption-s font-medium transition-colors",
-                    currentPage === page
-                      ? "bg-sedona-500 text-white"
-                      : "text-zeus-text-tertiary hover:bg-zeus-surface-elevated"
-                  )}
-                >
-                  {page}
-                </button>
-              ))}
-              <button
-                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                disabled={currentPage === totalPages}
-                className="p-1.5 rounded hover:bg-zeus-surface-elevated disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-              >
-                <ChevronRight className="w-4 h-4 text-zeus-text-secondary" />
-              </button>
-            </div>
+            <Pagination className="mx-0 w-auto justify-end">
+              <PaginationContent className="gap-1">
+                <PaginationItem>
+                  <PaginationLink
+                    href="#"
+                    aria-label="Go to previous page"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      setCurrentPage(p => Math.max(1, p - 1))
+                    }}
+                    className={cn(
+                      "h-7 w-7 hover:bg-zeus-surface-elevated",
+                      currentPage === 1 && "pointer-events-none opacity-30"
+                    )}
+                    aria-disabled={currentPage === 1}
+                  >
+                    <ChevronLeft className="h-4 w-4 text-zeus-text-secondary" />
+                  </PaginationLink>
+                </PaginationItem>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                  <PaginationItem key={page}>
+                    <PaginationLink
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        setCurrentPage(page)
+                      }}
+                      isActive={currentPage === page}
+                      className={cn(
+                        "w-7 h-7 text-caption-s font-medium transition-colors",
+                        currentPage === page
+                          ? "bg-sedona-500 text-white border-sedona-500 hover:bg-sedona-600 hover:text-white"
+                          : "text-zeus-text-tertiary hover:bg-zeus-surface-elevated border-transparent"
+                      )}
+                    >
+                      {page}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
+                <PaginationItem>
+                  <PaginationLink
+                    href="#"
+                    aria-label="Go to next page"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      setCurrentPage(p => Math.min(totalPages, p + 1))
+                    }}
+                    className={cn(
+                      "h-7 w-7 hover:bg-zeus-surface-elevated",
+                      currentPage === totalPages && "pointer-events-none opacity-30"
+                    )}
+                    aria-disabled={currentPage === totalPages}
+                  >
+                    <ChevronRight className="h-4 w-4 text-zeus-text-secondary" />
+                  </PaginationLink>
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
           </div>
         </div>
       </div>

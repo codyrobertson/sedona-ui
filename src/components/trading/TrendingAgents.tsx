@@ -3,8 +3,16 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+} from "@/components/ui/dropdown-menu"
 import { Search, ChevronDown } from "lucide-react"
 import { AgentListItem, AgentListItemProps } from "./AgentListItem"
+import { EmptyState } from "@/components/ui/empty-state"
 
 export interface TrendingAgentsProps extends React.HTMLAttributes<HTMLDivElement> {
   agents?: Omit<AgentListItemProps, "onSelect" | "rank">[]
@@ -36,7 +44,6 @@ const TrendingAgents = React.forwardRef<HTMLDivElement, TrendingAgentsProps>(
     ref
   ) => {
     const [searchQuery, setSearchQuery] = React.useState("")
-    const [showSortDropdown, setShowSortDropdown] = React.useState(false)
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setSearchQuery(e.target.value)
@@ -50,37 +57,40 @@ const TrendingAgents = React.forwardRef<HTMLDivElement, TrendingAgentsProps>(
           <h2 className="text-[28px] font-bold text-zeus-text-primary">
             Trending Agents
           </h2>
-          <div className="flex items-center gap-2 mt-2 relative">
+          <div className="flex items-center gap-2 mt-2">
             <span className="text-zeus-text-secondary text-caption-l">Sorting by</span>
-            <button
-              onClick={() => setShowSortDropdown(!showSortDropdown)}
-              className="flex items-center gap-1 text-zeus-text-primary text-caption-l font-medium hover:text-sedona-500 transition-colors"
-            >
-              {sortBy}
-              <ChevronDown className="w-4 h-4" />
-            </button>
-
-            {showSortDropdown && (
-              <div className="absolute top-full left-0 mt-1 bg-zeus-surface-neutral border border-zeus-border-alpha rounded-lg shadow-lg z-10 min-w-[250px]">
-                {SORT_OPTIONS.map((option) => (
-                  <button
-                    key={option}
-                    onClick={() => {
-                      onSortChange?.(option)
-                      setShowSortDropdown(false)
-                    }}
-                    className={cn(
-                      "w-full px-4 py-2 text-left text-caption-l hover:bg-zeus-surface-neutral-subtle transition-colors",
-                      option === sortBy
-                        ? "text-sedona-500 bg-zeus-surface-neutral-subtle"
-                        : "text-zeus-text-primary"
-                    )}
-                  >
-                    {option}
-                  </button>
-                ))}
-              </div>
-            )}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center gap-1 text-zeus-text-primary text-caption-l font-medium hover:text-sedona-500 transition-colors focus:outline-none">
+                  {sortBy}
+                  <ChevronDown className="w-4 h-4" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="start"
+                className="min-w-[250px] bg-zeus-surface-neutral border-zeus-border-alpha"
+              >
+                <DropdownMenuRadioGroup
+                  value={sortBy}
+                  onValueChange={(value) => onSortChange?.(value)}
+                >
+                  {SORT_OPTIONS.map((option) => (
+                    <DropdownMenuRadioItem
+                      key={option}
+                      value={option}
+                      className={cn(
+                        "px-4 py-2 cursor-pointer",
+                        option === sortBy
+                          ? "text-sedona-500 bg-zeus-surface-neutral-subtle"
+                          : "text-zeus-text-primary hover:bg-zeus-surface-neutral-subtle"
+                      )}
+                    >
+                      {option}
+                    </DropdownMenuRadioItem>
+                  ))}
+                </DropdownMenuRadioGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
 
@@ -119,9 +129,10 @@ const TrendingAgents = React.forwardRef<HTMLDivElement, TrendingAgentsProps>(
           </div>
 
           {agents.length === 0 && (
-            <div className="text-center py-12 text-zeus-text-tertiary">
-              No agents found
-            </div>
+            <EmptyState
+              title="No agents found"
+              description="Try adjusting your search or filters"
+            />
           )}
         </div>
       </div>

@@ -3,8 +3,10 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { RefreshCw, Settings, ChevronDown, ArrowUpDown, Wallet, Copy, Check } from "lucide-react"
+import { TokenInput } from "@/components/ui/token-input"
+import { TokenAvatar } from "@/components/ui/token-avatar"
+import { StatsGrid } from "@/components/ui/stats-grid"
+import { RefreshCw, Settings, ArrowUpDown, Copy, Check } from "lucide-react"
 
 export interface TokenSwapCardProps extends React.HTMLAttributes<HTMLDivElement> {
   // Token info
@@ -106,9 +108,7 @@ const TokenSwapCard = React.forwardRef<HTMLDivElement, TokenSwapCardProps>(
         <CardContent className="p-4 space-y-4">
           {/* Token Header */}
           <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-full bg-zeus-surface-elevated border border-zeus-border-alpha flex items-center justify-center text-lg font-bold text-zeus-text-secondary flex-shrink-0">
-              {ticker.charAt(0)}
-            </div>
+            <TokenAvatar ticker={ticker} size="lg" />
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
                 <span className="text-zeus-text-primary font-semibold text-body-s">{ticker}</span>
@@ -159,33 +159,23 @@ const TokenSwapCard = React.forwardRef<HTMLDivElement, TokenSwapCardProps>(
 
           {/* Stats Grid - 3 cols top, 4 cols bottom */}
           <div className="space-y-1.5">
-            <div className="grid grid-cols-3 gap-1.5">
-              {[
+            <StatsGrid
+              items={[
                 { label: "MCAP", value: marketCap },
                 { label: "VOL", value: volume24h },
                 { label: "TVL", value: tvl },
-              ].map(({ label, value }) => (
-                <div key={label} className="py-2 rounded-lg bg-zeus-surface-elevated border border-zeus-border-alpha text-center">
-                  <div className="text-zeus-text-quaternary text-[9px] uppercase">{label}</div>
-                  <div className="text-zeus-text-primary text-caption-s font-semibold">{value}</div>
-                </div>
-              ))}
-            </div>
-            <div className="grid grid-cols-4 gap-1.5">
-              {[
-                { label: "1H", value: change1h },
-                { label: "24H", value: change24h },
-                { label: "7D", value: change7d },
-                { label: "30D", value: change30d },
-              ].map(({ label, value }) => (
-                <div key={label} className="py-2 rounded-lg bg-zeus-surface-elevated border border-zeus-border-alpha text-center">
-                  <div className="text-zeus-text-quaternary text-[9px] uppercase">{label}</div>
-                  <div className={`text-caption-s font-semibold ${value >= 0 ? "text-zeus-status-success" : "text-zeus-status-destructive"}`}>
-                    {value >= 0 ? "+" : ""}{value.toFixed(1)}%
-                  </div>
-                </div>
-              ))}
-            </div>
+              ]}
+              columns={3}
+            />
+            <StatsGrid
+              items={[
+                { label: "1H", value: change1h, change: change1h },
+                { label: "24H", value: change24h, change: change24h },
+                { label: "7D", value: change7d, change: change7d },
+                { label: "30D", value: change30d, change: change30d },
+              ]}
+              columns={4}
+            />
           </div>
 
           {/* Divider */}
@@ -226,26 +216,17 @@ const TokenSwapCard = React.forwardRef<HTMLDivElement, TokenSwapCardProps>(
             </div>
 
             {/* Pay Input */}
-            <div className="relative">
-              <Input
-                type="text"
-                placeholder="0.00"
-                value={payAmount}
-                onChange={(e) => setPayAmount(e.target.value)}
-                className="bg-zeus-surface-default border-zeus-border-alpha text-zeus-text-primary text-body-s h-11 pr-24"
-              />
-              <button className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-zeus-surface-elevated">
+            <TokenInput
+              value={payAmount}
+              onChange={setPayAmount}
+              token={payToken}
+              tokenIcon={
                 <div className="w-5 h-5 rounded-full bg-gradient-to-br from-[#9945FF] to-[#14F195] flex items-center justify-center">
                   <span className="text-[8px] font-bold text-white">◎</span>
                 </div>
-                <span className="text-zeus-text-primary text-caption-s font-medium">{payToken}</span>
-                <ChevronDown className="w-3.5 h-3.5 text-zeus-text-tertiary" />
-              </button>
-            </div>
-            <div className="flex items-center gap-1 text-[10px] text-zeus-text-tertiary">
-              <Wallet className="w-3 h-3" />
-              <span>Balance: {payBalance} {payToken}</span>
-            </div>
+              }
+              balance={payBalance}
+            />
 
             {/* Swap Toggle */}
             <div className="flex items-center gap-2">
@@ -257,27 +238,13 @@ const TokenSwapCard = React.forwardRef<HTMLDivElement, TokenSwapCardProps>(
             </div>
 
             {/* To Receive */}
-            <span className="text-zeus-text-primary text-caption-s font-medium">To Receive</span>
-            <div className="relative">
-              <Input
-                type="text"
-                placeholder="0.00"
-                value={receiveAmount}
-                onChange={(e) => setReceiveAmount(e.target.value)}
-                className="bg-zeus-surface-default border-zeus-border-alpha text-zeus-text-primary text-body-s h-11 pr-24"
-              />
-              <button className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-zeus-surface-elevated">
-                <div className="w-5 h-5 rounded-full bg-gradient-to-br from-sedona-500 to-sedona-600 flex items-center justify-center">
-                  <span className="text-[8px] font-bold text-white">{ticker.charAt(0)}</span>
-                </div>
-                <span className="text-zeus-text-primary text-caption-s font-medium">{ticker}</span>
-                <ChevronDown className="w-3.5 h-3.5 text-zeus-text-tertiary" />
-              </button>
-            </div>
-            <div className="flex items-center gap-1 text-[10px] text-zeus-text-tertiary">
-              <Wallet className="w-3 h-3" />
-              <span>Balance: {receiveBalance} {ticker}</span>
-            </div>
+            <TokenInput
+              value={receiveAmount}
+              onChange={setReceiveAmount}
+              token={ticker}
+              balance={receiveBalance}
+              label="To Receive"
+            />
           </div>
 
           {/* Swap Button */}

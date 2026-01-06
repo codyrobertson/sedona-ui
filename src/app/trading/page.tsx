@@ -43,7 +43,6 @@ export default function TradingDemoPage() {
     <div className="min-h-screen bg-zeus-surface-default">
       {/* Header */}
       <Header
-        onDocs={() => console.log("Docs clicked")}
         onCreateCoin={() => setShowModal(true)}
         onConnect={() => {
           window.location.href = "/trading/portfolio"

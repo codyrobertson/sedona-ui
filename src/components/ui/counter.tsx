@@ -98,7 +98,7 @@ function Digit({ place, value, height, digitClassName }: DigitProps) {
   return <AnimatedDigit place={place} value={value} height={height} digitClassName={digitClassName} />
 }
 
-export interface CounterProps {
+export interface CounterProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'prefix'> {
   value: number
   fontSize?: number
   padding?: number
@@ -106,7 +106,6 @@ export interface CounterProps {
   gap?: number
   textColor?: string
   fontWeight?: React.CSSProperties["fontWeight"]
-  className?: string
   digitClassName?: string
   prefix?: string
   suffix?: string
@@ -114,158 +113,175 @@ export interface CounterProps {
   gradientColor?: string
 }
 
-export function Counter({
-  value,
-  fontSize = 16,
-  padding = 0,
-  places,
-  gap = 0,
-  textColor = "inherit",
-  fontWeight = "inherit",
-  className,
-  digitClassName,
-  prefix,
-  suffix,
-  showGradient = false,
-  gradientColor = "black",
-}: CounterProps) {
-  // Auto-detect places if not provided
-  const computedPlaces = React.useMemo(() => {
-    if (places) return places
-    const valueStr = value.toString()
-    return Array.from(valueStr).map((ch, i, a) => {
-      if (ch === ".") return "."
-      const dotIndex = a.indexOf(".")
-      const isInteger = dotIndex === -1
-      const exponent = isInteger
-        ? a.length - i - 1
-        : i < dotIndex
-          ? dotIndex - i - 1
-          : -(i - dotIndex)
-      return Math.pow(10, exponent)
-    }) as PlaceValue[]
-  }, [places, value])
+const Counter = React.forwardRef<HTMLSpanElement, CounterProps>(
+  (
+    {
+      value,
+      fontSize = 16,
+      padding = 0,
+      places,
+      gap = 0,
+      textColor = "inherit",
+      fontWeight = "inherit",
+      className,
+      digitClassName,
+      prefix,
+      suffix,
+      showGradient = false,
+      gradientColor = "black",
+      ...props
+    },
+    ref
+  ) => {
+    // Auto-detect places if not provided
+    const computedPlaces = React.useMemo(() => {
+      if (places) return places
+      const valueStr = value.toString()
+      return Array.from(valueStr).map((ch, i, a) => {
+        if (ch === ".") return "."
+        const dotIndex = a.indexOf(".")
+        const isInteger = dotIndex === -1
+        const exponent = isInteger
+          ? a.length - i - 1
+          : i < dotIndex
+            ? dotIndex - i - 1
+            : -(i - dotIndex)
+        return Math.pow(10, exponent)
+      }) as PlaceValue[]
+    }, [places, value])
 
-  const height = fontSize + padding
+    const height = fontSize + padding
 
-  return (
-    <span className={cn("relative inline-flex items-center", className)}>
-      {prefix && (
-        <span style={{ fontSize, color: textColor, fontWeight }}>{prefix}</span>
-      )}
+    return (
       <span
-        className="relative inline-block"
-        style={{
-          fontSize,
-          display: "flex",
-          gap,
-          overflow: "hidden",
-          lineHeight: 1,
-          color: textColor,
-          fontWeight,
-        }}
+        ref={ref}
+        className={cn("relative inline-flex items-center", className)}
+        {...props}
       >
-        <span className="flex" style={{ gap }}>
-          {computedPlaces.map((place, index) => (
-            <Digit
-              key={`${place}-${index}`}
-              place={place}
-              value={value}
-              height={height}
-              digitClassName={digitClassName}
-            />
-          ))}
-        </span>
-        {showGradient && (
-          <span
-            className="pointer-events-none absolute inset-0 flex flex-col justify-between"
-            aria-hidden
-          >
-            <span
-              style={{
-                height: 8,
-                background: `linear-gradient(to bottom, ${gradientColor}, transparent)`,
-              }}
-            />
-            <span
-              style={{
-                height: 8,
-                background: `linear-gradient(to top, ${gradientColor}, transparent)`,
-              }}
-            />
+        {prefix && (
+          <span style={{ fontSize, color: textColor, fontWeight }}>{prefix}</span>
+        )}
+        <span
+          className="relative inline-block"
+          style={{
+            fontSize,
+            display: "flex",
+            gap,
+            overflow: "hidden",
+            lineHeight: 1,
+            color: textColor,
+            fontWeight,
+          }}
+        >
+          <span className="flex" style={{ gap }}>
+            {computedPlaces.map((place, index) => (
+              <Digit
+                key={`${place}-${index}`}
+                place={place}
+                value={value}
+                height={height}
+                digitClassName={digitClassName}
+              />
+            ))}
           </span>
+          {showGradient && (
+            <span
+              className="pointer-events-none absolute inset-0 flex flex-col justify-between"
+              aria-hidden
+            >
+              <span
+                style={{
+                  height: 8,
+                  background: `linear-gradient(to bottom, ${gradientColor}, transparent)`,
+                }}
+              />
+              <span
+                style={{
+                  height: 8,
+                  background: `linear-gradient(to top, ${gradientColor}, transparent)`,
+                }}
+              />
+            </span>
+          )}
+        </span>
+        {suffix && (
+          <span style={{ fontSize, color: textColor, fontWeight }}>{suffix}</span>
         )}
       </span>
-      {suffix && (
-        <span style={{ fontSize, color: textColor, fontWeight }}>{suffix}</span>
-      )}
-    </span>
-  )
-}
+    )
+  }
+)
+
+Counter.displayName = "Counter"
 
 // Specialized variants for common use cases
-export interface TimeCounterProps {
+export interface TimeCounterProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'> {
   seconds: number
   fontSize?: number
-  className?: string
   textColor?: string
 }
 
-export function TimeCounter({
-  seconds,
-  fontSize = 16,
-  className,
-  textColor = "inherit",
-}: TimeCounterProps) {
-  const minutes = Math.floor(seconds / 60)
-  const secs = seconds % 60
+const TimeCounter = React.forwardRef<HTMLSpanElement, TimeCounterProps>(
+  ({ seconds, fontSize = 16, className, textColor = "inherit", ...props }, ref) => {
+    const minutes = Math.floor(seconds / 60)
+    const secs = seconds % 60
 
-  return (
-    <span className={cn("inline-flex items-center font-mono", className)}>
-      <Counter
-        value={minutes}
-        fontSize={fontSize}
-        textColor={textColor}
-        places={minutes >= 10 ? [10, 1] : [1]}
-        fontWeight={600}
-      />
-      <span style={{ fontSize, color: textColor, fontWeight: 600 }}>m </span>
-      <Counter
-        value={secs}
-        fontSize={fontSize}
-        textColor={textColor}
-        places={[10, 1]}
-        fontWeight={600}
-      />
-      <span style={{ fontSize, color: textColor, fontWeight: 600 }}>s</span>
-    </span>
-  )
-}
+    return (
+      <span
+        ref={ref}
+        className={cn("inline-flex items-center font-mono", className)}
+        {...props}
+      >
+        <Counter
+          value={minutes}
+          fontSize={fontSize}
+          textColor={textColor}
+          places={minutes >= 10 ? [10, 1] : [1]}
+          fontWeight={600}
+        />
+        <span style={{ fontSize, color: textColor, fontWeight: 600 }}>m </span>
+        <Counter
+          value={secs}
+          fontSize={fontSize}
+          textColor={textColor}
+          places={[10, 1]}
+          fontWeight={600}
+        />
+        <span style={{ fontSize, color: textColor, fontWeight: 600 }}>s</span>
+      </span>
+    )
+  }
+)
 
-export interface CurrencyCounterProps {
+TimeCounter.displayName = "TimeCounter"
+
+export interface CurrencyCounterProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'> {
   value: number
   fontSize?: number
-  className?: string
   textColor?: string
   currency?: string
 }
 
-export function CurrencyCounter({
-  value,
-  fontSize = 16,
-  className,
-  textColor = "inherit",
-  currency = "$",
-}: CurrencyCounterProps) {
-  return (
-    <span className={cn("inline-flex items-center font-semibold", className)}>
-      <span style={{ fontSize, color: textColor }}>{currency}</span>
-      <Counter
-        value={value}
-        fontSize={fontSize}
-        textColor={textColor}
-        fontWeight={600}
-      />
-    </span>
-  )
-}
+const CurrencyCounter = React.forwardRef<HTMLSpanElement, CurrencyCounterProps>(
+  ({ value, fontSize = 16, className, textColor = "inherit", currency = "$", ...props }, ref) => {
+    return (
+      <span
+        ref={ref}
+        className={cn("inline-flex items-center font-semibold", className)}
+        {...props}
+      >
+        <span style={{ fontSize, color: textColor }}>{currency}</span>
+        <Counter
+          value={value}
+          fontSize={fontSize}
+          textColor={textColor}
+          fontWeight={600}
+        />
+      </span>
+    )
+  }
+)
+
+CurrencyCounter.displayName = "CurrencyCounter"
+
+export { Counter, TimeCounter, CurrencyCounter }
