@@ -89,12 +89,14 @@ const NavBar = React.forwardRef<HTMLElement, NavBarProps>(
         {...props}
       >
         {/* Left: Logo + Tagline */}
-        <div className="flex items-center gap-3">
-          {logo || (
-            <SedonaLogo variant="logo" size="sm" className="text-sedona-500" />
-          )}
+        <div className="flex items-center gap-2">
+          <div className="flex items-center flex-shrink-0">
+            {logo || (
+              <SedonaLogo variant="logo" size="sm" className="text-sedona-500" />
+            )}
+          </div>
           {showTagline && (
-            <span className="hidden sm:block text-caption-m text-zeus-text-tertiary leading-none">
+            <span className="hidden sm:block text-[11px] text-zeus-text-tertiary leading-none">
               {tagline}
             </span>
           )}
