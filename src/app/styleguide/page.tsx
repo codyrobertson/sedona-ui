@@ -38,6 +38,7 @@ import { ElevatedBox, QuickButton, SlippageButton } from "@/components/ui/elevat
 import { EliminationProgress } from "@/components/ui/elimination-progress"
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationPrevious, PaginationNext, PaginationEllipsis } from "@/components/ui/pagination"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import FaultyTerminal from "@/components/ui/faulty-terminal"
 import { Marquee, MarqueeItem, VerticalMarquee } from "@/components/ui/marquee/marquee"
 import { DataTable, DataTableHeader, DataTableBody, DataTableRow, DataTableHead, DataTableCell, DataTableEmpty, DataTableLoading } from "@/components/ui/data-table/data-table"
 import { CollapsibleSection, CodeBlock, SimpleDemo, StyleguideNav, StyleguideSidebar, categories, type CategoryId } from "@/components/ui/playground"
@@ -2087,31 +2088,37 @@ export default function StyleguidePage() {
                 <p className="text-muted-foreground mb-4">
                   WebGL-powered terminal effect with scanlines, glitches, and mouse interaction. GPU-accelerated for smooth performance.
                 </p>
-                <div className="rounded-lg border border-zeus-border-normal bg-zeus-surface-default p-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-3 h-3 rounded-full bg-zeus-status-destructive" />
-                    <div className="w-3 h-3 rounded-full bg-zeus-accent-orange" />
-                    <div className="w-3 h-3 rounded-full bg-zeus-status-success" />
-                    <span className="text-zeus-text-tertiary text-caption-m ml-2">faulty-terminal.tsx</span>
+                <div className="grid gap-4">
+                  <div className="rounded-lg overflow-hidden h-64 border border-zeus-border-normal bg-black">
+                    <FaultyTerminal
+                      tint="#de7001"
+                      curvature={0.15}
+                      scanlineIntensity={0.3}
+                      brightness={0.8}
+                    />
                   </div>
-                  <code className="text-caption-m text-zeus-text-secondary block">
-                    {`<FaultyTerminal
-  tint="#de7001"      // Color tint for the effect
-  curvature={0.15}    // CRT screen curvature (0-1)
-  scanlineIntensity={0.3}
-  glitchAmount={1}    // Glitch displacement multiplier
-  chromaticAberration={0}
-  brightness={0.8}
-  mouseReact={true}   // Interactive mouse response
-/>`}
-                  </code>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="rounded-lg overflow-hidden h-32 border border-zeus-border-normal bg-black">
+                      <FaultyTerminal
+                        tint="#87d68a"
+                        curvature={0}
+                        glitchAmount={2}
+                        brightness={0.6}
+                      />
+                    </div>
+                    <div className="rounded-lg overflow-hidden h-32 border border-zeus-border-normal bg-black">
+                      <FaultyTerminal
+                        tint="#6b9dd0"
+                        curvature={0.3}
+                        chromaticAberration={5}
+                        brightness={0.7}
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className="mt-4 p-4 bg-zeus-surface-info/50 border border-zeus-accent-blue/30 rounded-lg">
-                  <p className="text-caption-m text-zeus-text-secondary">
-                    <span className="text-zeus-accent-blue font-semibold">Note:</span> This component uses WebGL shaders for real-time rendering.
-                    For live demo, import and use directly: <code className="bg-zeus-surface-neutral px-1.5 py-0.5 rounded">import FaultyTerminal from &quot;@/components/ui/faulty-terminal&quot;</code>
-                  </p>
-                </div>
+                <p className="text-caption-m text-muted-foreground mt-3">
+                  Props: tint • curvature • scanlineIntensity • glitchAmount • chromaticAberration • brightness • mouseReact
+                </p>
               </div>
             </div>
           </CollapsibleSection>

@@ -388,6 +388,11 @@ export default function FaultyTerminal({
       renderer.render({ scene: mesh });
     };
     rafRef.current = requestAnimationFrame(update);
+
+    // Style canvas to fill container
+    gl.canvas.style.width = '100%';
+    gl.canvas.style.height = '100%';
+    gl.canvas.style.display = 'block';
     ctn.appendChild(gl.canvas);
 
     if (mouseReact) ctn.addEventListener('mousemove', handleMouseMove);
