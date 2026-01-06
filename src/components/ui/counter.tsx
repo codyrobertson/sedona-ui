@@ -46,23 +46,25 @@ interface DigitProps {
   digitClassName?: string
 }
 
-function Digit({ place, value, height, digitClassName }: DigitProps) {
-  // Decimal or special character
-  if (place === ".") {
-    return (
-      <span
-        className={cn("relative inline-flex items-center justify-center", digitClassName)}
-        style={{ height, width: "fit-content" }}
-      >
-        .
-      </span>
-    )
-  }
+// Static character component (no hooks needed)
+function StaticChar({ char, height, digitClassName }: { char: string; height: number; digitClassName?: string }) {
+  return (
+    <span
+      className={cn("relative inline-flex items-center justify-center", digitClassName)}
+      style={{ height, width: "fit-content" }}
+    >
+      {char}
+    </span>
+  )
+}
 
+// Animated digit component (uses hooks)
+function AnimatedDigit({ place, value, height, digitClassName }: { place: number; value: number; height: number; digitClassName?: string }) {
   const valueRoundedToPlace = Math.floor(value / place)
   const animatedValue = useSpring(valueRoundedToPlace, {
-    stiffness: 100,
-    damping: 20,
+    stiffness: 300,
+    damping: 40,
+    mass: 0.5,
   })
 
   React.useEffect(() => {
@@ -84,6 +86,16 @@ function Digit({ place, value, height, digitClassName }: DigitProps) {
       ))}
     </span>
   )
+}
+
+function Digit({ place, value, height, digitClassName }: DigitProps) {
+  // Decimal or special character - render static component
+  if (place === ".") {
+    return <StaticChar char="." height={height} digitClassName={digitClassName} />
+  }
+
+  // Number - render animated component
+  return <AnimatedDigit place={place} value={value} height={height} digitClassName={digitClassName} />
 }
 
 export interface CounterProps {
@@ -120,7 +132,8 @@ export function Counter({
   // Auto-detect places if not provided
   const computedPlaces = React.useMemo(() => {
     if (places) return places
-    return [...value.toString()].map((ch, i, a) => {
+    const valueStr = value.toString()
+    return Array.from(valueStr).map((ch, i, a) => {
       if (ch === ".") return "."
       const dotIndex = a.indexOf(".")
       const isInteger = dotIndex === -1
