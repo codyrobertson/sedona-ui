@@ -78,9 +78,8 @@ export default function AgentDetailPage() {
               eliminationThreshold={agent.eliminationThreshold}
               payBalance="200"
               receiveBalance="0"
-              isActive={true}
-              onRefresh={() => console.log("Refresh")}
-              onSwap={(pay, receive, minReceived) => console.log("Swap:", pay, receive, minReceived)}
+              tradingStatus="active"
+              onSwap={async (params) => console.log("Swap:", params)}
             />
           </div>
 
@@ -111,9 +110,8 @@ export default function AgentDetailPage() {
             eliminationThreshold={agent.eliminationThreshold}
             payBalance="200"
             receiveBalance="0"
-            isActive={true}
-            onRefresh={() => console.log("Refresh")}
-            onSwap={(pay, receive, minReceived) => console.log("Swap:", pay, receive, minReceived)}
+            tradingStatus="active"
+            onSwap={async (params) => console.log("Swap:", params)}
           />
         </div>
       </div>
