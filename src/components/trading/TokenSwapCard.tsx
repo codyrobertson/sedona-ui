@@ -7,6 +7,8 @@ import { TokenInput } from "@/components/ui/token-input"
 import { TokenAvatar } from "@/components/ui/token-avatar"
 import { StatsGrid } from "@/components/ui/stats-grid"
 import { RefreshCw, Settings, ArrowUpDown, Copy, Check } from "lucide-react"
+import { useSwapLogic } from "@/hooks/useSwapLogic"
+import { useClipboard } from "@/hooks/useClipboard"
 
 export interface TokenSwapCardProps extends React.HTMLAttributes<HTMLDivElement> {
   // Token info
@@ -70,29 +72,18 @@ const TokenSwapCard = React.forwardRef<HTMLDivElement, TokenSwapCardProps>(
     },
     ref
   ) => {
-    const [payAmount, setPayAmount] = React.useState("")
-    const [receiveAmount, setReceiveAmount] = React.useState("")
-    const [copied, setCopied] = React.useState(false)
+    const {
+      payAmount,
+      receiveAmount,
+      setPayAmount,
+      setReceiveAmount,
+      handleQuickAmount,
+      handleFlip,
+    } = useSwapLogic({ balance: payBalance })
 
-    const handleQuickAmount = (percent: number) => {
-      const balance = parseFloat(payBalance.replace(/,/g, ""))
-      if (!isNaN(balance)) {
-        const amount = (balance * percent / 100).toFixed(2)
-        setPayAmount(amount)
-      }
-    }
+    const { copy, copied } = useClipboard()
 
-    const handleFlip = () => {
-      const temp = payAmount
-      setPayAmount(receiveAmount)
-      setReceiveAmount(temp)
-    }
-
-    const handleCopy = async () => {
-      await navigator.clipboard.writeText(tokenAddress)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    }
+    const handleCopy = () => copy(tokenAddress)
 
     const truncatedAddress = `${tokenAddress.slice(0, 6)}...${tokenAddress.slice(-4)}`
 

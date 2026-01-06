@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { RefreshCw, Settings, ChevronDown, ArrowUpDown, Wallet } from "lucide-react"
+import { useSwapLogic } from "@/hooks/useSwapLogic"
 
 export interface SwapWidgetProps extends React.HTMLAttributes<HTMLDivElement> {
   ticker: string
@@ -38,22 +39,14 @@ const SwapWidget = React.forwardRef<HTMLDivElement, SwapWidgetProps>(
     },
     ref
   ) => {
-    const [payAmount, setPayAmount] = React.useState("")
-    const [receiveAmount, setReceiveAmount] = React.useState("")
-
-    const handleQuickAmount = (percent: number) => {
-      const balance = parseFloat(payBalance.replace(/,/g, ""))
-      if (!isNaN(balance)) {
-        const amount = (balance * percent / 100).toFixed(2)
-        setPayAmount(amount)
-      }
-    }
-
-    const handleFlip = () => {
-      const temp = payAmount
-      setPayAmount(receiveAmount)
-      setReceiveAmount(temp)
-    }
+    const {
+      payAmount,
+      receiveAmount,
+      setPayAmount,
+      setReceiveAmount,
+      handleQuickAmount,
+      handleFlip,
+    } = useSwapLogic({ balance: payBalance })
 
     return (
       <Card

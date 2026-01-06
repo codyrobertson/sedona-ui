@@ -7,67 +7,10 @@ import {
   DialogContent,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
+import { GridScan } from "@/components/ui/grid-scan"
 import { Search, Upload, Loader2 } from "lucide-react"
 import { SedonaLogo } from "@/components/sedona/sedona-logo"
-
-// Custom GridScan animation component
-const GridScan = ({ color = "#f97316" }: { color?: string }) => {
-  const gridSize = 12
-
-  return (
-    <div className="absolute inset-0 overflow-hidden">
-      {/* Grid lines */}
-      <svg className="absolute inset-0 w-full h-full">
-        {Array.from({ length: gridSize + 1 }).map((_, i) => (
-          <React.Fragment key={i}>
-            <line
-              x1={`${(i / gridSize) * 100}%`}
-              y1="0%"
-              x2={`${(i / gridSize) * 100}%`}
-              y2="100%"
-              stroke={color}
-              strokeOpacity={0.15}
-              strokeWidth={1}
-            />
-            <line
-              x1="0%"
-              y1={`${(i / gridSize) * 100}%`}
-              x2="100%"
-              y2={`${(i / gridSize) * 100}%`}
-              stroke={color}
-              strokeOpacity={0.15}
-              strokeWidth={1}
-            />
-          </React.Fragment>
-        ))}
-      </svg>
-
-      {/* Scanning line - horizontal */}
-      <div
-        className="absolute left-0 right-0 h-[2px] animate-scan-y"
-        style={{
-          background: `linear-gradient(90deg, transparent, ${color}, transparent)`,
-          boxShadow: `0 0 15px ${color}, 0 0 30px ${color}`
-        }}
-      />
-
-      {/* Scanning line - vertical */}
-      <div
-        className="absolute top-0 bottom-0 w-[2px] animate-scan-x"
-        style={{
-          background: `linear-gradient(180deg, transparent, ${color}, transparent)`,
-          boxShadow: `0 0 15px ${color}, 0 0 30px ${color}`
-        }}
-      />
-
-      {/* Corner accents */}
-      <div className="absolute top-4 left-4 w-8 h-8 border-l-2 border-t-2" style={{ borderColor: color }} />
-      <div className="absolute top-4 right-4 w-8 h-8 border-r-2 border-t-2" style={{ borderColor: color }} />
-      <div className="absolute bottom-4 left-4 w-8 h-8 border-l-2 border-b-2" style={{ borderColor: color }} />
-      <div className="absolute bottom-4 right-4 w-8 h-8 border-r-2 border-b-2" style={{ borderColor: color }} />
-    </div>
-  )
-}
+import { DEFAULT_AGENT_MODELS } from "@/fixtures/agents"
 
 export interface AgentModel {
   id: string
@@ -88,20 +31,13 @@ export interface AgentLaunchModalProps {
   onCreateAgent?: (data: { name: string; ticker: string; description: string }) => void
 }
 
-const DEFAULT_AGENTS: AgentModel[] = [
-  { id: "1", name: "Alpha Trader", description: "High-frequency trading", strategy: "Momentum", performance: "+24.5%" },
-  { id: "2", name: "Momentum Bot", description: "Trend following", strategy: "Breakout", performance: "+18.2%" },
-  { id: "3", name: "Arbitrage AI", description: "Cross-DEX arbitrage", strategy: "Arbitrage", performance: "+12.8%" },
-  { id: "4", name: "Sentiment Scout", description: "Social sentiment analysis", strategy: "Sentiment", performance: "+31.4%" },
-  { id: "5", name: "Whale Watcher", description: "Large wallet tracking", strategy: "Copy Trading", performance: "+15.6%" },
-]
 
 type ModalView = "signin" | "form" | "creating"
 
 const AgentLaunchModal = ({
   open,
   onOpenChange,
-  models = DEFAULT_AGENTS,
+  models = DEFAULT_AGENT_MODELS,
   isAuthenticated = true,
   onSignIn,
   onSelectModel,

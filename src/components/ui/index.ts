@@ -1,6 +1,8 @@
 export { Button, buttonVariants } from "./button"
 export { Counter, TimeCounter, CurrencyCounter } from "./counter"
+export { ElevatedBox, QuickButton, SlippageButton, elevatedVariants, quickButtonVariants } from "./elevated"
 export { EmptyState } from "./empty-state"
+export { GridScan } from "./grid-scan"
 export { StatsGrid } from "./stats-grid"
 export { TokenAvatar } from "./token-avatar"
 export { TokenInput } from "./token-input"
