@@ -170,9 +170,8 @@ const SwapWidget = React.forwardRef<HTMLDivElement, SwapWidgetProps>(
 
           {/* Swap Button */}
           <Button
-            variant="outline"
-            size="default"
-            className="w-full h-10 !bg-white hover:!bg-gray-100 !text-black !text-sm font-semibold"
+            variant="light"
+            className="w-full"
             onClick={() => onSwap?.(payAmount, receiveAmount)}
             disabled={!isActive || !payAmount}
           >

@@ -112,7 +112,7 @@ const TokenInfoPanel = React.forwardRef<HTMLDivElement, TokenInfoPanelProps>(
           {/* Header: Avatar + Name/Ticker + Price */}
           <div className="flex items-center gap-3">
             {/* Avatar */}
-            <div className="w-12 h-12 rounded-full bg-zeus-surface-elevated border border-zeus-border-alpha flex items-center justify-center text-xl font-bold text-zeus-text-secondary overflow-hidden flex-shrink-0">
+            <div className="w-12 h-12 rounded-full bg-zeus-surface-elevated border border-zeus-border-alpha flex items-center justify-center text-heading-sm font-bold text-zeus-text-secondary overflow-hidden flex-shrink-0">
               {avatarUrl ? (
                 <img src={avatarUrl} alt={name} className="w-full h-full object-cover" />
               ) : (

@@ -22,7 +22,7 @@ const AboutAgent = React.forwardRef<HTMLDivElement, AboutAgentProps>(
         {...props}
       >
         <CardHeader className="pb-2">
-          <CardTitle className="text-lg text-zeus-text-primary">
+          <CardTitle className="text-heading-xs text-zeus-text-primary">
             About {name}
           </CardTitle>
         </CardHeader>
@@ -39,7 +39,7 @@ const AboutAgent = React.forwardRef<HTMLDivElement, AboutAgentProps>(
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sedona-500 hover:text-sedona-400 transition-colors text-caption-l"
             >
-              <span className="text-yellow-500">{"🤗"}</span>
+              <span>{"🤗"}</span>
               <span className="underline">View this agent on HuggingFace</span>
             </a>
           )}

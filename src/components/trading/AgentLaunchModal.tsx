@@ -114,7 +114,7 @@ const AgentLaunchModal = ({
                   Token Details
                 </h3>
                 <div className="flex-1 bg-zeus-surface-elevated rounded-lg p-4">
-                  <div className="w-14 h-14 rounded-lg bg-sedona-500/20 flex items-center justify-center text-2xl font-bold text-sedona-500 mb-4">
+                  <div className="w-14 h-14 rounded-lg bg-sedona-500/20 flex items-center justify-center text-heading-md font-bold text-sedona-500 mb-4">
                     {ticker.charAt(0) || "?"}
                   </div>
                   <h4 className="text-zeus-text-primary text-body-m font-semibold mb-1">

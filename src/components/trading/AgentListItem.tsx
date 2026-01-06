@@ -60,7 +60,7 @@ const AgentListItem = React.forwardRef<HTMLDivElement, AgentListItemProps>(
           <span className="text-zeus-text-secondary text-caption-l w-4">{rank}.</span>
           <Avatar className="w-10 h-10 border-2 border-sedona-500/30">
             <AvatarImage src={avatarUrl} alt={name} />
-            <AvatarFallback className="bg-gradient-to-br from-sedona-500/20 to-sedona-600/30 text-sedona-500 font-semibold text-sm">
+            <AvatarFallback className="bg-gradient-to-br from-sedona-500/20 to-sedona-600/30 text-sedona-500 font-semibold text-caption-l">
               {avatarFallback || name.charAt(0)}
             </AvatarFallback>
           </Avatar>

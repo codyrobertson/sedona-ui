@@ -35,24 +35,24 @@ const Header = React.forwardRef<HTMLElement, HeaderProps>(
       <header
         ref={ref}
         className={cn(
-          "flex items-center justify-between px-6 py-4 bg-zeus-surface-elevated border-b border-zeus-border-alpha",
+          "flex items-center justify-between px-6 py-2.5 bg-zeus-surface-elevated border-b border-zeus-border-alpha",
           className
         )}
         {...props}
       >
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <Link href="/trading" className="hover:opacity-80 transition-opacity">
-            <SedonaLogo variant="logo" size="md" className="text-white" />
+            <SedonaLogo variant="logo" size="sm" className="text-white" />
           </Link>
-          <span className="text-zeus-text-secondary text-caption-l">
+          <span className="text-zeus-text-secondary text-caption-s hidden sm:block">
             Discover the Pareto Frontier of Agents
           </span>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <Link
             href="/docs"
-            className="text-zeus-text-primary underline hover:text-zeus-text-secondary transition-colors text-caption-l font-medium"
+            className="text-zeus-text-primary underline hover:text-zeus-text-secondary transition-colors text-caption-s font-medium px-2"
           >
             Docs
           </Link>
@@ -61,9 +61,8 @@ const Header = React.forwardRef<HTMLElement, HeaderProps>(
             <>
               <Button
                 variant="brand"
-                size="default"
+                size="sm"
                 onClick={onCreateCoin}
-                className="px-4"
               >
                 Create Agent
               </Button>
@@ -80,17 +79,15 @@ const Header = React.forwardRef<HTMLElement, HeaderProps>(
             <>
               <Button
                 variant="secondary"
-                size="default"
+                size="sm"
                 onClick={onCreateCoin}
-                className="px-4"
               >
                 Create Agent
               </Button>
               <Button
                 variant="brand"
-                size="default"
+                size="sm"
                 onClick={onConnect}
-                className="px-4"
               >
                 Connect
               </Button>

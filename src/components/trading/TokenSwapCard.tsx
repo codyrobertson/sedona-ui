@@ -3,12 +3,13 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
-import { TokenInput } from "@/components/ui/token-input"
 import { TokenAvatar } from "@/components/ui/token-avatar"
 import { StatsGrid } from "@/components/ui/stats-grid"
-import { RefreshCw, Settings, ArrowUpDown, Copy, Check } from "lucide-react"
-import { useSwapLogic } from "@/hooks/useSwapLogic"
+import { Copy, Check } from "lucide-react"
 import { useClipboard } from "@/hooks/useClipboard"
+import { EliminationProgress } from "@/components/ui/elimination-progress"
+import { ModelHash, type ModelVersion } from "@/components/ui/model-hash"
+import { SwapWidget, type Token } from "@/components/ui/swap-widget"
 
 export interface TokenSwapCardProps extends React.HTMLAttributes<HTMLDivElement> {
   // Token info
@@ -20,6 +21,8 @@ export interface TokenSwapCardProps extends React.HTMLAttributes<HTMLDivElement>
   description?: string
   huggingFaceUrl?: string
   modelTypes?: string[]
+  /** Model version history for the sheet */
+  modelVersions?: ModelVersion[]
 
   // Stats
   marketCap: string
@@ -30,15 +33,28 @@ export interface TokenSwapCardProps extends React.HTMLAttributes<HTMLDivElement>
   change7d: number
   change30d: number
 
+  // Elimination game
+  rank?: number
+  totalAgents?: number
+  eliminationThreshold?: string
+
   // Swap
-  payToken?: string
+  /** Pay token symbol */
+  payTokenSymbol?: string
+  /** Pay token balance */
   payBalance?: string
+  /** Pay token price in USD */
+  payTokenPrice?: number
+  /** Receive token balance */
   receiveBalance?: string
-  slippage?: string
+  /** Receive token price in USD */
+  receiveTokenPrice?: number
+  /** Whether swap is active/enabled */
   isActive?: boolean
+  /** Callback when refresh is clicked */
   onRefresh?: () => void
-  onSlippageSettings?: () => void
-  onSwap?: (payAmount: string, receiveAmount: string) => void
+  /** Callback when swap is executed */
+  onSwap?: (payAmount: string, receiveAmount: string, minReceived: string) => void
 }
 
 const TokenSwapCard = React.forwardRef<HTMLDivElement, TokenSwapCardProps>(
@@ -53,6 +69,7 @@ const TokenSwapCard = React.forwardRef<HTMLDivElement, TokenSwapCardProps>(
       description,
       huggingFaceUrl,
       modelTypes = [],
+      modelVersions,
       marketCap,
       volume24h,
       tvl,
@@ -60,32 +77,38 @@ const TokenSwapCard = React.forwardRef<HTMLDivElement, TokenSwapCardProps>(
       change24h,
       change7d,
       change30d,
-      payToken = "SOL",
+      rank,
+      totalAgents,
+      eliminationThreshold,
+      payTokenSymbol = "SOL",
       payBalance = "200",
+      payTokenPrice = 100, // Default SOL price
       receiveBalance = "0",
-      slippage = "Auto",
+      receiveTokenPrice = 0.007, // Default token price
       isActive = true,
       onRefresh,
-      onSlippageSettings,
       onSwap,
       ...props
     },
     ref
   ) => {
-    const {
-      payAmount,
-      receiveAmount,
-      setPayAmount,
-      setReceiveAmount,
-      handleQuickAmount,
-      handleFlip,
-    } = useSwapLogic({ balance: payBalance })
-
     const { copy, copied } = useClipboard()
-
     const handleCopy = () => copy(tokenAddress)
 
-    const truncatedAddress = `${tokenAddress.slice(0, 6)}...${tokenAddress.slice(-4)}`
+    // Build token objects for SwapWidget
+    const payToken: Token = {
+      symbol: payTokenSymbol,
+      name: payTokenSymbol === "SOL" ? "Solana" : payTokenSymbol,
+      balance: payBalance,
+      price: payTokenPrice,
+    }
+
+    const receiveToken: Token = {
+      symbol: ticker,
+      name: name,
+      balance: receiveBalance,
+      price: receiveTokenPrice,
+    }
 
     return (
       <Card
@@ -99,49 +122,56 @@ const TokenSwapCard = React.forwardRef<HTMLDivElement, TokenSwapCardProps>(
         <CardContent className="p-4 space-y-4">
           {/* Token Header */}
           <div className="flex items-center gap-3">
-            <TokenAvatar ticker={ticker} size="lg" />
+            <div className="relative">
+              <TokenAvatar ticker={ticker} size="lg" />
+              {/* CA copy button */}
+              <button
+                onClick={handleCopy}
+                className="absolute -bottom-1 -right-1 p-1 rounded-full bg-zeus-surface-elevated border border-zeus-border-alpha hover:bg-zeus-surface-neutral transition-colors"
+                title={copied ? "Copied!" : "Copy contract address"}
+              >
+                {copied ? (
+                  <Check className="w-3 h-3 text-zeus-status-success" />
+                ) : (
+                  <Copy className="w-3 h-3 text-zeus-text-tertiary" />
+                )}
+              </button>
+            </div>
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <span className="text-zeus-text-primary font-semibold text-body-s">{ticker}</span>
-                <span className="text-zeus-text-tertiary text-caption-s">/SOL</span>
-              </div>
-              <div className="text-caption-s">
+              <span className="text-zeus-text-primary font-semibold text-body-s">{ticker}</span>
+              <div className="text-caption-s truncate">
                 <span className="text-zeus-text-secondary">{name}</span>
               </div>
             </div>
-            <div className={`px-3 py-1.5 rounded-md text-body-s font-bold ${
-              priceChange === "up"
-                ? "bg-zeus-status-success text-white"
-                : "bg-zeus-status-destructive text-white"
-            }`}>
-              {price} {priceChange === "up" ? "▲" : "▼"}
+            <div className="flex items-center gap-4">
+              {/* Price badge */}
+              <div className={`px-3 py-1.5 rounded-lg text-caption-l font-bold text-white ${
+                priceChange === "up"
+                  ? "bg-zeus-accent-green"
+                  : "bg-zeus-accent-red"
+              }`}>
+                {price} {priceChange === "up" ? "▲" : "▼"}
+              </div>
+              {/* Inline Elimination Progress */}
+              {rank !== undefined && totalAgents !== undefined && eliminationThreshold && (
+                <EliminationProgress
+                  rank={rank}
+                  totalAgents={totalAgents}
+                  marketCap={marketCap}
+                  eliminationThreshold={eliminationThreshold}
+                  variant="inline"
+                />
+              )}
             </div>
           </div>
 
-          {/* Token Address + HuggingFace Row */}
-          <div className="flex items-stretch gap-2">
-            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-zeus-surface-elevated border border-zeus-border-alpha flex-1">
-              <span className="text-zeus-text-tertiary text-[10px] uppercase">CA:</span>
-              <span className="text-zeus-text-secondary text-caption-s font-mono flex-1">{truncatedAddress}</span>
-              <button
-                onClick={handleCopy}
-                className="text-zeus-text-tertiary hover:text-zeus-text-secondary transition-colors"
-              >
-                {copied ? <Check className="w-4 h-4 text-zeus-status-success" /> : <Copy className="w-4 h-4" />}
-              </button>
-            </div>
-            {huggingFaceUrl && (
-              <a
-                href={huggingFaceUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-zeus-surface-neutral border border-zeus-border-alpha hover:bg-zeus-surface-elevated text-zeus-text-primary text-caption-s font-medium transition-colors"
-              >
-                <span>🤗</span>
-                <span className="whitespace-nowrap">View Model</span>
-              </a>
-            )}
-          </div>
+          {/* Model Hash + View Model Row */}
+          <ModelHash
+            hash={tokenAddress}
+            versions={modelVersions}
+            modelName={name}
+            modelUrl={huggingFaceUrl}
+          />
 
           {/* Description */}
           {description && (
@@ -172,87 +202,15 @@ const TokenSwapCard = React.forwardRef<HTMLDivElement, TokenSwapCardProps>(
           {/* Divider */}
           <div className="h-px bg-zeus-border-alpha" />
 
-          {/* Swap Section */}
-          <div className="space-y-2.5">
-            {/* Header Row */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <button onClick={onRefresh} className="p-1 rounded hover:bg-zeus-surface-elevated transition-colors">
-                  <RefreshCw className="w-3.5 h-3.5 text-zeus-text-tertiary" />
-                </button>
-                <span className="text-zeus-text-primary text-caption-s font-medium">Pay With</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                {[25, 50].map((pct) => (
-                  <button
-                    key={pct}
-                    onClick={() => handleQuickAmount(pct)}
-                    className="px-2 py-0.5 rounded bg-zeus-surface-elevated border border-zeus-border-alpha text-[10px] text-zeus-text-tertiary hover:text-zeus-text-secondary transition-colors"
-                  >
-                    {pct}%
-                  </button>
-                ))}
-                <button
-                  onClick={() => handleQuickAmount(100)}
-                  className="px-2 py-0.5 rounded bg-zeus-surface-elevated border border-zeus-border-alpha text-[10px] text-zeus-text-tertiary hover:text-zeus-text-secondary transition-colors"
-                >
-                  🚀 Full
-                </button>
-                <button onClick={onSlippageSettings} className="flex items-center gap-1 px-2 py-0.5 rounded bg-zeus-surface-elevated text-[10px]">
-                  <span className="text-zeus-text-tertiary">Slip:</span>
-                  <span className="text-sedona-500 font-medium">{slippage}</span>
-                  <Settings className="w-3 h-3 text-zeus-text-tertiary" />
-                </button>
-              </div>
-            </div>
-
-            {/* Pay Input */}
-            <TokenInput
-              value={payAmount}
-              onChange={setPayAmount}
-              token={payToken}
-              tokenIcon={
-                <div className="w-5 h-5 rounded-full bg-gradient-to-br from-[#9945FF] to-[#14F195] flex items-center justify-center">
-                  <span className="text-[8px] font-bold text-white">◎</span>
-                </div>
-              }
-              balance={payBalance}
-            />
-
-            {/* Swap Toggle */}
-            <div className="flex items-center gap-2">
-              <div className="flex-1 h-px bg-zeus-border-alpha" />
-              <button onClick={handleFlip} className="p-2 rounded-full bg-zeus-surface-elevated border border-zeus-border-alpha hover:bg-zeus-surface-neutral-subtle transition-colors">
-                <ArrowUpDown className="w-4 h-4 text-zeus-text-secondary" />
-              </button>
-              <div className="flex-1 h-px bg-zeus-border-alpha" />
-            </div>
-
-            {/* To Receive */}
-            <TokenInput
-              value={receiveAmount}
-              onChange={setReceiveAmount}
-              token={ticker}
-              balance={receiveBalance}
-              label="To Receive"
-            />
-          </div>
-
-          {/* Swap Button */}
-          <button
-            className="w-full h-11 bg-white hover:bg-gray-50 text-gray-900 text-sm font-semibold rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-            onClick={() => onSwap?.(payAmount, receiveAmount)}
-            disabled={!isActive || !payAmount}
-          >
-            Swap Tokens
-          </button>
-
-          {/* Min Received */}
-          {payAmount && !isNaN(parseFloat(payAmount)) && (
-            <div className="text-center text-[11px] text-zeus-text-tertiary">
-              ⊕ Min Received: {(parseFloat(payAmount) * 1000).toFixed(0)} {ticker}
-            </div>
-          )}
+          {/* Swap Widget */}
+          <SwapWidget
+            payToken={payToken}
+            receiveToken={receiveToken}
+            isLoading={false}
+            isSwapping={!isActive}
+            onRefresh={onRefresh}
+            onSwap={onSwap}
+          />
         </CardContent>
       </Card>
     )

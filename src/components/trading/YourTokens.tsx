@@ -27,7 +27,7 @@ const YourTokens = React.forwardRef<HTMLDivElement, YourTokensProps>(
         {...props}
       >
         <CardHeader className="pb-2">
-          <CardTitle className="text-lg text-zeus-text-primary">
+          <CardTitle className="text-heading-xs text-zeus-text-primary">
             Your Tokens
           </CardTitle>
         </CardHeader>

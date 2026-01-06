@@ -65,7 +65,7 @@ const YourPortfolio = React.forwardRef<HTMLDivElement, YourPortfolioProps>(
         {/* Header Row */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-4">
-            <h2 className="text-2xl font-bold text-zeus-text-primary">
+            <h2 className="text-heading-md font-bold text-zeus-text-primary">
               Your Portfolio
             </h2>
             <Select value={sortBy} onValueChange={onSortChange}>

@@ -127,21 +127,25 @@ const TopAgentsChart = React.forwardRef<HTMLDivElement, TopAgentsChartProps>(
       // Fit content
       chart.timeScale().fitContent()
 
-      // Handle resize
+      // Handle resize with ResizeObserver
       const handleResize = () => {
         if (chartContainerRef.current && chartRef.current) {
+          const { clientWidth, clientHeight } = chartContainerRef.current
           chartRef.current.applyOptions({
-            width: chartContainerRef.current.clientWidth,
-            height: chartContainerRef.current.clientHeight,
+            width: clientWidth,
+            height: clientHeight,
           })
+          chartRef.current.timeScale().fitContent()
         }
       }
 
       handleResize()
-      window.addEventListener("resize", handleResize)
+
+      const resizeObserver = new ResizeObserver(handleResize)
+      resizeObserver.observe(chartContainerRef.current)
 
       return () => {
-        window.removeEventListener("resize", handleResize)
+        resizeObserver.disconnect()
         seriesRef.current.clear()
         if (chartRef.current) {
           chartRef.current.remove()
@@ -169,7 +173,7 @@ const TopAgentsChart = React.forwardRef<HTMLDivElement, TopAgentsChartProps>(
       <div
         ref={ref}
         className={cn(
-          "rounded-xl overflow-hidden bg-zeus-surface-default border border-zeus-border-alpha",
+          "rounded-xl overflow-hidden bg-zeus-surface-default border border-zeus-border-alpha min-w-0",
           className
         )}
         {...props}
@@ -177,7 +181,7 @@ const TopAgentsChart = React.forwardRef<HTMLDivElement, TopAgentsChartProps>(
         {/* Header */}
         <div className="px-4 pt-4 pb-3 border-b border-zeus-border-alpha">
           {/* Title */}
-          <h2 className="text-[28px] font-bold text-zeus-text-primary mb-2">
+          <h2 className="text-heading-lg font-bold text-zeus-text-primary mb-2">
             Trending Agents
           </h2>
           {/* Sorting + Timeframe Row */}
@@ -254,13 +258,13 @@ const TopAgentsChart = React.forwardRef<HTMLDivElement, TopAgentsChartProps>(
         </div>
 
         {/* Chart */}
-        <div className="h-[250px] px-2">
+        <div className="h-[250px] px-2 overflow-hidden">
           {!mounted ? (
             <div className="h-full flex items-center justify-center">
               <span className="text-zeus-text-tertiary text-caption-s">Loading chart...</span>
             </div>
           ) : (
-            <div ref={chartContainerRef} className="w-full h-full" />
+            <div ref={chartContainerRef} className="w-full h-full max-w-full" />
           )}
         </div>
 

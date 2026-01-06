@@ -31,7 +31,7 @@ const AgentStats = React.forwardRef<HTMLDivElement, AgentStatsProps>(
         {...props}
       >
         <CardHeader className="pb-2">
-          <CardTitle className="text-lg text-zeus-text-primary">Stats</CardTitle>
+          <CardTitle className="text-heading-xs text-zeus-text-primary">Stats</CardTitle>
         </CardHeader>
 
         <CardContent className="space-y-3">
