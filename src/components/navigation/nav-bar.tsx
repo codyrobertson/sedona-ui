@@ -101,7 +101,7 @@ const NavBar = React.forwardRef<HTMLElement, NavBarProps>(
         </div>
 
         {/* Right: Actions */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-0.5">
           {/* Nav Links as buttons (desktop) */}
           {items.map((item) => (
             <Button
@@ -109,7 +109,7 @@ const NavBar = React.forwardRef<HTMLElement, NavBarProps>(
               variant="ghost"
               size="sm"
               asChild
-              className="hidden md:inline-flex h-7 px-2.5 text-[11px] text-zeus-text-secondary hover:text-zeus-text-primary"
+              className="hidden md:inline-flex h-6 px-2 text-[11px] text-zeus-text-secondary hover:text-zeus-text-primary"
             >
               <a
                 href={item.href}
@@ -117,7 +117,7 @@ const NavBar = React.forwardRef<HTMLElement, NavBarProps>(
                 rel={item.external ? "noopener noreferrer" : undefined}
               >
                 {item.label}
-                {item.external && <ExternalLink className="w-3 h-3 ml-1" />}
+                {item.external && <ExternalLink className="w-2.5 h-2.5 ml-1" />}
               </a>
             </Button>
           ))}
@@ -128,9 +128,9 @@ const NavBar = React.forwardRef<HTMLElement, NavBarProps>(
               variant="default"
               size="sm"
               onClick={onCreateAgent}
-              className="hidden sm:inline-flex h-7 px-2.5 text-[11px] bg-sedona-500 hover:bg-sedona-600 text-white"
+              className="hidden sm:inline-flex h-6 px-2 text-[11px] bg-sedona-500 hover:bg-sedona-600 text-white"
             >
-              <Plus className="w-3 h-3 mr-1" />
+              <Plus className="w-2.5 h-2.5 mr-1" />
               Create Agent
             </Button>
           )}
