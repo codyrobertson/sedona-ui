@@ -76,7 +76,7 @@ export function StyleguideNav({
           <div className="flex items-center gap-3">
             <SedonaLogo size="md" variant="logomark" />
             <div className="h-5 w-px bg-border" />
-            <span className="text-sm font-semibold tracking-tight">Design System</span>
+            <span className="text-caption-l font-semibold tracking-tight">Design System</span>
           </div>
           <ThemeToggle />
         </div>
@@ -90,7 +90,7 @@ export function StyleguideNav({
               key={category.id}
               onClick={() => onCategoryChange(category.id)}
               className={cn(
-                "px-4 py-3 text-sm font-medium transition-all relative",
+                "px-4 py-3 text-caption-l font-medium transition-all relative",
                 "hover:text-foreground border-b-2",
                 activeCategory === category.id
                   ? "text-foreground border-sedona-500"
@@ -112,7 +112,7 @@ export function StyleguideNav({
                 key={section.id}
                 onClick={() => onSectionClick(section.id)}
                 className={cn(
-                  "px-3.5 py-1.5 text-sm font-medium rounded-full transition-all",
+                  "px-3.5 py-1.5 text-caption-l font-medium rounded-full transition-all",
                   activeSection === section.id
                     ? "bg-sedona-500 text-white shadow-sm"
                     : "bg-background hover:bg-background/80 text-muted-foreground hover:text-foreground border border-border/50"
@@ -151,7 +151,7 @@ export function StyleguideSidebar({
                 <button
                   onClick={() => onSectionClick(section.id)}
                   className={cn(
-                    "w-full text-left px-3 py-2 text-sm rounded-lg transition-all",
+                    "w-full text-left px-3 py-2 text-caption-l rounded-lg transition-all",
                     activeSection === section.id
                       ? "bg-sedona-500/10 text-sedona-600 dark:text-sedona-400 font-medium border-l-2 border-sedona-500 rounded-l-none"
                       : "text-muted-foreground hover:text-foreground hover:bg-muted/50"

@@ -65,7 +65,7 @@ export function ComponentDemo<T extends PropDefinition>({
     <div className={cn("space-y-4", className)}>
       {(title || description) && (
         <div>
-          {title && <h3 className="text-lg font-semibold">{title}</h3>}
+          {title && <h3 className="text-heading-xs font-semibold">{title}</h3>}
           {description && <p className="text-muted-foreground text-caption-l">{description}</p>}
         </div>
       )}

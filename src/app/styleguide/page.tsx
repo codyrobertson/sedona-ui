@@ -101,7 +101,7 @@ export default function StyleguidePage() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div className="space-y-4">
                   <div className="flex items-center gap-2 mb-4">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Inter</span>
+                    <span className="text-caption-m font-semibold uppercase tracking-wider text-muted-foreground">Inter</span>
                     <div className="flex-1 h-px bg-border" />
                   </div>
                   <div className="space-y-2">
@@ -130,7 +130,7 @@ export default function StyleguidePage() {
 
                 <div className="space-y-4">
                   <div className="flex items-center gap-2 mb-4">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Berkeley Mono</span>
+                    <span className="text-caption-m font-semibold uppercase tracking-wider text-muted-foreground">Berkeley Mono</span>
                     <div className="flex-1 h-px bg-border" />
                   </div>
                   <div className="space-y-2">
@@ -158,7 +158,7 @@ export default function StyleguidePage() {
                 
                 {/* Surface Colors */}
                 <div>
-                  <h4 className="text-lg font-medium mb-4">Surface Colors</h4>
+                  <h4 className="text-heading-xs font-medium mb-4">Surface Colors</h4>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 p-2 border rounded">
                       <div className="w-6 h-6 bg-zeus-surface-default rounded border"></div>
@@ -214,7 +214,7 @@ export default function StyleguidePage() {
 
                 {/* Accent Colors */}
                 <div>
-                  <h4 className="text-lg font-medium mb-4">Accent Colors</h4>
+                  <h4 className="text-heading-xs font-medium mb-4">Accent Colors</h4>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 p-2 border rounded">
                       <div className="w-6 h-6 bg-zeus-accent-red rounded border"></div>
@@ -284,7 +284,7 @@ export default function StyleguidePage() {
 
                 {/* Status Colors */}
                 <div>
-                  <h4 className="text-lg font-medium mb-4">Status Colors</h4>
+                  <h4 className="text-heading-xs font-medium mb-4">Status Colors</h4>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 p-2 border rounded">
                       <div className="w-6 h-6 bg-zeus-status-success rounded border"></div>
@@ -319,7 +319,7 @@ export default function StyleguidePage() {
 
                 {/* Text Colors */}
                 <div>
-                  <h4 className="text-lg font-medium mb-4">Text Colors</h4>
+                  <h4 className="text-heading-xs font-medium mb-4">Text Colors</h4>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 p-2 border rounded bg-zeus-surface-default">
                       <div className="w-6 h-6 bg-zeus-text-primary rounded border"></div>
@@ -354,7 +354,7 @@ export default function StyleguidePage() {
 
                 {/* Brand Colors */}
                 <div>
-                  <h4 className="text-lg font-medium mb-4">Brand Colors</h4>
+                  <h4 className="text-heading-xs font-medium mb-4">Brand Colors</h4>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 p-2 border rounded">
                       <div className="w-6 h-6 bg-sedona-400 rounded border"></div>
@@ -389,7 +389,7 @@ export default function StyleguidePage() {
 
                 {/* Border & Overlay Colors */}
                 <div>
-                  <h4 className="text-lg font-medium mb-4">Border & Overlay</h4>
+                  <h4 className="text-heading-xs font-medium mb-4">Border & Overlay</h4>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 p-2 border rounded bg-zeus-surface-default">
                       <div className="w-6 h-6 bg-zeus-border-normal rounded border border-white"></div>
@@ -425,13 +425,13 @@ export default function StyleguidePage() {
 
               {/* Full Semantic Color Scales */}
               <div className="mt-10 pt-8 border-t">
-                <h3 className="text-xl font-semibold mb-2">Semantic Color Scales</h3>
+                <h3 className="text-heading-sm font-semibold mb-2">Semantic Color Scales</h3>
                 <p className="text-muted-foreground mb-6">Full 11-step color scales (50→950) for consistent UI theming. 500 is the default.</p>
 
                 <div className="space-y-6">
                   {/* Success Scale */}
                   <div>
-                    <h4 className="text-sm font-medium mb-2 text-muted-foreground">Success (Green)</h4>
+                    <h4 className="text-caption-l font-medium mb-2 text-muted-foreground">Success (Green)</h4>
                     <div className="flex">
                       <div className="flex-1 h-14 bg-success-50 rounded-l flex flex-col items-center justify-end pb-1">
                         <span className="text-[9px] text-success-900 font-mono">50</span>
@@ -471,7 +471,7 @@ export default function StyleguidePage() {
 
                   {/* Warning Scale */}
                   <div>
-                    <h4 className="text-sm font-medium mb-2 text-muted-foreground">Warning (Yellow)</h4>
+                    <h4 className="text-caption-l font-medium mb-2 text-muted-foreground">Warning (Yellow)</h4>
                     <div className="flex">
                       <div className="flex-1 h-14 bg-warning-50 rounded-l flex flex-col items-center justify-end pb-1">
                         <span className="text-[9px] text-warning-900 font-mono">50</span>
@@ -511,7 +511,7 @@ export default function StyleguidePage() {
 
                   {/* Error Scale */}
                   <div>
-                    <h4 className="text-sm font-medium mb-2 text-muted-foreground">Error (Red)</h4>
+                    <h4 className="text-caption-l font-medium mb-2 text-muted-foreground">Error (Red)</h4>
                     <div className="flex">
                       <div className="flex-1 h-14 bg-error-50 rounded-l flex flex-col items-center justify-end pb-1">
                         <span className="text-[9px] text-error-900 font-mono">50</span>
@@ -551,7 +551,7 @@ export default function StyleguidePage() {
 
                   {/* Info Scale */}
                   <div>
-                    <h4 className="text-sm font-medium mb-2 text-muted-foreground">Info (Blue)</h4>
+                    <h4 className="text-caption-l font-medium mb-2 text-muted-foreground">Info (Blue)</h4>
                     <div className="flex">
                       <div className="flex-1 h-14 bg-info-50 rounded-l flex flex-col items-center justify-end pb-1">
                         <span className="text-[9px] text-info-900 font-mono">50</span>
@@ -591,7 +591,7 @@ export default function StyleguidePage() {
 
                   {/* Neutral Scale */}
                   <div>
-                    <h4 className="text-sm font-medium mb-2 text-muted-foreground">Neutral (Dark theme surfaces)</h4>
+                    <h4 className="text-caption-l font-medium mb-2 text-muted-foreground">Neutral (Dark theme surfaces)</h4>
                     <div className="flex">
                       <div className="flex-1 h-14 bg-neutral-50 rounded-l flex flex-col items-center justify-end pb-1">
                         <span className="text-[9px] text-white font-mono">50</span>
@@ -631,7 +631,7 @@ export default function StyleguidePage() {
 
                   {/* Sedona Brand Scale */}
                   <div>
-                    <h4 className="text-sm font-medium mb-2 text-muted-foreground">Sedona (Brand Orange)</h4>
+                    <h4 className="text-caption-l font-medium mb-2 text-muted-foreground">Sedona (Brand Orange)</h4>
                     <div className="flex">
                       <div className="flex-1 h-14 bg-sedona-50 rounded-l flex flex-col items-center justify-end pb-1">
                         <span className="text-[9px] text-sedona-900 font-mono">50</span>
@@ -675,7 +675,7 @@ export default function StyleguidePage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Spacing Scale */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Spacing Scale</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Spacing Scale</h3>
                 <div className="space-y-3 p-4 border rounded-lg">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -724,7 +724,7 @@ export default function StyleguidePage() {
 
               {/* Border Radius */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Border Radius</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Border Radius</h3>
                 <div className="space-y-3 p-4 border rounded-lg">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -766,7 +766,7 @@ export default function StyleguidePage() {
 
               {/* Animation Tokens */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Animation Tokens</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Animation Tokens</h3>
                 <div className="space-y-3 p-4 border rounded-lg">
                   <div className="flex items-center justify-between">
                     <code className="text-caption-l font-mono">animate-accordion-down</code>
@@ -789,7 +789,7 @@ export default function StyleguidePage() {
 
               {/* Container */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Container</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Container</h3>
                 <div className="space-y-3 p-4 border rounded-lg">
                   <div className="flex items-center justify-between">
                     <code className="text-caption-l font-mono">container</code>
@@ -852,7 +852,7 @@ export default function StyleguidePage() {
             
             <div className="space-y-8">
               <div>
-                <h3 className="text-xl font-semibold mb-4">Navigation Bar</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Navigation Bar</h3>
                 <p className="text-muted-foreground mb-4">
                   Responsive navigation with wallet connection, logo, and theme-aware styling.
                 </p>
@@ -866,7 +866,7 @@ export default function StyleguidePage() {
               </div>
 
               <div>
-                <h3 className="text-xl font-semibold mb-4">Search Component</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Search Component</h3>
                 <p className="text-muted-foreground mb-4">
                   Search input with proper focus states and Zeus color integration.
                 </p>
@@ -887,7 +887,7 @@ export default function StyleguidePage() {
             <div className="space-y-12">
               {/* All Variants Grid */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Button Variants</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Button Variants</h3>
                 <p className="text-muted-foreground mb-4">
                   Complete button variant system with proper interaction states (hover, active, focus, disabled).
                 </p>
@@ -938,12 +938,12 @@ export default function StyleguidePage() {
 
               {/* Button States Demo */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Button States</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Button States</h3>
                 <p className="text-muted-foreground mb-4">
                   Each variant supports default, hover, active, focus, and disabled states. Interact with buttons to see state changes.
                 </p>
                 <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
+                  <table className="w-full text-caption-l">
                     <thead>
                       <tr className="border-b">
                         <th className="text-left py-3 pr-4 font-medium">Variant</th>
@@ -989,7 +989,7 @@ export default function StyleguidePage() {
 
               {/* Status Buttons */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Status Buttons</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Status Buttons</h3>
                 <p className="text-muted-foreground mb-4">
                   Status buttons for agent trading states with semantic colors.
                 </p>
@@ -1005,7 +1005,7 @@ export default function StyleguidePage() {
 
               {/* Button Sizes */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Button Sizes</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Button Sizes</h3>
                 <div className="flex gap-4 items-center flex-wrap">
                   <Button size="xs">Extra Small</Button>
                   <Button size="sm">Small</Button>
@@ -1019,7 +1019,7 @@ export default function StyleguidePage() {
 
               {/* Icon Buttons */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Icon Buttons</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Icon Buttons</h3>
                 <div className="flex gap-4 items-center flex-wrap">
                   <Button icon={<span>→</span>}>With Icon Right</Button>
                   <Button icon={<span>←</span>} iconPosition="left">With Icon Left</Button>
@@ -1040,7 +1040,7 @@ export default function StyleguidePage() {
             <div className="space-y-10">
               {/* Text Inputs */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Text Inputs</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Text Inputs</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <Label htmlFor="default-input">Default Input</Label>
@@ -1063,7 +1063,7 @@ export default function StyleguidePage() {
 
               {/* Textarea */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Textarea</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Textarea</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <Label htmlFor="default-textarea">Default Textarea</Label>
@@ -1078,7 +1078,7 @@ export default function StyleguidePage() {
 
               {/* Select */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Select</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Select</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <Label>Default Select</Label>
@@ -1109,7 +1109,7 @@ export default function StyleguidePage() {
 
               {/* Checkbox */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Checkbox</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Checkbox</h3>
                 <div className="flex flex-wrap gap-8">
                   <div className="flex items-center space-x-2">
                     <Checkbox id="check1" />
@@ -1132,7 +1132,7 @@ export default function StyleguidePage() {
 
               {/* Toggle */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Toggle</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Toggle</h3>
                 <div className="flex flex-wrap gap-4">
                   <Toggle>Default</Toggle>
                   <Toggle defaultPressed>Pressed</Toggle>
@@ -1143,10 +1143,10 @@ export default function StyleguidePage() {
 
               {/* Toggle Group */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Toggle Group</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Toggle Group</h3>
                 <div className="space-y-4">
                   <div>
-                    <p className="text-sm text-muted-foreground mb-2">Single selection</p>
+                    <p className="text-caption-l text-muted-foreground mb-2">Single selection</p>
                     <ToggleGroup type="single" defaultValue="center">
                       <ToggleGroupItem value="left">Left</ToggleGroupItem>
                       <ToggleGroupItem value="center">Center</ToggleGroupItem>
@@ -1154,7 +1154,7 @@ export default function StyleguidePage() {
                     </ToggleGroup>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground mb-2">Multiple selection</p>
+                    <p className="text-caption-l text-muted-foreground mb-2">Multiple selection</p>
                     <ToggleGroup type="multiple" defaultValue={["bold"]}>
                       <ToggleGroupItem value="bold">Bold</ToggleGroupItem>
                       <ToggleGroupItem value="italic">Italic</ToggleGroupItem>
@@ -1175,7 +1175,7 @@ export default function StyleguidePage() {
             <div className="space-y-8">
               {/* Core Badge Variants - Exact Figma Designs */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Core Badge Variants</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Core Badge Variants</h3>
                 <p className="text-muted-foreground mb-4">
                   Primary badge designs matching Figma specifications exactly.
                 </p>
@@ -1210,7 +1210,7 @@ export default function StyleguidePage() {
 
               {/* Badge Group Component */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Badge Groups</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Badge Groups</h3>
                 <p className="text-muted-foreground mb-4">
                   Complex badges with icons, labels, and values following Figma badge group design.
                 </p>
@@ -1244,7 +1244,7 @@ export default function StyleguidePage() {
 
               {/* Status Badges */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Status Badges</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Status Badges</h3>
                 <p className="text-muted-foreground mb-4">
                   Status badges matching Figma design for trading indicators.
                 </p>
@@ -1261,7 +1261,7 @@ export default function StyleguidePage() {
 
               {/* Badge Sizes */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Badge Sizes</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Badge Sizes</h3>
                 <div className="flex gap-4 items-center flex-wrap">
                   <Badge size="sm">Small</Badge>
                   <Badge size="default">Default</Badge>
@@ -1279,7 +1279,7 @@ export default function StyleguidePage() {
           >
             <div className="space-y-8">
               <div>
-                <h3 className="text-xl font-semibold mb-4">Input Types</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Input Types</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl">
                   <div className="space-y-2">
                     <label className="text-caption-l font-medium">Text Input</label>
@@ -1301,7 +1301,7 @@ export default function StyleguidePage() {
               </div>
 
               <div>
-                <h3 className="text-xl font-semibold mb-4">Input States</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Input States</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl">
                   <div className="space-y-2">
                     <label className="text-caption-l font-medium">Default</label>
@@ -1329,7 +1329,7 @@ export default function StyleguidePage() {
             
             <div className="space-y-8">
               <div>
-                <h3 className="text-xl font-semibold mb-4">Card Components</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Card Components</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {/* Basic Card */}
                   <Card>
@@ -1384,7 +1384,7 @@ export default function StyleguidePage() {
                         </div>
                         <div className="flex justify-between">
                           <span className="text-caption-l">24h Change:</span>
-                          <span className="font-mono text-caption-l text-emerald-600 dark:text-zeus-accent-green">+5.2%</span>
+                          <span className="font-mono text-caption-l text-zeus-status-success">+5.2%</span>
                         </div>
                       </div>
                     </CardContent>
@@ -1393,7 +1393,7 @@ export default function StyleguidePage() {
               </div>
 
               <div>
-                <h3 className="text-xl font-semibold mb-4">Card Composition</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Card Composition</h3>
                 <div className="max-w-md">
                   <Card>
                     <CardHeader>
@@ -1435,7 +1435,7 @@ export default function StyleguidePage() {
             <div className="space-y-8">
               {/* Table Rows */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Table Rows</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Table Rows</h3>
                 <div className="border rounded-lg overflow-hidden bg-card dark:bg-zeus-surface-default">
                   <Table>
                     <TableRow
@@ -1486,7 +1486,7 @@ export default function StyleguidePage() {
 
               {/* Dot Matrix Grid Standalone */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Dot Matrix Grid</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Dot Matrix Grid</h3>
                 <p className="text-muted-foreground mb-4">
                   Flexible visualization component with customizable colors and data patterns.
                 </p>
@@ -1552,7 +1552,7 @@ export default function StyleguidePage() {
 
               {/* Component Features */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Component Features</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Component Features</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Card>
                     <CardHeader>
@@ -1606,7 +1606,7 @@ export default function StyleguidePage() {
             <div className="space-y-10">
               {/* Dialog */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Dialog</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Dialog</h3>
                 <p className="text-muted-foreground mb-4">Modal dialogs for focused interactions.</p>
                 <div className="flex gap-4">
                   <Dialog>
@@ -1621,7 +1621,7 @@ export default function StyleguidePage() {
                         </DialogDescription>
                       </DialogHeader>
                       <div className="py-4">
-                        <p className="text-sm text-muted-foreground">Dialog content goes here.</p>
+                        <p className="text-caption-l text-muted-foreground">Dialog content goes here.</p>
                       </div>
                     </DialogContent>
                   </Dialog>
@@ -1630,7 +1630,7 @@ export default function StyleguidePage() {
 
               {/* Alert Dialog */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Alert Dialog</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Alert Dialog</h3>
                 <p className="text-muted-foreground mb-4">Confirmation dialogs for destructive actions.</p>
                 <div className="flex gap-4">
                   <AlertDialog>
@@ -1655,7 +1655,7 @@ export default function StyleguidePage() {
 
               {/* Tooltip */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Tooltip</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Tooltip</h3>
                 <p className="text-muted-foreground mb-4">Contextual information on hover.</p>
                 <div className="flex gap-4">
                   <TooltipProvider>
@@ -1683,29 +1683,29 @@ export default function StyleguidePage() {
 
               {/* Progress */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Progress</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Progress</h3>
                 <p className="text-muted-foreground mb-4">Progress indicators for loading states.</p>
                 <div className="space-y-4 max-w-md">
                   <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
+                    <div className="flex justify-between text-caption-l">
                       <span>25%</span>
                     </div>
                     <Progress value={25} />
                   </div>
                   <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
+                    <div className="flex justify-between text-caption-l">
                       <span>50%</span>
                     </div>
                     <Progress value={50} />
                   </div>
                   <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
+                    <div className="flex justify-between text-caption-l">
                       <span>75%</span>
                     </div>
                     <Progress value={75} />
                   </div>
                   <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
+                    <div className="flex justify-between text-caption-l">
                       <span>100%</span>
                     </div>
                     <Progress value={100} />
@@ -1715,7 +1715,7 @@ export default function StyleguidePage() {
 
               {/* Skeleton */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Skeleton</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Skeleton</h3>
                 <p className="text-muted-foreground mb-4">Placeholder loading states.</p>
                 <div className="space-y-4">
                   <div className="flex items-center space-x-4">
@@ -1740,7 +1740,7 @@ export default function StyleguidePage() {
             <div className="space-y-10">
               {/* Tabs */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Tabs</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Tabs</h3>
                 <p className="text-muted-foreground mb-4">Tabbed navigation for organizing content.</p>
                 <Tabs defaultValue="account" className="w-full max-w-md">
                   <TabsList>
@@ -1749,28 +1749,28 @@ export default function StyleguidePage() {
                     <TabsTrigger value="settings">Settings</TabsTrigger>
                   </TabsList>
                   <TabsContent value="account" className="p-4 border rounded-b-lg">
-                    <p className="text-sm text-muted-foreground">Account settings and preferences.</p>
+                    <p className="text-caption-l text-muted-foreground">Account settings and preferences.</p>
                   </TabsContent>
                   <TabsContent value="password" className="p-4 border rounded-b-lg">
-                    <p className="text-sm text-muted-foreground">Change your password here.</p>
+                    <p className="text-caption-l text-muted-foreground">Change your password here.</p>
                   </TabsContent>
                   <TabsContent value="settings" className="p-4 border rounded-b-lg">
-                    <p className="text-sm text-muted-foreground">General application settings.</p>
+                    <p className="text-caption-l text-muted-foreground">General application settings.</p>
                   </TabsContent>
                 </Tabs>
               </div>
 
               {/* Separator */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Separator</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Separator</h3>
                 <p className="text-muted-foreground mb-4">Visual dividers for content sections.</p>
                 <div className="space-y-4">
                   <div>
-                    <p className="text-sm">Content above separator</p>
+                    <p className="text-caption-l">Content above separator</p>
                     <Separator className="my-4" />
-                    <p className="text-sm">Content below separator</p>
+                    <p className="text-caption-l">Content below separator</p>
                   </div>
-                  <div className="flex h-5 items-center space-x-4 text-sm">
+                  <div className="flex h-5 items-center space-x-4 text-caption-l">
                     <span>Item 1</span>
                     <Separator orientation="vertical" />
                     <span>Item 2</span>
@@ -1782,7 +1782,7 @@ export default function StyleguidePage() {
 
               {/* Avatar */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Avatar</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Avatar</h3>
                 <p className="text-muted-foreground mb-4">User profile images with fallbacks.</p>
                 <div className="flex gap-4 items-center">
                   <Avatar>
@@ -1793,17 +1793,17 @@ export default function StyleguidePage() {
                     <AvatarFallback>JD</AvatarFallback>
                   </Avatar>
                   <Avatar className="h-14 w-14">
-                    <AvatarFallback className="text-lg">LG</AvatarFallback>
+                    <AvatarFallback className="text-heading-xs">LG</AvatarFallback>
                   </Avatar>
                   <Avatar className="h-8 w-8">
-                    <AvatarFallback className="text-xs">SM</AvatarFallback>
+                    <AvatarFallback className="text-caption-s">SM</AvatarFallback>
                   </Avatar>
                 </div>
               </div>
 
               {/* Dropdown Menu */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Dropdown Menu</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Dropdown Menu</h3>
                 <p className="text-muted-foreground mb-4">Contextual menus triggered by buttons.</p>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -1823,7 +1823,7 @@ export default function StyleguidePage() {
 
               {/* Popover */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Popover</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Popover</h3>
                 <p className="text-muted-foreground mb-4">Floating content panels triggered on click.</p>
                 <div className="flex gap-4">
                   <Popover>
@@ -1834,7 +1834,7 @@ export default function StyleguidePage() {
                       <div className="grid gap-4">
                         <div className="space-y-2">
                           <h4 className="font-medium leading-none">Dimensions</h4>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-caption-l text-muted-foreground">
                             Set the dimensions for the layer.
                           </p>
                         </div>
@@ -1856,7 +1856,7 @@ export default function StyleguidePage() {
 
               {/* Pagination */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Pagination</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Pagination</h3>
                 <p className="text-muted-foreground mb-4">Navigation for paginated content with previous/next and page links.</p>
                 <Pagination>
                   <PaginationContent>
@@ -1896,7 +1896,7 @@ export default function StyleguidePage() {
             <div className="space-y-10">
               {/* Token Avatar */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Token Avatar</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Token Avatar</h3>
                 <p className="text-muted-foreground mb-4">Circular token identifiers with fallback to first letter.</p>
                 <div className="flex gap-4 items-center">
                   <TokenAvatar ticker="SOL" size="sm" />
@@ -1911,7 +1911,7 @@ export default function StyleguidePage() {
 
               {/* Token Input */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Token Input</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Token Input</h3>
                 <p className="text-muted-foreground mb-4">Amount input with token selector and balance display.</p>
                 <div className="max-w-sm">
                   <TokenInput
@@ -1928,7 +1928,7 @@ export default function StyleguidePage() {
 
               {/* Wallet Card */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Wallet Card</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Wallet Card</h3>
                 <p className="text-muted-foreground mb-4">Connected wallet display with address copy and disconnect.</p>
                 <WalletCard
                   address="J181...U7Wi"
@@ -1941,7 +1941,7 @@ export default function StyleguidePage() {
 
               {/* Stats Grid */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Stats Grid</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Stats Grid</h3>
                 <p className="text-muted-foreground mb-4">Compact grid of labeled statistics with optional change indicators.</p>
                 <div className="max-w-md">
                   <StatsGrid
@@ -1969,7 +1969,7 @@ export default function StyleguidePage() {
 
               {/* Elimination Progress */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Elimination Progress</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Elimination Progress</h3>
                 <p className="text-muted-foreground mb-4">
                   Status indicator showing rank position and elimination risk. Supports default card and inline arc gauge variants.
                 </p>
@@ -2031,7 +2031,7 @@ export default function StyleguidePage() {
 
               {/* Empty State */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Empty State</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Empty State</h3>
                 <p className="text-muted-foreground mb-4">Placeholder for empty content areas with optional actions.</p>
                 <div className="border rounded-lg">
                   <EmptyState
@@ -2049,7 +2049,7 @@ export default function StyleguidePage() {
 
               {/* Elevated Components */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Elevated Surfaces</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Elevated Surfaces</h3>
                 <p className="text-muted-foreground mb-4">Elevated container boxes and quick action buttons.</p>
                 <div className="space-y-4">
                   <div className="flex gap-4 items-center">
@@ -2072,7 +2072,7 @@ export default function StyleguidePage() {
 
               {/* Grid Scan Effect */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Grid Scan Effect</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Grid Scan Effect</h3>
                 <p className="text-muted-foreground mb-4">Animated scanning grid overlay for visual effects.</p>
                 <div className="relative h-48 bg-zeus-surface-default rounded-lg overflow-hidden">
                   <GridScan color="#de7001" gridSize={8} />
@@ -2084,7 +2084,7 @@ export default function StyleguidePage() {
 
               {/* Faulty Terminal Effect */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Faulty Terminal</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Faulty Terminal</h3>
                 <p className="text-muted-foreground mb-4">
                   WebGL-powered terminal effect with scanlines, glitches, and mouse interaction. GPU-accelerated for smooth performance.
                 </p>
@@ -2129,7 +2129,7 @@ export default function StyleguidePage() {
             <div className="space-y-8">
               {/* Basic Data Table */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Composable Table</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Composable Table</h3>
                 <p className="text-muted-foreground mb-4">
                   Build custom tables with flexible primitives: DataTable, DataTableHeader, DataTableBody, DataTableRow, DataTableCell.
                 </p>
@@ -2192,7 +2192,7 @@ export default function StyleguidePage() {
 
               {/* Loading State */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Loading State</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Loading State</h3>
                 <p className="text-muted-foreground mb-4">
                   Built-in skeleton loading for tables.
                 </p>
@@ -2203,13 +2203,13 @@ export default function StyleguidePage() {
 
               {/* Empty State */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Empty State</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Empty State</h3>
                 <p className="text-muted-foreground mb-4">
                   Customizable empty state with icon, title, and description.
                 </p>
                 <div className="border rounded-lg overflow-hidden bg-card dark:bg-zeus-surface-default max-w-xl">
                   <DataTableEmpty
-                    icon={<span className="text-2xl">📊</span>}
+                    icon={<span className="text-heading-md">📊</span>}
                     title="No agents found"
                     description="Try adjusting your search or filters to find what you're looking for."
                   />
@@ -2224,25 +2224,25 @@ export default function StyleguidePage() {
             <div className="space-y-8">
               {/* Basic Counter */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Basic Counter</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Basic Counter</h3>
                 <p className="text-muted-foreground mb-4">
                   Smoothly animates between number values with spring physics.
                 </p>
                 <div className="flex gap-8 items-center flex-wrap p-6 border rounded-lg bg-card dark:bg-zeus-surface-default">
                   <div className="text-center">
-                    <div className="font-mono text-2xl mb-2">
+                    <div className="font-mono text-heading-md mb-2">
                       <Counter value={1234567} fontSize={28} fontWeight={600} />
                     </div>
                     <p className="text-caption-s text-muted-foreground">Large number</p>
                   </div>
                   <div className="text-center">
-                    <div className="font-mono text-2xl mb-2">
+                    <div className="font-mono text-heading-md mb-2">
                       <Counter value={99.99} fontSize={28} fontWeight={600} />
                     </div>
                     <p className="text-caption-s text-muted-foreground">Decimal</p>
                   </div>
                   <div className="text-center">
-                    <div className="font-mono text-2xl mb-2">
+                    <div className="font-mono text-heading-md mb-2">
                       <Counter value={42} fontSize={28} fontWeight={600} prefix="+" suffix="%" />
                     </div>
                     <p className="text-caption-s text-muted-foreground">With prefix/suffix</p>
@@ -2252,7 +2252,7 @@ export default function StyleguidePage() {
 
               {/* Currency Counter */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Currency Counter</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Currency Counter</h3>
                 <p className="text-muted-foreground mb-4">
                   Specialized variant for displaying monetary values.
                 </p>
@@ -2274,7 +2274,7 @@ export default function StyleguidePage() {
 
               {/* Time Counter */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Time Counter</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Time Counter</h3>
                 <p className="text-muted-foreground mb-4">
                   Countdown/timer variant with minutes and seconds.
                 </p>
@@ -2296,7 +2296,7 @@ export default function StyleguidePage() {
 
               {/* Component API */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Component API</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Component API</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Card>
                     <CardHeader>
@@ -2337,7 +2337,7 @@ export default function StyleguidePage() {
             <div className="space-y-8">
               {/* Horizontal Marquee */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Horizontal Marquee</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Horizontal Marquee</h3>
                 <p className="text-muted-foreground mb-4">
                   Smooth infinite horizontal scroll with fade edges and pause on hover.
                 </p>
@@ -2369,7 +2369,7 @@ export default function StyleguidePage() {
 
               {/* Vertical Marquee */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Vertical Marquee</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Vertical Marquee</h3>
                 <p className="text-muted-foreground mb-4">
                   Vertical scrolling variant for news feeds, activity logs, and notifications.
                 </p>
@@ -2386,7 +2386,7 @@ export default function StyleguidePage() {
 
               {/* Marquee Props */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Configuration</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Configuration</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Card>
                     <CardHeader>
@@ -2426,7 +2426,7 @@ export default function StyleguidePage() {
             
             <div className="space-y-8">
               <div>
-                <h3 className="text-xl font-semibold mb-4">Market Performance Card</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Market Performance Card</h3>
                 <div className="max-w-2xl">
                   <OutlineCard
                     title="Trade AI agents as performance-based tokens on Solana."
@@ -2476,7 +2476,7 @@ export default function StyleguidePage() {
               </div>
 
               <div>
-                <h3 className="text-xl font-semibold mb-4">Simple Information Card</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Simple Information Card</h3>
                 <div className="max-w-lg">
                   <OutlineCard
                     title="How It Works?"
@@ -2505,7 +2505,7 @@ export default function StyleguidePage() {
             <div className="space-y-8">
               {/* Complete Chat Interface */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Complete Chat Interface (Dark Theme)</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Complete Chat Interface (Dark Theme)</h3>
                 <p className="text-caption-l text-muted-foreground mb-4">
                   Rebuilt to match Figma designs exactly with proper dark theme colors and styling.
                 </p>
@@ -2549,7 +2549,7 @@ export default function StyleguidePage() {
 
               {/* Individual Components */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Individual Components</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Individual Components</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {/* Agent Avatars */}
                   <div className="p-4 border rounded-lg bg-card dark:bg-zeus-surface-default">
@@ -2596,7 +2596,7 @@ export default function StyleguidePage() {
 
               {/* Features Overview */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Chat System Features</h3>
+                <h3 className="text-heading-sm font-semibold mb-4">Chat System Features</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Card>
                     <CardHeader>
@@ -2648,12 +2648,12 @@ export default function StyleguidePage() {
             <div className="space-y-12">
               {/* Form Components */}
               <div>
-                <h3 className="text-2xl font-semibold mb-6">Form Components</h3>
+                <h3 className="text-heading-md font-semibold mb-6">Form Components</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   
                   {/* Input & Label */}
                   <div className="space-y-4">
-                    <h4 className="text-lg font-medium">Inputs & Labels</h4>
+                    <h4 className="text-heading-xs font-medium">Inputs & Labels</h4>
                     <div className="space-y-3 p-4 border rounded-lg">
                       <div className="space-y-2">
                         <Label htmlFor="email">Email Address</Label>
@@ -2674,7 +2674,7 @@ export default function StyleguidePage() {
 
                   {/* Select */}
                   <div className="space-y-4">
-                    <h4 className="text-lg font-medium">Select Dropdown</h4>
+                    <h4 className="text-heading-xs font-medium">Select Dropdown</h4>
                     <div className="space-y-3 p-4 border rounded-lg">
                       <div className="space-y-2">
                         <Label htmlFor="framework">Choose Framework</Label>
@@ -2697,12 +2697,12 @@ export default function StyleguidePage() {
 
               {/* Navigation & Dialogs */}
               <div>
-                <h3 className="text-2xl font-semibold mb-6">Navigation & Dialogs</h3>
+                <h3 className="text-heading-md font-semibold mb-6">Navigation & Dialogs</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   
                   {/* Dropdown Menu */}
                   <div className="space-y-4">
-                    <h4 className="text-lg font-medium">Dropdown Menu</h4>
+                    <h4 className="text-heading-xs font-medium">Dropdown Menu</h4>
                     <div className="p-4 border rounded-lg">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -2723,7 +2723,7 @@ export default function StyleguidePage() {
 
                   {/* Dialog */}
                   <div className="space-y-4">
-                    <h4 className="text-lg font-medium">Dialog Modal</h4>
+                    <h4 className="text-heading-xs font-medium">Dialog Modal</h4>
                     <div className="p-4 border rounded-lg">
                       <Dialog>
                         <DialogTrigger asChild>
@@ -2743,7 +2743,7 @@ export default function StyleguidePage() {
 
                   {/* Alert Dialog */}
                   <div className="space-y-4">
-                    <h4 className="text-lg font-medium">Alert Dialog</h4>
+                    <h4 className="text-heading-xs font-medium">Alert Dialog</h4>
                     <div className="p-4 border rounded-lg">
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
@@ -2769,12 +2769,12 @@ export default function StyleguidePage() {
 
               {/* Layout Components */}
               <div>
-                <h3 className="text-2xl font-semibold mb-6">Layout & Structure</h3>
+                <h3 className="text-heading-md font-semibold mb-6">Layout & Structure</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   
                   {/* Tabs */}
                   <div className="space-y-4">
-                    <h4 className="text-lg font-medium">Tabs Navigation</h4>
+                    <h4 className="text-heading-xs font-medium">Tabs Navigation</h4>
                     <div className="p-4 border rounded-lg">
                       <Tabs defaultValue="account" className="w-full">
                         <TabsList className="grid w-full grid-cols-2">
@@ -2793,7 +2793,7 @@ export default function StyleguidePage() {
 
                   {/* Avatar & Separators */}
                   <div className="space-y-4">
-                    <h4 className="text-lg font-medium">Avatars & Separators</h4>
+                    <h4 className="text-heading-xs font-medium">Avatars & Separators</h4>
                     <div className="p-4 border rounded-lg space-y-4">
                       <div className="flex items-center space-x-4">
                         <Avatar>
@@ -2823,12 +2823,12 @@ export default function StyleguidePage() {
 
               {/* Feedback Components */}
               <div>
-                <h3 className="text-2xl font-semibold mb-6">Feedback & States</h3>
+                <h3 className="text-heading-md font-semibold mb-6">Feedback & States</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   
                   {/* Progress */}
                   <div className="space-y-4">
-                    <h4 className="text-lg font-medium">Progress Indicator</h4>
+                    <h4 className="text-heading-xs font-medium">Progress Indicator</h4>
                     <div className="p-4 border rounded-lg space-y-3">
                       <div className="space-y-2">
                         <div className="flex justify-between text-caption-s">
@@ -2850,7 +2850,7 @@ export default function StyleguidePage() {
 
                   {/* Skeleton */}
                   <div className="space-y-4">
-                    <h4 className="text-lg font-medium">Loading Skeleton</h4>
+                    <h4 className="text-heading-xs font-medium">Loading Skeleton</h4>
                     <div className="p-4 border rounded-lg space-y-3">
                       <div className="space-y-2">
                         <Skeleton className="h-4 w-[250px]" />
@@ -2866,7 +2866,7 @@ export default function StyleguidePage() {
 
                   {/* Tooltip */}
                   <div className="space-y-4">
-                    <h4 className="text-lg font-medium">Tooltip</h4>
+                    <h4 className="text-heading-xs font-medium">Tooltip</h4>
                     <div className="p-4 border rounded-lg">
                       <TooltipProvider>
                         <Tooltip>
@@ -2885,7 +2885,7 @@ export default function StyleguidePage() {
 
               {/* Component Summary */}
               <div>
-                <h3 className="text-2xl font-semibold mb-6">Implementation Summary</h3>
+                <h3 className="text-heading-md font-semibold mb-6">Implementation Summary</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Card>
                     <CardHeader>
@@ -2933,10 +2933,10 @@ export default function StyleguidePage() {
             <div className="space-y-8">
               {/* Theme Toggle Demo */}
               <div>
-                <h3 className="text-2xl font-semibold mb-6">Interactive Theme Controls</h3>
+                <h3 className="text-heading-md font-semibold mb-6">Interactive Theme Controls</h3>
                 <div className="flex flex-col items-center gap-6 p-8 border rounded-lg bg-background">
                   <div className="text-center space-y-2">
-                    <h4 className="text-lg font-medium">Current Theme</h4>
+                    <h4 className="text-heading-xs font-medium">Current Theme</h4>
                     <p className="text-muted-foreground">Click the theme toggle in the header to switch between light and dark modes</p>
                   </div>
                   
@@ -2951,7 +2951,7 @@ export default function StyleguidePage() {
 
               {/* Theme Showcase */}
               <div>
-                <h3 className="text-2xl font-semibold mb-6">Component Theme Adaptation</h3>
+                <h3 className="text-heading-md font-semibold mb-6">Component Theme Adaptation</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   
                   {/* Buttons Theme Test */}
@@ -3009,7 +3009,7 @@ export default function StyleguidePage() {
 
               {/* Theme Technical Details */}
               <div>
-                <h3 className="text-2xl font-semibold mb-6">Technical Implementation</h3>
+                <h3 className="text-heading-md font-semibold mb-6">Technical Implementation</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   
                   <Card>
@@ -3064,7 +3064,7 @@ export default function StyleguidePage() {
           <CollapsibleSection id="usage-guidelines" title="Usage Guidelines">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="p-6 border rounded-lg">
-                <h3 className="text-lg font-semibold mb-4">Typography</h3>
+                <h3 className="text-heading-xs font-semibold mb-4">Typography</h3>
                 <ul className="space-y-2 text-muted-foreground">
                   <li>• Use Inter for UI text and labels</li>
                   <li>• Use monospace for financial data and addresses</li>
@@ -3074,7 +3074,7 @@ export default function StyleguidePage() {
               </div>
               
               <div className="p-6 border rounded-lg">
-                <h3 className="text-lg font-semibold mb-4">Colors</h3>
+                <h3 className="text-heading-xs font-semibold mb-4">Colors</h3>
                 <ul className="space-y-2 text-muted-foreground">
                   <li>• Zeus colors provide consistent theming</li>
                   <li>• Sedona orange for brand elements</li>
@@ -3084,7 +3084,7 @@ export default function StyleguidePage() {
               </div>
               
               <div className="p-6 border rounded-lg">
-                <h3 className="text-lg font-semibold mb-4">Buttons</h3>
+                <h3 className="text-heading-xs font-semibold mb-4">Buttons</h3>
                 <ul className="space-y-2 text-muted-foreground">
                   <li>• Primary for main actions</li>
                   <li>• Brand for Sedona-specific features</li>
@@ -3094,7 +3094,7 @@ export default function StyleguidePage() {
               </div>
               
               <div className="p-6 border rounded-lg">
-                <h3 className="text-lg font-semibold mb-4">Layout</h3>
+                <h3 className="text-heading-xs font-semibold mb-4">Layout</h3>
                 <ul className="space-y-2 text-muted-foreground">
                   <li>• Consistent spacing using design tokens</li>
                   <li>• Responsive grid system</li>

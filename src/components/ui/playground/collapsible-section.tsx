@@ -42,11 +42,11 @@ export function CollapsibleSection({
               />
             </div>
             <div className="flex-1">
-              <h2 className="text-xl font-semibold group-hover:text-sedona-500 transition-colors">
+              <h2 className="text-heading-sm font-semibold group-hover:text-sedona-500 transition-colors">
                 {title}
               </h2>
               {description && (
-                <p className="text-sm text-muted-foreground mt-0.5">{description}</p>
+                <p className="text-caption-l text-muted-foreground mt-0.5">{description}</p>
               )}
             </div>
           </button>

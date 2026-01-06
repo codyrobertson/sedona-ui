@@ -24,7 +24,7 @@ export function DemoContainer({
   return (
     <div className={cn("relative", className)}>
       {label && (
-        <div className="absolute -top-2.5 left-3 px-2 bg-background text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+        <div className="absolute -top-2.5 left-3 px-2 bg-zeus-surface-default text-caption-s font-medium text-zeus-text-tertiary uppercase tracking-wider">
           {label}
         </div>
       )}
@@ -32,7 +32,7 @@ export function DemoContainer({
         className={cn(
           "rounded-lg border p-6",
           pattern && "bg-[radial-gradient(circle_at_1px_1px,_rgb(0_0_0_/_0.05)_1px,_transparent_0)] bg-[size:16px_16px]",
-          dark && "bg-zinc-900 border-zinc-800"
+          dark && "bg-zeus-surface-default border-zeus-border-alpha"
         )}
       >
         {children}
@@ -72,7 +72,7 @@ export function DemoRow({ children, className, label }: DemoRowProps) {
   return (
     <div className={cn("space-y-3", className)}>
       {label && (
-        <h4 className="text-sm font-medium text-muted-foreground">{label}</h4>
+        <h4 className="text-caption-l font-medium text-zeus-text-tertiary">{label}</h4>
       )}
       <div className="flex flex-wrap items-center gap-3">{children}</div>
     </div>
@@ -95,7 +95,7 @@ export function SpecimenCard({
   return (
     <div
       className={cn(
-        "rounded-lg border bg-card p-4 space-y-3",
+        "rounded-lg border border-zeus-border-alpha bg-zeus-surface-neutral p-4 space-y-3",
         className
       )}
     >
@@ -103,12 +103,12 @@ export function SpecimenCard({
         {children}
       </div>
       {(label || description) && (
-        <div className="pt-2 border-t border-border/50">
+        <div className="pt-2 border-t border-zeus-border-alpha/50">
           {label && (
-            <span className="text-xs font-medium text-foreground">{label}</span>
+            <span className="text-caption-s font-medium text-zeus-text-primary">{label}</span>
           )}
           {description && (
-            <span className="text-xs text-muted-foreground ml-2">{description}</span>
+            <span className="text-caption-s text-zeus-text-tertiary ml-2">{description}</span>
           )}
         </div>
       )}
