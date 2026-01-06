@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Image from "next/image"
 import { cn } from "@/lib/utils"
 
 export type TokenAvatarSize = "sm" | "md" | "lg"
@@ -39,18 +40,20 @@ const TokenAvatar = React.forwardRef<HTMLDivElement, TokenAvatarProps>(
       <div
         ref={ref}
         className={cn(
-          "rounded-full bg-zeus-surface-neutral border border-zeus-border-alpha flex items-center justify-center flex-shrink-0 overflow-hidden",
+          "relative rounded-full bg-zeus-surface-neutral border border-zeus-border-alpha flex items-center justify-center flex-shrink-0 overflow-hidden",
           variant.container,
           className
         )}
         {...props}
       >
         {showImage ? (
-          <img
+          <Image
             src={imageUrl}
             alt={`${ticker} token`}
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
             onError={() => setImageError(true)}
+            unoptimized
           />
         ) : (
           <span

@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight } from "lucide-react"
 
@@ -203,7 +204,7 @@ const LogoItem = React.forwardRef<HTMLDivElement, LogoItemProps>(
         )}
         {...props}
       >
-        <img
+        <Image
           src={src}
           alt={alt}
           width={width}
@@ -212,6 +213,7 @@ const LogoItem = React.forwardRef<HTMLDivElement, LogoItemProps>(
             "object-contain",
             grayscale && "grayscale hover:grayscale-0 transition-all"
           )}
+          unoptimized
         />
       </div>
     )

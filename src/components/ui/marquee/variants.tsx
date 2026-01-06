@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { Marquee, type MarqueeProps } from "./marquee"
 import { TokenItem, TradeItem, type TokenItemProps, type TradeItemProps } from "./items"
@@ -241,7 +242,7 @@ const LogoCarousel = React.forwardRef<HTMLDivElement, LogoCarouselProps>(
       >
         {logos.map((logo, i) => {
           const content = (
-            <img
+            <Image
               src={logo.src}
               alt={logo.alt}
               width={logoWidth}
@@ -250,6 +251,7 @@ const LogoCarousel = React.forwardRef<HTMLDivElement, LogoCarouselProps>(
                 "object-contain transition-all",
                 grayscale && "grayscale opacity-60 hover:grayscale-0 hover:opacity-100"
               )}
+              unoptimized
             />
           )
 
