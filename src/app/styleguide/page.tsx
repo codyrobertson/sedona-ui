@@ -35,6 +35,9 @@ import { StatsGrid } from "@/components/ui/stats-grid"
 import { EmptyState } from "@/components/ui/empty-state"
 import { GridScan } from "@/components/ui/grid-scan"
 import { ElevatedBox, QuickButton, SlippageButton } from "@/components/ui/elevated"
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationPrevious, PaginationNext, PaginationEllipsis } from "@/components/ui/pagination"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import FaultyTerminal from "@/components/ui/faulty-terminal"
 import { Marquee, MarqueeItem, VerticalMarquee } from "@/components/ui/marquee/marquee"
 import { DataTable, DataTableHeader, DataTableBody, DataTableRow, DataTableHead, DataTableCell, DataTableEmpty, DataTableLoading } from "@/components/ui/data-table/data-table"
 import { CollapsibleSection, CodeBlock, SimpleDemo, StyleguideNav, StyleguideSidebar, categories, type CategoryId } from "@/components/ui/playground"
@@ -1814,6 +1817,70 @@ export default function StyleguidePage() {
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
+
+              {/* Popover */}
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Popover</h3>
+                <p className="text-muted-foreground mb-4">Floating content panels triggered on click.</p>
+                <div className="flex gap-4">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button variant="outline">Open Popover</Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80">
+                      <div className="grid gap-4">
+                        <div className="space-y-2">
+                          <h4 className="font-medium leading-none">Dimensions</h4>
+                          <p className="text-sm text-muted-foreground">
+                            Set the dimensions for the layer.
+                          </p>
+                        </div>
+                        <div className="grid gap-2">
+                          <div className="grid grid-cols-3 items-center gap-4">
+                            <Label htmlFor="width">Width</Label>
+                            <Input id="width" defaultValue="100%" className="col-span-2 h-8" />
+                          </div>
+                          <div className="grid grid-cols-3 items-center gap-4">
+                            <Label htmlFor="height">Height</Label>
+                            <Input id="height" defaultValue="auto" className="col-span-2 h-8" />
+                          </div>
+                        </div>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              </div>
+
+              {/* Pagination */}
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Pagination</h3>
+                <p className="text-muted-foreground mb-4">Navigation for paginated content with previous/next and page links.</p>
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious href="#" />
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#">1</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#" isActive>2</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#">3</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationEllipsis />
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#">10</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationNext href="#" />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              </div>
             </div>
           </CollapsibleSection>
 
@@ -1948,6 +2015,45 @@ export default function StyleguidePage() {
                     <span className="text-zeus-text-tertiary text-caption-l">Scanning...</span>
                   </div>
                 </div>
+              </div>
+
+              {/* Faulty Terminal Effect */}
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Faulty Terminal</h3>
+                <p className="text-muted-foreground mb-4">
+                  WebGL-powered terminal effect with scanlines, glitches, and mouse interaction. GPU-accelerated for smooth performance.
+                </p>
+                <div className="grid gap-4">
+                  <div className="rounded-lg overflow-hidden h-64 border border-zeus-border-normal">
+                    <FaultyTerminal
+                      tint="#de7001"
+                      curvature={0.15}
+                      scanlineIntensity={0.3}
+                      brightness={0.8}
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="rounded-lg overflow-hidden h-32 border border-zeus-border-normal">
+                      <FaultyTerminal
+                        tint="#87d68a"
+                        curvature={0}
+                        glitchAmount={2}
+                        brightness={0.6}
+                      />
+                    </div>
+                    <div className="rounded-lg overflow-hidden h-32 border border-zeus-border-normal">
+                      <FaultyTerminal
+                        tint="#6b9dd0"
+                        curvature={0.3}
+                        chromaticAberration={5}
+                        brightness={0.7}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <p className="text-caption-m text-muted-foreground mt-3">
+                  Props: tint • curvature • scanlineIntensity • glitchAmount • chromaticAberration • brightness • mouseReact
+                </p>
               </div>
             </div>
           </CollapsibleSection>
