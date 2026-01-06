@@ -71,17 +71,25 @@ const StatBadge = React.forwardRef<HTMLDivElement, StatBadgeProps>(
     const iconSize = size === "sm" ? "w-3 h-3" : size === "lg" ? "w-4 h-4" : "w-3.5 h-3.5"
     const fontSize = size === "sm" ? 10 : size === "lg" ? 14 : 12
 
-    const Icon = IconProp as LucideIcon
+    // Check if IconProp is a component (function or forwardRef) vs a React element
+    const isIconComponent = typeof IconProp === "function" ||
+      (typeof IconProp === "object" && IconProp !== null && "$$typeof" in IconProp && (IconProp as { render?: unknown }).render)
+
+    const renderIcon = () => {
+      if (!IconProp) return null
+      if (isIconComponent) {
+        const Icon = IconProp as LucideIcon
+        return <Icon className={iconSize} />
+      }
+      // It's already a React element
+      return IconProp
+    }
 
     return (
       <div ref={ref} className={cn(statBadgeVariants({ variant, size }), className)}>
         {IconProp && (
           <span className="text-zeus-text-tertiary">
-            {typeof IconProp === "function" ? (
-              <Icon className={iconSize} />
-            ) : (
-              IconProp
-            )}
+            {renderIcon()}
           </span>
         )}
         <span className="text-zeus-text-secondary">{label}</span>
