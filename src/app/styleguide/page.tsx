@@ -1254,6 +1254,8 @@ export default function StyleguidePage() {
                   <Badge variant="risk">AT RISK</Badge>
                   <Badge variant="secondary">NEUTRAL</Badge>
                   <Badge variant="brand">ACCENT</Badge>
+                  <Badge variant="destructive">DESTRUCTIVE</Badge>
+                  <Badge variant="outline">OUTLINE</Badge>
                 </div>
               </div>
 
@@ -2560,7 +2562,7 @@ export default function StyleguidePage() {
                   </div>
 
                   {/* Message Bubbles */}
-                  <div className="p-4 border rounded-lg bg-card dark:bg-[#1e1c17]">
+                  <div className="p-4 border rounded-lg bg-card dark:bg-zeus-surface-elevated">
                     <h4 className="font-medium text-card-foreground dark:text-white mb-3">Message Types (Exact Figma)</h4>
                     <div className="space-y-3">
                       <MessageBubble
@@ -2582,7 +2584,7 @@ export default function StyleguidePage() {
                   </div>
 
                   {/* Typing Indicator */}
-                  <div className="p-4 border rounded-lg bg-card dark:bg-[#1e1c17]">
+                  <div className="p-4 border rounded-lg bg-card dark:bg-zeus-surface-elevated">
                     <h4 className="font-medium text-card-foreground dark:text-white mb-3">Typing States</h4>
                     <div className="space-y-3">
                       <TypingIndicator variant="dots" />
