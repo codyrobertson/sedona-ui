@@ -78,3 +78,92 @@ export const CHART_COLORS = {
   crosshair: 'rgba(255, 255, 255, 0.2)',
   border: 'rgba(255, 255, 255, 0.1)',
 } as const
+
+export type ChartTimeframe = "1m" | "5m" | "1h" | "1d"
+
+/**
+ * Generate intraday candle data based on daily data
+ * Creates realistic minute/5min/hourly candles from daily OHLC
+ */
+function generateIntradayCandles(
+  dailyData: CandlestickData<Time>[],
+  candlesPerDay: number,
+  lastNCandlesDays: number = 1
+): CandlestickData<Time>[] {
+  // Take last N days of data
+  const recentDays = dailyData.slice(-lastNCandlesDays)
+  const candles: CandlestickData<Time>[] = []
+
+  for (const day of recentDays) {
+    const dayOpen = day.open
+    const dayClose = day.close
+    const dayHigh = day.high
+    const dayLow = day.low
+    const dayRange = dayHigh - dayLow
+
+    // Generate candles for this day
+    for (let i = 0; i < candlesPerDay; i++) {
+      const progress = i / candlesPerDay
+      const nextProgress = (i + 1) / candlesPerDay
+
+      // Interpolate price with some noise
+      const basePrice = dayOpen + (dayClose - dayOpen) * progress
+      const nextBasePrice = dayOpen + (dayClose - dayOpen) * nextProgress
+
+      // Add volatility
+      const noise = () => (Math.random() - 0.5) * dayRange * 0.3
+      const open = basePrice + noise()
+      const close = nextBasePrice + noise()
+      const high = Math.max(open, close) + Math.abs(noise()) * 0.5
+      const low = Math.min(open, close) - Math.abs(noise()) * 0.5
+
+      // Create timestamp (use index as time for simplicity)
+      const timestamp = candles.length
+
+      candles.push({
+        time: timestamp as unknown as Time,
+        open: Math.max(open, dayLow),
+        high: Math.min(high, dayHigh),
+        low: Math.max(low, dayLow),
+        close: Math.max(Math.min(close, dayHigh), dayLow),
+      })
+    }
+  }
+
+  return candles.slice(-60) // Return last 60 candles
+}
+
+/**
+ * Get chart data filtered by timeframe
+ *
+ * @param timeframe - The chart timeframe
+ * @returns Candlestick data appropriate for the timeframe
+ *
+ * Timeframe mappings:
+ * - 1m: ~60 candles representing 1 hour of 1-minute data
+ * - 5m: ~60 candles representing 5 hours of 5-minute data
+ * - 1h: ~24 candles representing 1 day of hourly data
+ * - 1d: Full dataset (~60 days of daily data)
+ */
+export function getChartDataByTimeframe(
+  timeframe: ChartTimeframe
+): CandlestickData<Time>[] {
+  switch (timeframe) {
+    case "1m":
+      // Generate 60 one-minute candles from last day's data
+      return generateIntradayCandles(MEME_COIN_CHART_DATA, 60, 1)
+
+    case "5m":
+      // Generate 60 five-minute candles from last 5 days
+      return generateIntradayCandles(MEME_COIN_CHART_DATA, 12, 5)
+
+    case "1h":
+      // Generate 24 hourly candles from last few days
+      return generateIntradayCandles(MEME_COIN_CHART_DATA, 24, 3).slice(-24)
+
+    case "1d":
+    default:
+      // Return full daily dataset
+      return MEME_COIN_CHART_DATA
+  }
+}
