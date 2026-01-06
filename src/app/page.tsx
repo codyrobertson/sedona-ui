@@ -24,6 +24,31 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Progress } from "@/components/ui/progress"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Counter, CurrencyCounter, TimeCounter } from "@/components/ui/counter"
+import { Marquee, MarqueeItem, VerticalMarquee } from "@/components/ui/marquee/marquee"
+import { DataTable, DataTableHeader, DataTableBody, DataTableRow, DataTableHead, DataTableCell, DataTableEmpty, DataTableLoading } from "@/components/ui/data-table/data-table"
+
+// Table of Contents sections
+const tocSections = [
+  { id: "design-foundation", label: "Design Foundation" },
+  { id: "color-system", label: "Color System" },
+  { id: "spacing-tokens", label: "Spacing & Layout" },
+  { id: "logo-system", label: "Logo System" },
+  { id: "navigation", label: "Navigation" },
+  { id: "buttons", label: "Buttons" },
+  { id: "badges", label: "Badges" },
+  { id: "inputs", label: "Inputs" },
+  { id: "cards", label: "Cards" },
+  { id: "tables", label: "Tables" },
+  { id: "data-tables", label: "Data Tables" },
+  { id: "counter", label: "Counter" },
+  { id: "marquee", label: "Marquee" },
+  { id: "outline-cards", label: "Outline Cards" },
+  { id: "chat", label: "Chat System" },
+  { id: "shadcn-components", label: "Shadcn/UI" },
+  { id: "theme-system", label: "Theme System" },
+  { id: "usage-guidelines", label: "Usage Guidelines" },
+]
 
 export default function Home() {
   return (
@@ -44,14 +69,30 @@ export default function Home() {
           </div>
           <h1 className="text-4xl font-bold mb-4">Sedona Design System</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            A comprehensive UI kit built with Tailwind CSS, Shadcn/ui, and Zeus design tokens. 
+            A comprehensive UI kit built with Tailwind CSS, Shadcn/ui, and Zeus design tokens.
             Optimized for AI agent trading platforms.
           </p>
         </div>
 
+        {/* Quick Navigation */}
+        <nav className="mb-16 p-6 border rounded-xl bg-card">
+          <h2 className="text-lg font-semibold mb-4">Quick Navigation</h2>
+          <div className="flex flex-wrap gap-2">
+            {tocSections.map((section) => (
+              <a
+                key={section.id}
+                href={`#${section.id}`}
+                className="px-3 py-1.5 text-caption-l rounded-lg bg-muted hover:bg-muted/80 transition-colors"
+              >
+                {section.label}
+              </a>
+            ))}
+          </div>
+        </nav>
+
         <div className="space-y-20">
           {/* Design Tokens Section */}
-          <section>
+          <section id="design-foundation">
             <h2 className="text-3xl font-bold mb-8">Design Foundation</h2>
             
             {/* Typography */}
@@ -105,7 +146,7 @@ export default function Home() {
             </div>
 
             {/* Complete Zeus Color System */}
-            <div className="mb-12">
+            <div id="color-system" className="mb-12">
               <h3 className="text-2xl font-semibold mb-6">Complete Zeus Color System</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 
@@ -117,6 +158,13 @@ export default function Home() {
                       <div className="w-6 h-6 bg-zeus-surface-default rounded border"></div>
                       <div className="text-caption-s">
                         <div className="font-medium">Default</div>
+                        <code className="text-muted-foreground">#141310</code>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 p-2 border rounded">
+                      <div className="w-6 h-6 bg-zeus-surface-elevated rounded border"></div>
+                      <div className="text-caption-s">
+                        <div className="font-medium">Elevated</div>
                         <code className="text-muted-foreground">#1e1c17</code>
                       </div>
                     </div>
@@ -211,6 +259,20 @@ export default function Home() {
                         <code className="text-muted-foreground">#ec4899</code>
                       </div>
                     </div>
+                    <div className="flex items-center gap-2 p-2 border rounded">
+                      <div className="w-6 h-6 bg-zeus-accent-cyan rounded border"></div>
+                      <div className="text-caption-s">
+                        <div className="font-medium">Cyan</div>
+                        <code className="text-muted-foreground">#81d9c3</code>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 p-2 border rounded">
+                      <div className="w-6 h-6 bg-zeus-highlight rounded border"></div>
+                      <div className="text-caption-s">
+                        <div className="font-medium">Highlight</div>
+                        <code className="text-muted-foreground">#f6e78a</code>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -222,28 +284,28 @@ export default function Home() {
                       <div className="w-6 h-6 bg-zeus-status-success rounded border"></div>
                       <div className="text-caption-s">
                         <div className="font-medium">Success</div>
-                        <code className="text-muted-foreground">#339965</code>
+                        <code className="text-muted-foreground">#87d68a</code>
                       </div>
                     </div>
                     <div className="flex items-center gap-2 p-2 border rounded">
                       <div className="w-6 h-6 bg-zeus-status-warning rounded border"></div>
                       <div className="text-caption-s">
                         <div className="font-medium">Warning</div>
-                        <code className="text-muted-foreground">#f48e2f</code>
+                        <code className="text-muted-foreground">#ffa55b</code>
                       </div>
                     </div>
                     <div className="flex items-center gap-2 p-2 border rounded">
                       <div className="w-6 h-6 bg-zeus-status-destructive rounded border"></div>
                       <div className="text-caption-s">
                         <div className="font-medium">Destructive</div>
-                        <code className="text-muted-foreground">#e6483d</code>
+                        <code className="text-muted-foreground">#e75d57</code>
                       </div>
                     </div>
                     <div className="flex items-center gap-2 p-2 border rounded">
                       <div className="w-6 h-6 bg-zeus-status-info rounded border"></div>
                       <div className="text-caption-s">
                         <div className="font-medium">Info</div>
-                        <code className="text-muted-foreground">#397fb2</code>
+                        <code className="text-muted-foreground">#6b9dd0</code>
                       </div>
                     </div>
                   </div>
@@ -357,8 +419,151 @@ export default function Home() {
             </div>
           </section>
 
+          {/* Spacing & Layout Tokens */}
+          <section id="spacing-tokens">
+            <h2 className="text-3xl font-bold mb-8">Spacing & Layout Tokens</h2>
+            <p className="text-muted-foreground mb-8">
+              Consistent spacing and border radius values from the design system for predictable layouts.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Spacing Scale */}
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Spacing Scale</h3>
+                <div className="space-y-3 p-4 border rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-1 h-4 bg-sedona-500 rounded" />
+                      <code className="text-caption-l font-mono">space-1</code>
+                    </div>
+                    <span className="text-caption-s text-muted-foreground">4px</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-4 bg-sedona-500 rounded" />
+                      <code className="text-caption-l font-mono">space-2</code>
+                    </div>
+                    <span className="text-caption-s text-muted-foreground">8px</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-3 h-4 bg-sedona-500 rounded" />
+                      <code className="text-caption-l font-mono">space-3</code>
+                    </div>
+                    <span className="text-caption-s text-muted-foreground">12px</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-4 h-4 bg-sedona-500 rounded" />
+                      <code className="text-caption-l font-mono">space-4</code>
+                    </div>
+                    <span className="text-caption-s text-muted-foreground">16px</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-6 h-4 bg-sedona-500 rounded" />
+                      <code className="text-caption-l font-mono">space-6</code>
+                    </div>
+                    <span className="text-caption-s text-muted-foreground">24px</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-4 bg-sedona-500 rounded" />
+                      <code className="text-caption-l font-mono">space-8</code>
+                    </div>
+                    <span className="text-caption-s text-muted-foreground">32px</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Border Radius */}
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Border Radius</h3>
+                <div className="space-y-3 p-4 border rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-sedona-500 rounded-none" />
+                      <code className="text-caption-l font-mono">rounded-none</code>
+                    </div>
+                    <span className="text-caption-s text-muted-foreground">0px</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-sedona-500 rounded-xs" />
+                      <code className="text-caption-l font-mono">rounded-xs</code>
+                    </div>
+                    <span className="text-caption-s text-muted-foreground">4px</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-sedona-500 rounded-md" />
+                      <code className="text-caption-l font-mono">rounded-md</code>
+                    </div>
+                    <span className="text-caption-s text-muted-foreground">8px</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-sedona-500 rounded-xl" />
+                      <code className="text-caption-l font-mono">rounded-xl</code>
+                    </div>
+                    <span className="text-caption-s text-muted-foreground">10px (buttons)</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-sedona-500 rounded-full" />
+                      <code className="text-caption-l font-mono">rounded-full</code>
+                    </div>
+                    <span className="text-caption-s text-muted-foreground">999px</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Animation Tokens */}
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Animation Tokens</h3>
+                <div className="space-y-3 p-4 border rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <code className="text-caption-l font-mono">animate-accordion-down</code>
+                    <span className="text-caption-s text-muted-foreground">0.2s ease-out</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <code className="text-caption-l font-mono">animate-marquee</code>
+                    <span className="text-caption-s text-muted-foreground">20s linear infinite</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <code className="text-caption-l font-mono">animate-scan-x</code>
+                    <span className="text-caption-s text-muted-foreground">1.5s ease-in-out</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <code className="text-caption-l font-mono">animate-scan-y</code>
+                    <span className="text-caption-s text-muted-foreground">2s ease-in-out</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Container */}
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Container</h3>
+                <div className="space-y-3 p-4 border rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <code className="text-caption-l font-mono">container</code>
+                    <span className="text-caption-s text-muted-foreground">max-width: 1400px</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <code className="text-caption-l font-mono">padding</code>
+                    <span className="text-caption-s text-muted-foreground">2rem (32px)</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <code className="text-caption-l font-mono">center</code>
+                    <span className="text-caption-s text-muted-foreground">mx-auto</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
           {/* Logo System */}
-          <section>
+          <section id="logo-system">
             <h2 className="text-3xl font-bold mb-8">Logo System</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               <div className="text-center p-6 border rounded-lg">
@@ -398,7 +603,7 @@ export default function Home() {
           </section>
 
           {/* Navigation Components */}
-          <section>
+          <section id="navigation">
             <h2 className="text-3xl font-bold mb-8">Navigation Components</h2>
             
             <div className="space-y-8">
@@ -429,7 +634,7 @@ export default function Home() {
           </section>
 
           {/* Button System */}
-          <section>
+          <section id="buttons">
             <h2 className="text-3xl font-bold mb-8">Button System</h2>
             
             <div className="space-y-12">
@@ -511,7 +716,7 @@ export default function Home() {
           </section>
 
           {/* Badge System */}
-          <section>
+          <section id="badges">
             <h2 className="text-3xl font-bold mb-8">Badge System</h2>
             <p className="text-muted-foreground mb-8">
               Badge components for status indicators, labels, and categorization using Zeus theme variables.
@@ -615,7 +820,7 @@ export default function Home() {
           </section>
 
           {/* Input System */}
-          <section>
+          <section id="inputs">
             <h2 className="text-3xl font-bold mb-8">Input System</h2>
             <p className="text-muted-foreground mb-8">
               Form input components with theme-aware styling and proper focus states.
@@ -665,7 +870,7 @@ export default function Home() {
           </section>
 
           {/* Card System */}
-          <section>
+          <section id="cards">
             <h2 className="text-3xl font-bold mb-8">Card System</h2>
             <p className="text-muted-foreground mb-8">
               Flexible card components for content organization using theme variables.
@@ -770,7 +975,7 @@ export default function Home() {
           </section>
 
           {/* Table System */}
-          <section>
+          <section id="tables">
             <h2 className="text-3xl font-bold mb-8">Table System</h2>
             <p className="text-muted-foreground mb-8">
               Flexible table rows with dot matrix visualization, exactly matching Figma designs.
@@ -941,8 +1146,318 @@ export default function Home() {
             </div>
           </section>
 
+          {/* Data Table System */}
+          <section id="data-tables">
+            <h2 className="text-3xl font-bold mb-8">Data Table System</h2>
+            <p className="text-muted-foreground mb-8">
+              Composable table primitives for building complex data displays with sorting, loading states, and empty states.
+            </p>
+
+            <div className="space-y-8">
+              {/* Basic Data Table */}
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Composable Table</h3>
+                <p className="text-muted-foreground mb-4">
+                  Build custom tables with flexible primitives: DataTable, DataTableHeader, DataTableBody, DataTableRow, DataTableCell.
+                </p>
+                <div className="border rounded-lg overflow-hidden bg-card dark:bg-zeus-surface-default">
+                  <DataTable>
+                    <DataTableHeader>
+                      <DataTableRow interactive={false}>
+                        <DataTableHead width={60}>Rank</DataTableHead>
+                        <DataTableHead>Agent</DataTableHead>
+                        <DataTableHead width={100} align="right">Price</DataTableHead>
+                        <DataTableHead width={120} align="right">Market Cap</DataTableHead>
+                        <DataTableHead width={80} align="center">Status</DataTableHead>
+                      </DataTableRow>
+                    </DataTableHeader>
+                    <DataTableBody>
+                      <DataTableRow>
+                        <DataTableCell width={60}>
+                          <span className="font-mono text-zeus-text-tertiary">#1</span>
+                        </DataTableCell>
+                        <DataTableCell>
+                          <div>
+                            <div className="font-medium">Shopping Buddy</div>
+                            <div className="text-caption-s text-muted-foreground font-mono">$SHOP</div>
+                          </div>
+                        </DataTableCell>
+                        <DataTableCell width={100} align="right">
+                          <span className="font-mono text-zeus-status-success">+4.7%</span>
+                        </DataTableCell>
+                        <DataTableCell width={120} align="right">
+                          <span className="font-mono">$4.5M</span>
+                        </DataTableCell>
+                        <DataTableCell width={80} align="center">
+                          <Badge variant="safe" size="sm">SAFE</Badge>
+                        </DataTableCell>
+                      </DataTableRow>
+                      <DataTableRow>
+                        <DataTableCell width={60}>
+                          <span className="font-mono text-zeus-text-tertiary">#2</span>
+                        </DataTableCell>
+                        <DataTableCell>
+                          <div>
+                            <div className="font-medium">Trading Cat</div>
+                            <div className="text-caption-s text-muted-foreground font-mono">$TCAT</div>
+                          </div>
+                        </DataTableCell>
+                        <DataTableCell width={100} align="right">
+                          <span className="font-mono text-zeus-status-destructive">-2.1%</span>
+                        </DataTableCell>
+                        <DataTableCell width={120} align="right">
+                          <span className="font-mono">$2.1M</span>
+                        </DataTableCell>
+                        <DataTableCell width={80} align="center">
+                          <Badge variant="risk" size="sm">RISK</Badge>
+                        </DataTableCell>
+                      </DataTableRow>
+                    </DataTableBody>
+                  </DataTable>
+                </div>
+              </div>
+
+              {/* Loading State */}
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Loading State</h3>
+                <p className="text-muted-foreground mb-4">
+                  Built-in skeleton loading for tables.
+                </p>
+                <div className="border rounded-lg overflow-hidden bg-card dark:bg-zeus-surface-default max-w-xl">
+                  <DataTableLoading rows={3} />
+                </div>
+              </div>
+
+              {/* Empty State */}
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Empty State</h3>
+                <p className="text-muted-foreground mb-4">
+                  Customizable empty state with icon, title, and description.
+                </p>
+                <div className="border rounded-lg overflow-hidden bg-card dark:bg-zeus-surface-default max-w-xl">
+                  <DataTableEmpty
+                    icon={<span className="text-2xl">📊</span>}
+                    title="No agents found"
+                    description="Try adjusting your search or filters to find what you're looking for."
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Counter System */}
+          <section id="counter">
+            <h2 className="text-3xl font-bold mb-8">Counter System</h2>
+            <p className="text-muted-foreground mb-8">
+              Animated number counter with spring physics. Perfect for displaying dynamic financial data, statistics, and metrics.
+            </p>
+
+            <div className="space-y-8">
+              {/* Basic Counter */}
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Basic Counter</h3>
+                <p className="text-muted-foreground mb-4">
+                  Smoothly animates between number values with spring physics.
+                </p>
+                <div className="flex gap-8 items-center flex-wrap p-6 border rounded-lg bg-card dark:bg-zeus-surface-default">
+                  <div className="text-center">
+                    <div className="font-mono text-2xl mb-2">
+                      <Counter value={1234567} fontSize={28} fontWeight={600} />
+                    </div>
+                    <p className="text-caption-s text-muted-foreground">Large number</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="font-mono text-2xl mb-2">
+                      <Counter value={99.99} fontSize={28} fontWeight={600} />
+                    </div>
+                    <p className="text-caption-s text-muted-foreground">Decimal</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="font-mono text-2xl mb-2">
+                      <Counter value={42} fontSize={28} fontWeight={600} prefix="+" suffix="%" />
+                    </div>
+                    <p className="text-caption-s text-muted-foreground">With prefix/suffix</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Currency Counter */}
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Currency Counter</h3>
+                <p className="text-muted-foreground mb-4">
+                  Specialized variant for displaying monetary values.
+                </p>
+                <div className="flex gap-8 items-center flex-wrap p-6 border rounded-lg bg-card dark:bg-zeus-surface-default">
+                  <div className="text-center">
+                    <div className="mb-2">
+                      <CurrencyCounter value={4500000} fontSize={24} />
+                    </div>
+                    <p className="text-caption-s text-muted-foreground">USD</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="mb-2">
+                      <CurrencyCounter value={1250} fontSize={24} currency="SOL " />
+                    </div>
+                    <p className="text-caption-s text-muted-foreground">SOL</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Time Counter */}
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Time Counter</h3>
+                <p className="text-muted-foreground mb-4">
+                  Countdown/timer variant with minutes and seconds.
+                </p>
+                <div className="flex gap-8 items-center flex-wrap p-6 border rounded-lg bg-card dark:bg-zeus-surface-default">
+                  <div className="text-center">
+                    <div className="mb-2">
+                      <TimeCounter seconds={125} fontSize={24} />
+                    </div>
+                    <p className="text-caption-s text-muted-foreground">2m 5s</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="mb-2">
+                      <TimeCounter seconds={3600} fontSize={24} />
+                    </div>
+                    <p className="text-caption-s text-muted-foreground">60m 0s</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Component API */}
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Component API</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Counter Props</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <ul className="space-y-1 text-caption-l font-mono">
+                        <li><code>value</code> - number to display</li>
+                        <li><code>fontSize</code> - text size (default: 16)</li>
+                        <li><code>prefix</code> - text before number</li>
+                        <li><code>suffix</code> - text after number</li>
+                        <li><code>fontWeight</code> - CSS font weight</li>
+                        <li><code>textColor</code> - text color</li>
+                        <li><code>showGradient</code> - fade edges</li>
+                      </ul>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Variants</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <ul className="space-y-1 text-caption-l">
+                        <li>• <code className="font-mono">Counter</code> - Base component</li>
+                        <li>• <code className="font-mono">CurrencyCounter</code> - Money display</li>
+                        <li>• <code className="font-mono">TimeCounter</code> - Timer display</li>
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Marquee System */}
+          <section id="marquee">
+            <h2 className="text-3xl font-bold mb-8">Marquee System</h2>
+            <p className="text-muted-foreground mb-8">
+              GPU-accelerated infinite scroll component for tickers, announcements, and scrolling content.
+            </p>
+
+            <div className="space-y-8">
+              {/* Horizontal Marquee */}
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Horizontal Marquee</h3>
+                <p className="text-muted-foreground mb-4">
+                  Smooth infinite horizontal scroll with fade edges and pause on hover.
+                </p>
+                <div className="border rounded-lg overflow-hidden bg-zeus-surface-default py-4">
+                  <Marquee speed={60} gap={32} pauseOnHover fadeColor="rgb(20, 19, 16)">
+                    <MarqueeItem className="flex items-center gap-2">
+                      <Badge variant="success">$SHOP</Badge>
+                      <span className="font-mono text-white">+4.7%</span>
+                    </MarqueeItem>
+                    <MarqueeItem className="flex items-center gap-2">
+                      <Badge variant="danger">$TCAT</Badge>
+                      <span className="font-mono text-white">-2.1%</span>
+                    </MarqueeItem>
+                    <MarqueeItem className="flex items-center gap-2">
+                      <Badge variant="info">$WEALTH</Badge>
+                      <span className="font-mono text-white">+1.2%</span>
+                    </MarqueeItem>
+                    <MarqueeItem className="flex items-center gap-2">
+                      <Badge variant="warning">$TRADE</Badge>
+                      <span className="font-mono text-white">+0.5%</span>
+                    </MarqueeItem>
+                    <MarqueeItem className="flex items-center gap-2">
+                      <Badge variant="safe">$AI</Badge>
+                      <span className="font-mono text-white">+8.3%</span>
+                    </MarqueeItem>
+                  </Marquee>
+                </div>
+              </div>
+
+              {/* Vertical Marquee */}
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Vertical Marquee</h3>
+                <p className="text-muted-foreground mb-4">
+                  Vertical scrolling variant for news feeds, activity logs, and notifications.
+                </p>
+                <div className="border rounded-lg overflow-hidden bg-zeus-surface-default p-4 h-48">
+                  <VerticalMarquee speed={30} gap={12} pauseOnHover fadeColor="rgb(20, 19, 16)">
+                    <div className="text-caption-l text-white/80">🔥 Shopping Buddy reached $4.5M market cap</div>
+                    <div className="text-caption-l text-white/80">📈 Trading Cat up 15% in the last hour</div>
+                    <div className="text-caption-l text-white/80">🎯 New agent Wealth Manager launched</div>
+                    <div className="text-caption-l text-white/80">⚡ Platform volume hit $200k today</div>
+                    <div className="text-caption-l text-white/80">🏆 Weekly competition starting in 2 days</div>
+                  </VerticalMarquee>
+                </div>
+              </div>
+
+              {/* Marquee Props */}
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Configuration</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Marquee Props</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <ul className="space-y-1 text-caption-l font-mono">
+                        <li><code>speed</code> - pixels per second (default: 50)</li>
+                        <li><code>direction</code> - &quot;left&quot; | &quot;right&quot;</li>
+                        <li><code>pauseOnHover</code> - pause on mouse hover</li>
+                        <li><code>gap</code> - space between items</li>
+                        <li><code>fade</code> - show edge gradients</li>
+                        <li><code>fadeColor</code> - gradient color</li>
+                        <li><code>paused</code> - start paused</li>
+                      </ul>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Components</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <ul className="space-y-1 text-caption-l">
+                        <li>• <code className="font-mono">Marquee</code> - Horizontal scroll</li>
+                        <li>• <code className="font-mono">VerticalMarquee</code> - Vertical scroll</li>
+                        <li>• <code className="font-mono">MarqueeItem</code> - Item wrapper</li>
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            </div>
+          </section>
+
           {/* Outline Card System */}
-          <section>
+          <section id="outline-cards">
             <h2 className="text-3xl font-bold mb-8">Outline Card System</h2>
             <p className="text-muted-foreground mb-8">
               Complex content cards with market performance data, dot matrix visualizations, and structured information sections.
@@ -1024,7 +1539,7 @@ export default function Home() {
           </section>
 
           {/* Chat System */}
-          <section>
+          <section id="chat">
             <h2 className="text-3xl font-bold mb-8">Chat System</h2>
             <p className="text-muted-foreground mb-8">
               Comprehensive chat interface components for AI agent interactions with multiple variants and full theme integration.
@@ -1170,7 +1685,7 @@ export default function Home() {
           </section>
 
           {/* Complete Shadcn/UI Components */}
-          <section>
+          <section id="shadcn-components">
             <h2 className="text-3xl font-bold mb-8">Complete Shadcn/UI Components</h2>
             <p className="text-muted-foreground mb-8">
               Production-ready shadcn/ui components with full Zeus theming integration. All components follow accessibility standards and design system patterns.
@@ -1459,7 +1974,7 @@ export default function Home() {
           </section>
 
           {/* Theme Demonstration */}
-          <section>
+          <section id="theme-system">
             <h2 className="text-3xl font-bold mb-8">Theme System</h2>
             <p className="text-muted-foreground mb-8">
               The Sedona UI kit fully supports light and dark themes with automatic persistence and system preference detection. 
@@ -1597,7 +2112,7 @@ export default function Home() {
           </section>
 
           {/* Usage Guidelines */}
-          <section>
+          <section id="usage-guidelines">
             <h2 className="text-3xl font-bold mb-8">Usage Guidelines</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="p-6 border rounded-lg">
