@@ -30,7 +30,7 @@ export default function LightModePage() {
             <div className="flex-1" />
             <SedonaLogo size="xl" />
             <div className="flex-1 flex justify-end">
-              <span className="text-sm font-medium bg-gray-100 px-3 py-1 rounded-full">LIGHT MODE</span>
+              <span className="text-caption-l font-medium bg-gray-100 px-3 py-1 rounded-full">LIGHT MODE</span>
             </div>
           </div>
           <p className="text-center text-gray-600 mb-12">
@@ -39,11 +39,11 @@ export default function LightModePage() {
           
           <div className="flex flex-col gap-8 items-center">
             <div className="flex flex-col gap-4 items-center">
-              <h2 className="text-2xl font-semibold mb-4">Sedona Buttons - Light Mode</h2>
+              <h2 className="text-heading-md font-semibold mb-4">Sedona Buttons - Light Mode</h2>
               <div className="flex flex-col gap-6 items-center">
                 {/* Button Variants */}
                 <div className="flex flex-col gap-2 items-center">
-                  <span className="text-sm text-gray-600">Button Variants</span>
+                  <span className="text-caption-l text-gray-600">Button Variants</span>
                   <div className="flex gap-4 flex-wrap justify-center">
                     <Button>Primary</Button>
                     <Button variant="brand">Brand</Button>
@@ -54,7 +54,7 @@ export default function LightModePage() {
                 
                 {/* Figma Status Buttons */}
                 <div className="flex flex-col gap-2 items-center">
-                  <span className="text-sm text-gray-600">Status Buttons (From Figma)</span>
+                  <span className="text-caption-l text-gray-600">Status Buttons (From Figma)</span>
                   <div className="flex gap-4 flex-wrap justify-center">
                     <Button variant="safe">SAFE</Button>
                     <Button variant="close">CLOSE</Button>
@@ -63,7 +63,7 @@ export default function LightModePage() {
                 </div>
                 
                 <div className="flex flex-col gap-2 items-center">
-                  <span className="text-sm text-gray-600">Other Variants</span>
+                  <span className="text-caption-l text-gray-600">Other Variants</span>
                   <div className="flex gap-4 flex-wrap justify-center">
                     <Button variant="outline">Outline</Button>
                     <Button variant="ghost">Ghost</Button>
@@ -73,7 +73,7 @@ export default function LightModePage() {
                 
                 {/* Button Sizes */}
                 <div className="flex flex-col gap-2 items-center">
-                  <span className="text-sm text-gray-600">Button Sizes</span>
+                  <span className="text-caption-l text-gray-600">Button Sizes</span>
                   <div className="flex gap-4 flex-wrap justify-center items-center">
                     <Button size="xs">Extra Small</Button>
                     <Button size="sm">Small</Button>
@@ -84,7 +84,7 @@ export default function LightModePage() {
                 
                 {/* Icon Buttons */}
                 <div className="flex flex-col gap-2 items-center">
-                  <span className="text-sm text-gray-600">Icon Buttons</span>
+                  <span className="text-caption-l text-gray-600">Icon Buttons</span>
                   <div className="flex gap-4 flex-wrap justify-center items-center">
                     <Button icon={<span>→</span>}>With Icon Right</Button>
                     <Button icon={<span>←</span>} iconPosition="left">With Icon Left</Button>
