@@ -34,16 +34,16 @@ const Navigation = React.forwardRef<HTMLElement, NavigationProps>(
         <div className="flex items-center gap-4">
           {/* SOL Balance and Market info */}
           <div className="flex items-center gap-2 text-caption-m">
-            <span className="text-emerald-600 font-mono dark:text-zeus-status-success">1000 SOL</span>
+            <span className="text-zeus-status-success font-mono">1000 SOL</span>
             <span className="text-muted-foreground dark:text-zeus-text-tertiary">/</span>
-            <span className="text-red-600 font-mono dark:text-zeus-status-destructive">Disconnect</span>
+            <span className="text-zeus-status-destructive font-mono">Disconnect</span>
           </div>
 
           {/* Wallet Address or Connect Button */}
           {walletAddress ? (
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-2 bg-muted px-3 py-1.5 rounded-full dark:bg-zeus-surface-neutral">
-                <div className="w-2 h-2 bg-purple-500 rounded-full dark:bg-zeus-accent-purple"></div>
+                <div className="w-2 h-2 bg-zeus-accent-purple rounded-full"></div>
                 <span className="text-caption-m text-foreground font-mono dark:text-zeus-text-primary">
                   {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
                 </span>

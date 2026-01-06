@@ -11,36 +11,36 @@ const badgeVariants = cva(
       variant: {
         // Default badge - theme-aware background, proper contrast, mono for tokens only
         default:
-          "bg-muted border border-border text-muted-foreground font-mono font-bold",
+          "bg-muted border border-border text-muted-foreground font-mono font-bold dark:bg-zeus-surface-neutral dark:border-zeus-border-alpha dark:text-zeus-text-secondary",
         // Success badge - theme-aware backgrounds with status colors
         success:
-          "bg-muted border border-border text-emerald-600 font-sans font-semibold dark:bg-zeus-surface-default dark:border-zeus-border-normal dark:text-zeus-status-success",
+          "bg-muted border border-border text-zeus-status-success font-sans font-semibold dark:bg-zeus-surface-default dark:border-zeus-border-normal",
         // Danger badge - theme-aware with destructive colors
         danger:
-          "bg-muted border border-border text-red-600 font-sans font-semibold dark:bg-zeus-surface-default dark:border-zeus-border-normal dark:text-zeus-status-destructive",
+          "bg-muted border border-border text-zeus-status-destructive font-sans font-semibold dark:bg-zeus-surface-default dark:border-zeus-border-normal",
         // Info badge - theme-aware with info colors
         info:
-          "bg-muted border border-border text-blue-600 font-sans font-semibold dark:bg-zeus-surface-default dark:border-zeus-border-normal dark:text-zeus-accent-blue",
+          "bg-muted border border-border text-zeus-accent-blue font-sans font-semibold dark:bg-zeus-surface-default dark:border-zeus-border-normal",
         // Warning badge - theme-aware with warning colors
         warning:
-          "bg-muted border border-border text-orange-600 font-sans font-semibold dark:bg-zeus-surface-default dark:border-zeus-border-normal dark:text-zeus-accent-orange",
+          "bg-muted border border-border text-zeus-accent-orange font-sans font-semibold dark:bg-zeus-surface-default dark:border-zeus-border-normal",
         // Standard shadcn variants for compatibility
         secondary:
-          "bg-secondary border border-transparent text-secondary-foreground font-sans hover:bg-secondary/80",
+          "bg-secondary border border-transparent text-secondary-foreground font-sans hover:bg-secondary/80 dark:bg-zeus-surface-neutral dark:text-zeus-text-primary",
         destructive:
-          "bg-destructive border border-transparent text-destructive-foreground font-sans shadow hover:bg-destructive/80",
-        outline: 
-          "text-foreground border border-border bg-transparent font-sans",
+          "bg-destructive border border-transparent text-destructive-foreground font-sans shadow hover:bg-destructive/80 dark:bg-zeus-status-destructive",
+        outline:
+          "text-foreground border border-border bg-transparent font-sans dark:text-zeus-text-primary dark:border-zeus-border-alpha",
         // Status badges - using theme-aware status colors
         safe:
-          "bg-muted border border-border text-emerald-600 font-sans font-semibold dark:bg-zeus-surface-default dark:border-zeus-border-normal dark:text-zeus-status-success",
+          "bg-muted border border-border text-zeus-status-success font-sans font-semibold dark:bg-zeus-surface-default dark:border-zeus-border-normal",
         close:
-          "bg-muted border border-border text-orange-600 font-sans font-semibold dark:bg-zeus-surface-default dark:border-zeus-border-normal dark:text-zeus-accent-orange", 
+          "bg-muted border border-border text-zeus-accent-orange font-sans font-semibold dark:bg-zeus-surface-default dark:border-zeus-border-normal",
         risk:
-          "bg-muted border border-border text-red-600 font-sans font-semibold dark:bg-zeus-surface-default dark:border-zeus-border-normal dark:text-zeus-status-destructive",
+          "bg-muted border border-border text-zeus-status-destructive font-sans font-semibold dark:bg-zeus-surface-default dark:border-zeus-border-normal",
         // Brand badge - using Sedona brand colors
         brand:
-          "bg-muted border border-border text-sedona-600 font-sans font-semibold dark:bg-zeus-surface-default dark:border-zeus-border-normal dark:text-sedona-500",
+          "bg-muted border border-border text-sedona-500 font-sans font-semibold dark:bg-zeus-surface-default dark:border-zeus-border-normal",
       },
       size: {
         default: "px-1 py-0.5 text-[12px] leading-4 h-6",

@@ -25,7 +25,7 @@ const sizeVariants: Record<TokenAvatarSize, { container: string; text: string }>
   },
   lg: {
     container: "w-11 h-11",
-    text: "text-lg",
+    text: "text-heading-xs",
   },
 }
 

@@ -71,7 +71,7 @@ const WalletCard = React.forwardRef<HTMLDivElement, WalletCardProps>(
                 className="flex items-center gap-2 px-3 py-2 border-r border-zeus-border-alpha cursor-pointer hover:bg-zeus-surface-elevated transition-colors"
                 onClick={handleCopyAddress}
               >
-                <div className="w-2 h-2 rounded-full bg-purple-500" />
+                <div className="w-2 h-2 rounded-full bg-zeus-accent-purple" />
                 <span className="text-zeus-text-primary text-caption-l font-medium">
                   {address}
                 </span>

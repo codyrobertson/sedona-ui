@@ -26,14 +26,14 @@ const DotMatrixGrid = React.forwardRef<HTMLDivElement, DotMatrixGridProps>(
     }, [data, width, height, dotSize, gap])
 
     const colorSchemes = {
-      green: 'bg-emerald-500 dark:bg-zeus-accent-green',
-      red: 'bg-red-500 dark:bg-zeus-accent-red', 
-      blue: 'bg-blue-500 dark:bg-zeus-accent-blue',
-      orange: 'bg-orange-500 dark:bg-zeus-accent-orange',
-      purple: 'bg-purple-500 dark:bg-zeus-accent-purple',
-      pink: 'bg-pink-500 dark:bg-zeus-accent-pink',
-      yellow: 'bg-yellow-500 dark:bg-zeus-accent-yellow',
-      neutral: 'bg-gray-500 dark:bg-zeus-accent-gray'
+      green: 'bg-zeus-accent-green',
+      red: 'bg-zeus-accent-red',
+      blue: 'bg-zeus-accent-blue',
+      orange: 'bg-zeus-accent-orange',
+      purple: 'bg-zeus-accent-purple',
+      pink: 'bg-zeus-accent-pink',
+      yellow: 'bg-zeus-accent-yellow',
+      neutral: 'bg-zeus-text-tertiary'
     }
 
     const dotsPerRow = Math.floor(width / (dotSize + gap))
@@ -170,13 +170,13 @@ const TableRow = React.forwardRef<HTMLDivElement, TableRowProps>(
                       <div className="flex items-center gap-1 text-caption-m leading-4 shrink-0">
                         <span className={cn(
                           "font-bold font-sans",
-                          priceChange.isPositive ? "text-emerald-600 dark:text-zeus-status-success" : "text-red-600 dark:text-zeus-status-destructive"
+                          priceChange.isPositive ? "text-zeus-status-success" : "text-zeus-status-destructive"
                         )}>
                           {priceChange.value}
                         </span>
                         <span className={cn(
                           "text-caption-m font-sans",
-                          priceChange.isPositive ? "text-emerald-500 dark:text-zeus-status-success-secondary" : "text-red-500 dark:text-zeus-status-destructive-secondary"
+                          priceChange.isPositive ? "text-zeus-status-success" : "text-zeus-status-destructive"
                         )}>
                           {priceChange.isPositive ? "↗" : "↘"}
                         </span>

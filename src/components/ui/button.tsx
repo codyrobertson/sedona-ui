@@ -19,7 +19,7 @@ const buttonVariants = cva(
           "bg-sedona-500 text-white shadow-sm hover:bg-sedona-600 active:bg-sedona-700 focus-visible:ring-sedona-500/50 disabled:bg-sedona-500/50 disabled:text-white/70",
         // Secondary button - Visible raised surface (significantly lighter than bg)
         secondary:
-          "bg-[#45413a] text-white border border-white/20 hover:bg-[#524e45] active:bg-[#3a3733] focus-visible:ring-white/20 disabled:bg-[#45413a]/50 disabled:text-white/50 disabled:border-white/10",
+          "bg-zeus-surface-neutral-subtle text-white border border-white/20 hover:bg-zeus-surface-neutral active:bg-zeus-surface-elevated focus-visible:ring-white/20 disabled:bg-zeus-surface-neutral-subtle/50 disabled:text-white/50 disabled:border-white/10",
         // Tertiary button - Frosted glass effect (clearly visible overlay)
         tertiary:
           "bg-white/[0.15] text-white hover:bg-white/[0.22] active:bg-white/[0.28] focus-visible:ring-white/20 disabled:bg-white/[0.08] disabled:text-white/40",
@@ -44,6 +44,9 @@ const buttonVariants = cva(
         // Link variant - Text only
         link:
           "bg-transparent text-sedona-500 underline-offset-4 hover:underline hover:text-sedona-600 active:text-sedona-700 disabled:text-sedona-500/50 disabled:no-underline",
+        // Light variant - White button for dark backgrounds (swap CTAs)
+        light:
+          "bg-white text-zeus-surface-default shadow-sm hover:bg-white/90 active:bg-white/80 focus-visible:ring-white/50 disabled:bg-white/50 disabled:text-zeus-surface-default/50",
       },
       size: {
         default: "h-10 px-2.5 py-1.5 text-caption-l gap-0.5",
