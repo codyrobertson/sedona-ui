@@ -1,0 +1,232 @@
+{
+  "components": [
+    {
+      "name": "Button",
+      "variants": ["default", "brand", "secondary", "destructive", "safe", "close", "risk", "outline", "ghost", "link"],
+      "states": ["default", "hover", "pressed", "disabled"],
+      "sizes": ["xs", "sm", "default", "lg", "icon"],
+      "hasProps": true
+    },
+    {
+      "name": "Input",
+      "variants": ["default", "error", "success"],
+      "states": ["default", "focused", "disabled"],
+      "sizes": ["sm", "default", "lg"],
+      "hasProps": true
+    },
+    {
+      "name": "Card",
+      "variants": ["default", "outline", "elevated"],
+      "states": ["default", "hover"],
+      "sizes": ["sm", "default", "lg"],
+      "hasProps": true
+    },
+    {
+      "name": "Badge",
+      "variants": ["default", "success", "danger", "info", "warning", "secondary", "destructive", "outline", "safe", "close", "risk", "brand"],
+      "states": ["default"],
+      "sizes": ["sm", "default", "lg"],
+      "hasProps": true
+    },
+    {
+      "name": "BadgeGroup",
+      "variants": ["info", "success", "warning", "danger"],
+      "states": ["default"],
+      "sizes": ["default"],
+      "hasProps": true
+    },
+    {
+      "name": "Avatar",
+      "variants": ["default"],
+      "states": ["default"],
+      "sizes": ["sm", "md", "lg"],
+      "hasProps": true
+    },
+    {
+      "name": "AgentAvatar",
+      "variants": ["default"],
+      "states": ["online", "offline", "typing"],
+      "sizes": ["sm", "md", "lg"],
+      "hasProps": true
+    },
+    {
+      "name": "Search",
+      "variants": ["default"],
+      "states": ["default", "focused"],
+      "sizes": [],
+      "hasProps": true
+    },
+    {
+      "name": "Navigation",
+      "variants": ["default"],
+      "states": ["default"],
+      "sizes": [],
+      "hasProps": true
+    },
+    {
+      "name": "TableRow",
+      "variants": ["default"],
+      "states": ["default"],
+      "sizes": [],
+      "hasProps": true
+    },
+    {
+      "name": "DotMatrixGrid",
+      "variants": ["green", "red", "blue", "orange", "purple", "pink", "yellow", "neutral"],
+      "states": ["default"],
+      "sizes": [],
+      "hasProps": true
+    },
+    {
+      "name": "OutlineCard",
+      "variants": ["default"],
+      "states": ["default"],
+      "sizes": [],
+      "hasProps": true
+    },
+    {
+      "name": "ChatInterface",
+      "variants": ["widget", "panel", "fullscreen"],
+      "states": ["default", "typing"],
+      "sizes": [],
+      "hasProps": true
+    },
+    {
+      "name": "MessageBubble",
+      "variants": ["agent", "user"],
+      "states": ["default"],
+      "sizes": [],
+      "hasProps": true
+    }
+  ],
+  "tailwindConfig": {
+    "colors": {
+      "zeus": {
+        "surface-default": "#1e1c17",
+        "surface-neutral": "#2e2b24",
+        "surface-neutral-subtle": "#3e3a31",
+        "surface-warning": "#2e2319",
+        "surface-warning-accent": "#fb9704",
+        "surface-destructive": "#2e1b19",
+        "surface-destructive-accent": "#ea1e04",
+        "surface-info": "#1e2228",
+        "surface-info-accent": "#397fb2",
+        "surface-success": "#1e2821",
+        "surface-success-accent": "#21a65e",
+        "text-primary": "#ffffff",
+        "text-secondary": "#ffffff99",
+        "text-tertiary": "#ffffff75",
+        "text-quaternary": "#ffffff40",
+        "text-inverted": "#1e1c17",
+        "text-inverted-secondary": "#1e1c1799",
+        "text-disabled": "#ffffff1a",
+        "icon-primary": "#ffffff",
+        "icon-secondary": "#ffffff99",
+        "icon-tertiary": "#ffffff75",
+        "icon-inverted": "#1e1c17",
+        "icon-disabled": "#ffffff1a",
+        "border-normal": "#ffffff2e",
+        "border-alpha": "#ffffff24",
+        "border-divider": "#ffffff24",
+        "border-neutral-subtle": "#ffffff3d",
+        "border-surface": "#1e1c17",
+        "border-focused": "#ffffff4d",
+        "border-disabled": "#ffffff0d",
+        "button-secondary": "#2e2b24",
+        "button-tertiary": "#ffffff14",
+        "button-ghost": "#ffffff00",
+        "button-disabled": "#ffffff0d",
+        "badge-surface": "#1f2228",
+        "badge-neutral": "#2e2b24",
+        "badge-warning": "#2e2319",
+        "badge-destructive": "#2e1b19",
+        "badge-info": "#1e2228",
+        "badge-success": "#1e2821",
+        "accent-red": "#d9281c",
+        "accent-red-secondary": "#ffffff80",
+        "accent-red-accent": "#e6483d",
+        "accent-red-subtle": "#2e1b19",
+        "accent-orange": "#fb9704",
+        "accent-orange-secondary": "#ffffff80",
+        "accent-orange-subtle": "#2e2319",
+        "accent-yellow": "#fdd835",
+        "accent-yellow-secondary": "#ffffff80",
+        "accent-yellow-subtle": "#2e2b19",
+        "accent-green": "#21a65e",
+        "accent-green-secondary": "#ffffff80",
+        "accent-green-accent": "#26bd6c",
+        "accent-green-subtle": "#1e2821",
+        "accent-blue": "#397fb2",
+        "accent-blue-secondary": "#ffffff80",
+        "accent-blue-accent": "#4778f5",
+        "accent-blue-subtle": "#1e2228",
+        "accent-purple": "#8b5cf6",
+        "accent-purple-secondary": "#ffffff80",
+        "accent-purple-subtle": "#251e2e",
+        "accent-pink": "#ec4899",
+        "accent-pink-secondary": "#ffffff80",
+        "accent-pink-subtle": "#2e1e28",
+        "accent-gray": "#6b7280",
+        "accent-gray-secondary": "#ffffff80",
+        "accent-gray-subtle": "#1f2228",
+        "status-success": "#339965",
+        "status-success-secondary": "#33996599",
+        "status-success-subtle": "#1e2821",
+        "status-warning": "#f48e2f",
+        "status-warning-secondary": "#f48e2f99",
+        "status-warning-subtle": "#2e2319",
+        "status-destructive": "#e6483d",
+        "status-destructive-secondary": "#e6483db2",
+        "status-destructive-subtle": "#2e1b19",
+        "status-info": "#397fb2",
+        "status-info-secondary": "#397fb299",
+        "status-info-subtle": "#1e2228",
+        "overlay-light": "#ffffff0d",
+        "overlay-medium": "#ffffff1a",
+        "overlay-heavy": "#ffffff40",
+        "overlay-backdrop": "#000000b3",
+        "gradient-start": "#1e1c17",
+        "gradient-middle": "#2e2b24",
+        "gradient-end": "#3e3a31"
+      },
+      "sedona": {
+        "50": "#fef7ed",
+        "100": "#fdead5",
+        "200": "#fbd1aa",
+        "300": "#f7b174",
+        "400": "#f2883c",
+        "500": "#de7001",
+        "600": "#c25e00",
+        "700": "#a14800",
+        "800": "#833b02",
+        "900": "#6c3108"
+      }
+    },
+    "fontSize": {
+      "caption-s": ["10px", { "lineHeight": "14px" }],
+      "caption-m": ["12px", { "lineHeight": "16px" }],
+      "caption-l": ["14px", { "lineHeight": "20px" }],
+      "body-s": ["16px", { "lineHeight": "24px" }],
+      "body-m": ["18px", { "lineHeight": "26px" }]
+    },
+    "spacing": {
+      "0": "0",
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "6": "24px",
+      "8": "32px",
+      "36": "144px"
+    },
+    "borderRadius": {
+      "none": "0",
+      "xs": "4px",
+      "sm": "4px",
+      "md": "8px",
+      "lg": "12px",
+      "xl": "10px",
+      "full": "999px"
+    }
+  }
+}
