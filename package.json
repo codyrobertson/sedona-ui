@@ -55,6 +55,12 @@
     "figma:dev": "cd figma-plugin/sedona-sync && npm run dev"
   },
   "dependencies": {
+    "@awesome.me/kit-1655babbde": "^1.0.2",
+    "@fortawesome/fontawesome-svg-core": "^7.1.0",
+    "@fortawesome/free-brands-svg-icons": "^7.1.0",
+    "@fortawesome/free-regular-svg-icons": "^7.1.0",
+    "@fortawesome/free-solid-svg-icons": "^7.1.0",
+    "@fortawesome/react-fontawesome": "^3.1.1",
     "@paper-design/shaders-react": "^0.0.68",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.14",

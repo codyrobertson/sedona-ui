@@ -97,3 +97,6 @@ temp/
 
 # Local tasks/planning (untracked)
 /tasks/
+
+# NPM auth tokens (contains secrets)
+.npmrc

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next"
 import { GeistSans } from "geist/font/sans"
 import "./globals.css"
+import "@/lib/fontawesome" // Initialize Font Awesome library
 import { Footer } from "@/components/trading/Footer"
 import { JsonLd } from "@/components/seo"
 import { SEO_CONFIG } from "@/lib/seo-config"
