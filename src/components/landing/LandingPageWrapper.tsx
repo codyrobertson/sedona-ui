@@ -7,8 +7,11 @@ import { cn } from "@/lib/utils"
 import { BrowserChrome } from "./BrowserChrome"
 import { LandingHero } from "./LandingHero"
 import { LandingNav } from "./LandingNav"
+import { ProblemStatement } from "./ProblemStatement"
 import { FeaturesSection } from "./FeaturesSection"
+import { TrustedByMarquee } from "./TrustedByMarquee"
 import { NutshellSection } from "./NutshellSection"
+import { DeveloperStats } from "./DeveloperStats"
 import { AgentsSection } from "./AgentsSection"
 import { FAQSection } from "./FAQSection"
 
@@ -209,11 +212,20 @@ export function LandingPageWrapper({
         </AnimatePresence>
         </div>
 
-        {/* Features section - below the hero fold */}
+        {/* Problem Statement - after hero */}
+        {isHeroMode && <ProblemStatement />}
+
+        {/* Features section */}
         {isHeroMode && <FeaturesSection />}
+
+        {/* Trusted By marquee */}
+        {isHeroMode && <TrustedByMarquee />}
 
         {/* In a Nutshell section */}
         {isHeroMode && <NutshellSection />}
+
+        {/* Developer Stats */}
+        {isHeroMode && <DeveloperStats />}
 
         {/* Agents section */}
         {isHeroMode && <AgentsSection onAgentExchange={onToggle} />}
