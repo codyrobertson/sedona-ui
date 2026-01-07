@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { Clock, Trophy, BarChart3, type LucideIcon } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 import { Counter, TimeCounter, CurrencyCounter } from "@/components/ui/counter"
 import {
   TokenMarquee,
@@ -40,8 +40,8 @@ const statBadgeVariants = cva(
 )
 
 export interface StatBadgeProps extends VariantProps<typeof statBadgeVariants> {
-  /** Icon component */
-  icon?: LucideIcon | React.ReactNode
+  /** Icon name */
+  icon?: string | React.ReactNode
   /** Stat label */
   label: string
   /** Static string value */
@@ -57,7 +57,7 @@ export interface StatBadgeProps extends VariantProps<typeof statBadgeVariants> {
 const StatBadge = React.forwardRef<HTMLDivElement, StatBadgeProps>(
   (
     {
-      icon: IconProp,
+      icon: iconProp,
       label,
       value,
       numericValue,
@@ -71,23 +71,18 @@ const StatBadge = React.forwardRef<HTMLDivElement, StatBadgeProps>(
     const iconSize = size === "sm" ? "w-3 h-3" : size === "lg" ? "w-4 h-4" : "w-3.5 h-3.5"
     const fontSize = size === "sm" ? 10 : size === "lg" ? 14 : 12
 
-    // Check if IconProp is a component (function or forwardRef) vs a React element
-    const isIconComponent = typeof IconProp === "function" ||
-      (typeof IconProp === "object" && IconProp !== null && "$$typeof" in IconProp && (IconProp as { render?: unknown }).render)
-
     const renderIcon = () => {
-      if (!IconProp) return null
-      if (isIconComponent) {
-        const Icon = IconProp as LucideIcon
-        return <Icon className={iconSize} />
+      if (!iconProp) return null
+      if (typeof iconProp === "string") {
+        return <Icon icon={iconProp} className={iconSize} />
       }
       // It's already a React element
-      return IconProp
+      return iconProp
     }
 
     return (
       <div ref={ref} className={cn(statBadgeVariants({ variant, size }), className)}>
-        {IconProp && (
+        {iconProp && (
           <span className="text-zeus-text-tertiary">
             {renderIcon()}
           </span>
@@ -118,7 +113,7 @@ StatBadge.displayName = "StatBadge"
  */
 export interface PlatformStat {
   id: string
-  icon: LucideIcon
+  icon: string
   label: string
   value?: string
   numericValue?: number
@@ -197,7 +192,7 @@ const StatsBar = React.forwardRef<HTMLDivElement, StatsBarProps>(
       return [
         {
           id: "ends-in",
-          icon: Clock,
+          icon: "clock",
           label: "Ends In:",
           numericValue: endsInSeconds,
           type: "time" as const,
@@ -205,7 +200,7 @@ const StatsBar = React.forwardRef<HTMLDivElement, StatsBarProps>(
         },
         {
           id: "jackpot",
-          icon: Trophy,
+          icon: "trophy",
           label: "Jackpot:",
           numericValue: jackpotValue,
           type: "currency" as const,
@@ -213,7 +208,7 @@ const StatsBar = React.forwardRef<HTMLDivElement, StatsBarProps>(
         },
         {
           id: "tokens",
-          icon: BarChart3,
+          icon: "chart-bar",
           label: "Tokens:",
           numericValue: tokenCount,
           type: "number" as const,

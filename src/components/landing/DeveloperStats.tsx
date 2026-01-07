@@ -3,7 +3,7 @@
 import * as React from "react"
 import { motion } from "motion/react"
 import { cn } from "@/lib/utils"
-import { DollarSign, Clock, Sparkles } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 
 export interface DeveloperStatsProps {
   className?: string
@@ -11,19 +11,19 @@ export interface DeveloperStatsProps {
 
 const stats = [
   {
-    icon: DollarSign,
+    iconName: "dollar-sign",
     value: "~$35",
     label: "Training Cost",
     description: "Full agent training",
   },
   {
-    icon: Clock,
+    iconName: "clock",
     value: "Hours",
     label: "to Deploy",
     description: "Not months",
   },
   {
-    icon: Sparkles,
+    iconName: "sparkles",
     value: "Zero",
     label: "ML Required",
     description: "No prerequisites",
@@ -64,7 +64,7 @@ export function DeveloperStats({ className }: DeveloperStatsProps) {
                 ease: [0.25, 0.1, 0.25, 1],
               }}
             >
-              <stat.icon className="w-5 h-5 mx-auto mb-3 text-zeus-highlight-gold" />
+              <Icon icon={stat.iconName} className="w-5 h-5 mx-auto mb-3 text-zeus-highlight-gold" />
               <div className="font-souvenir font-bold text-2xl md:text-3xl text-white mb-1">
                 {stat.value}
               </div>

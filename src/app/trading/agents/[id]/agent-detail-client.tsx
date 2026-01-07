@@ -4,17 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
-import {
-  ArrowLeft,
-  ExternalLink,
-  Trophy,
-  GitCommit,
-  Clock,
-  CheckCircle2,
-  Loader2,
-  ChevronRight,
-  Bot
-} from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 import { Header, PlatformStats } from "@/components/trading"
 import { useAgentLaunch } from "@/contexts"
 import { Badge } from "@/components/ui/badge"
@@ -69,7 +59,7 @@ function VersionRow({ version, isActive, onClick }: VersionRowProps) {
 
       {/* Commit Hash */}
       <div className="flex items-center gap-1.5 min-w-[100px]">
-        <GitCommit className="w-3.5 h-3.5 text-zeus-text-tertiary" />
+        <Icon icon="code-commit" className="w-3.5 h-3.5 text-zeus-text-tertiary" />
         <span className="text-caption-l font-mono text-zeus-text-secondary">
           {version.huggingFace.commitHashShort}
         </span>
@@ -100,7 +90,7 @@ function VersionRow({ version, isActive, onClick }: VersionRowProps) {
         )}
         {version.status === "evaluating" && (
           <Badge variant="warning" size="sm" showPulse pulseColor="bg-zeus-accent-orange">
-            <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+            <Icon icon="spinner-third" spin className="w-3 h-3 mr-1" />
             Eval
           </Badge>
         )}
@@ -109,7 +99,7 @@ function VersionRow({ version, isActive, onClick }: VersionRowProps) {
         )}
       </div>
 
-      <ChevronRight className="w-4 h-4 text-zeus-text-tertiary shrink-0 group-hover:text-zeus-text-secondary group-hover:translate-x-0.5 transition-all" />
+      <Icon icon="chevron-right" className="w-4 h-4 text-zeus-text-tertiary shrink-0 group-hover:text-zeus-text-secondary group-hover:translate-x-0.5 transition-all" />
     </button>
   )
 }
@@ -136,7 +126,7 @@ function AgentStatsCard({ agent, onTrade, onAddWeights }: AgentStatsCardProps) {
             <img src={agent.imageUrl} alt={agent.name} className="w-12 h-12 rounded-xl bg-zeus-surface-default" />
           ) : (
             <div className="w-12 h-12 rounded-xl bg-zeus-surface-default flex items-center justify-center">
-              <Bot className="w-6 h-6 text-zeus-text-tertiary" />
+              <Icon icon="robot" className="w-6 h-6 text-zeus-text-tertiary" />
             </div>
           )}
           <div className="flex-1 min-w-0">
@@ -189,7 +179,7 @@ function AgentStatsCard({ agent, onTrade, onAddWeights }: AgentStatsCardProps) {
               className="flex items-center gap-1 text-caption-l font-mono text-sedona-400 hover:underline"
             >
               {agent.activeVersion.huggingFace.commitHashShort}
-              <ExternalLink className="w-3 h-3" />
+              <Icon icon="arrow-up-right-from-square" className="w-3 h-3" />
             </a>
           </div>
           {agent.activeVersion.evaluation && (
@@ -210,7 +200,7 @@ function AgentStatsCard({ agent, onTrade, onAddWeights }: AgentStatsCardProps) {
         <div className="p-4 border-b border-zeus-border-alpha">
           <h3 className="text-caption-s font-semibold text-zeus-text-tertiary uppercase tracking-wide mb-3">Competition</h3>
           <div className="flex items-center gap-2">
-            <Trophy className="w-4 h-4 text-sedona-400" />
+            <Icon icon="trophy" className="w-4 h-4 text-sedona-400" />
             <span className="text-body-s text-zeus-text-primary flex-1 truncate">
               {agent.currentCompetition.competition.name}
             </span>
@@ -237,7 +227,7 @@ function AgentStatsCard({ agent, onTrade, onAddWeights }: AgentStatsCardProps) {
           rel="noopener noreferrer"
           className="w-full"
         >
-          <Button variant="ghost" size="sm" className="w-full" icon={<ExternalLink className="w-3.5 h-3.5" />} iconPosition="right">
+          <Button variant="ghost" size="sm" className="w-full" icon={<Icon icon="arrow-up-right-from-square" className="w-3.5 h-3.5" />} iconPosition="right">
             View on HuggingFace
           </Button>
         </a>
@@ -269,7 +259,7 @@ function VersionDetailSheet({ version, open, onOpenChange, onSetActive }: Versio
         <SheetHeader className="pb-4 border-b border-zeus-border-alpha">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-zeus-surface-default flex items-center justify-center">
-              <GitCommit className="w-5 h-5 text-zeus-text-tertiary" />
+              <Icon icon="code-commit" className="w-5 h-5 text-zeus-text-tertiary" />
             </div>
             <div>
               <SheetTitle>Version {version.versionNumber}</SheetTitle>
@@ -289,7 +279,7 @@ function VersionDetailSheet({ version, open, onOpenChange, onSetActive }: Versio
             )}
             {version.status === "evaluating" && (
               <Badge variant="warning" size="sm" showPulse pulseColor="bg-zeus-accent-orange">
-                <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                <Icon icon="spinner-third" spin className="w-3 h-3 mr-1" />
                 Evaluating
               </Badge>
             )}
@@ -316,7 +306,7 @@ function VersionDetailSheet({ version, open, onOpenChange, onSetActive }: Versio
               <div className="flex items-center justify-between text-caption-s text-zeus-text-tertiary">
                 <span className="capitalize">{version.evaluationProgress.currentStep.replace(/_/g, " ")}</span>
                 <span className="flex items-center gap-1">
-                  <Clock className="w-3 h-3" />
+                  <Icon icon="clock" className="w-3 h-3" />
                   {Math.floor(version.evaluationProgress.elapsedTimeMs / 60000)}m elapsed
                 </span>
               </div>
@@ -362,7 +352,7 @@ function VersionDetailSheet({ version, open, onOpenChange, onSetActive }: Versio
               {version.evaluation!.attestation && (
                 <div className="rounded-lg border border-zeus-border-alpha bg-zeus-surface-default p-4">
                   <div className="flex items-center gap-2 mb-2">
-                    <CheckCircle2 className="w-4 h-4 text-zeus-status-success" />
+                    <Icon icon="circle-check" className="w-4 h-4 text-zeus-status-success" />
                     <span className="text-caption-s font-semibold text-zeus-text-tertiary uppercase tracking-wide">
                       TEE Attestation
                     </span>
@@ -404,7 +394,7 @@ function VersionDetailSheet({ version, open, onOpenChange, onSetActive }: Versio
               rel="noopener noreferrer"
               className="block"
             >
-              <Button variant="outline" size="lg" className="w-full" icon={<ExternalLink className="w-4 h-4" />} iconPosition="right">
+              <Button variant="outline" size="lg" className="w-full" icon={<Icon icon="arrow-up-right-from-square" className="w-4 h-4" />} iconPosition="right">
                 View on HuggingFace
               </Button>
             </a>
@@ -486,7 +476,7 @@ export default function AgentDetailClient({ agentId }: AgentDetailClientProps) {
 
         {/* Back + Title - outside columns so both align */}
         <div className="flex items-center gap-3 px-4 pt-4 pb-2">
-          <Button variant="ghost" size="sm" onClick={handleBack} icon={<ArrowLeft className="w-4 h-4" />}>
+          <Button variant="ghost" size="sm" onClick={handleBack} icon={<Icon icon="arrow-left" className="w-4 h-4" />}>
             Back
           </Button>
           <span className="text-zeus-text-tertiary">/</span>
@@ -502,12 +492,12 @@ export default function AgentDetailClient({ agentId }: AgentDetailClientProps) {
               <div className="rounded-xl border border-zeus-border-alpha bg-zeus-surface-elevated p-4">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <Loader2 className="w-4 h-4 text-sedona-400 animate-spin" />
+                    <Icon icon="spinner-third" spin className="w-4 h-4 text-sedona-400" />
                     <span className="text-body-s font-medium text-zeus-text-primary">Evaluating v{evaluatingVersion.versionNumber}</span>
                   </div>
                   <div className="flex items-center gap-3 text-caption-l text-zeus-text-tertiary">
                     <span className="flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5" />
+                      <Icon icon="clock" className="w-3.5 h-3.5" />
                       {Math.floor(evaluatingVersion.evaluationProgress.elapsedTimeMs / 60000)}m
                     </span>
                     <span>{evaluatingVersion.evaluationProgress.progress}%</span>

@@ -1,6 +1,6 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { TrendingUp, TrendingDown } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 
 export interface StatRowProps {
   /** Label text displayed on the left */
@@ -75,9 +75,9 @@ export function StatRow({
             )}
           >
             {change >= 0 ? (
-              <TrendingUp className="w-3 h-3" />
+              <Icon icon="arrow-trend-up" className="w-3 h-3" />
             ) : (
-              <TrendingDown className="w-3 h-3" />
+              <Icon icon="arrow-trend-down" className="w-3 h-3" />
             )}
             {Math.abs(change).toFixed(1)}%
           </span>

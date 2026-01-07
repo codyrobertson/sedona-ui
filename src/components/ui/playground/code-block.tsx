@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { Check, Copy } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 
 export interface CodeBlockProps {
   code: string
@@ -40,9 +40,9 @@ export function CodeBlock({
         aria-label="Copy code"
       >
         {copied ? (
-          <Check className="h-4 w-4 text-zeus-status-success" />
+          <Icon icon="check" className="h-4 w-4 text-zeus-status-success" />
         ) : (
-          <Copy className="h-4 w-4" />
+          <Icon icon="copy" className="h-4 w-4" />
         )}
       </button>
       <pre className={cn(

@@ -3,7 +3,7 @@
 import * as React from "react"
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible"
 import { cn } from "@/lib/utils"
-import { ChevronRight } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 
 export interface CollapsibleSectionProps {
   id: string
@@ -34,7 +34,8 @@ export function CollapsibleSection({
         <CollapsiblePrimitive.Trigger asChild>
           <button className="flex items-center gap-3 w-full group text-left py-3 mb-2">
             <div className="flex items-center justify-center w-7 h-7 rounded-md bg-muted/50 group-hover:bg-sedona-500/10 transition-colors">
-              <ChevronRight
+              <Icon
+                icon="chevron-right"
                 className={cn(
                   "h-4 w-4 text-muted-foreground group-hover:text-sedona-500 transition-all duration-200",
                   isOpen && "rotate-90"

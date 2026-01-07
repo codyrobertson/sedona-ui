@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { motion } from "motion/react"
-import { ExternalLink, BarChart3 } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { PaperTextureOverlay } from "@/components/ui/lazy-paper-texture"
@@ -91,7 +91,7 @@ export function AgentsSection({ className, onAgentExchange }: AgentsSectionProps
             variant="light"
             size="lg"
             onClick={onAgentExchange}
-            icon={<ExternalLink className="w-4 h-4" />}
+            icon={<Icon icon="arrow-up-right-from-square" className="w-4 h-4" />}
             iconPosition="right"
             className="!text-zeus-surface-default"
           >
@@ -101,7 +101,7 @@ export function AgentsSection({ className, onAgentExchange }: AgentsSectionProps
             variant="outline"
             size="lg"
             onClick={() => window.open('#', '_blank')}
-            icon={<BarChart3 className="w-4 h-4" />}
+            icon={<Icon icon="chart-bar" className="w-4 h-4" />}
             iconPosition="right"
           >
             View Docs

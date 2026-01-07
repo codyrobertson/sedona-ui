@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { motion } from "motion/react"
-import { ArrowRight, Zap } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -84,7 +84,7 @@ export function LandingHero({
           variant="tertiary"
           size="lg"
           onClick={onEnterApp}
-          icon={<Zap className="w-4 h-4" />}
+          icon={<Icon icon="bolt" className="w-4 h-4" />}
         >
           Launch Your Agent
         </Button>
@@ -95,7 +95,7 @@ export function LandingHero({
           onClick={() => {
             document.getElementById("features")?.scrollIntoView({ behavior: "smooth" })
           }}
-          icon={<ArrowRight className="w-4 h-4" />}
+          icon={<Icon icon="arrow-right" className="w-4 h-4" />}
           iconPosition="right"
         >
           Learn More

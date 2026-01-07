@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { FileText, ChevronLeft, ChevronRight } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 import {
   Pagination,
   PaginationContent,
@@ -58,7 +58,7 @@ const TransactionsTable = React.forwardRef<HTMLDivElement, TransactionsTableProp
       >
         {/* Header */}
         <div className="flex-shrink-0 flex items-center gap-2 px-4 py-2.5 bg-zeus-surface-neutral border border-zeus-border-alpha border-b-0 rounded-t-xl">
-          <FileText className="w-4 h-4 text-zeus-text-secondary" />
+          <Icon icon="file-lines" className="w-4 h-4 text-zeus-text-secondary" />
           <span className="text-caption-l font-semibold text-zeus-text-primary">Transactions</span>
         </div>
 
@@ -142,7 +142,7 @@ const TransactionsTable = React.forwardRef<HTMLDivElement, TransactionsTableProp
                     )}
                     aria-disabled={currentPage === 1}
                   >
-                    <ChevronLeft className="h-4 w-4 text-zeus-text-secondary" />
+                    <Icon icon="chevron-left" className="h-4 w-4 text-zeus-text-secondary" />
                   </PaginationLink>
                 </PaginationItem>
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
@@ -179,7 +179,7 @@ const TransactionsTable = React.forwardRef<HTMLDivElement, TransactionsTableProp
                     )}
                     aria-disabled={currentPage === totalPages}
                   >
-                    <ChevronRight className="h-4 w-4 text-zeus-text-secondary" />
+                    <Icon icon="chevron-right" className="h-4 w-4 text-zeus-text-secondary" />
                   </PaginationLink>
                 </PaginationItem>
               </PaginationContent>

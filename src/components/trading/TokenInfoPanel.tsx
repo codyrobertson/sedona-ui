@@ -11,15 +11,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { useClipboard } from "@/hooks/useClipboard"
-import {
-  ArrowUpRight,
-  ArrowDownRight,
-  Copy,
-  Check,
-  ChevronUp,
-  Plus,
-  ExternalLink,
-} from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 
 export interface TokenInfoPanelProps extends React.HTMLAttributes<HTMLDivElement> {
   // Core info
@@ -141,9 +133,9 @@ const TokenInfoPanel = React.forwardRef<HTMLDivElement, TokenInfoPanelProps>(
             >
               {price}
               {isUp ? (
-                <ArrowUpRight className="w-3 h-3" />
+                <Icon icon="arrow-trend-up" className="w-3 h-3" />
               ) : (
-                <ArrowDownRight className="w-3 h-3" />
+                <Icon icon="arrow-trend-down" className="w-3 h-3" />
               )}
             </div>
           </div>
@@ -158,7 +150,7 @@ const TokenInfoPanel = React.forwardRef<HTMLDivElement, TokenInfoPanelProps>(
             >
               <span className="text-base">🤗</span>
               <span>View on HuggingFace</span>
-              <ExternalLink className="w-3 h-3" />
+              <Icon icon="arrow-up-right-from-square" className="w-3 h-3" />
             </a>
           )}
 
@@ -177,9 +169,9 @@ const TokenInfoPanel = React.forwardRef<HTMLDivElement, TokenInfoPanelProps>(
                       className="p-1 rounded hover:bg-zeus-surface-elevated transition-colors"
                     >
                       {copied ? (
-                        <Check className="w-3.5 h-3.5 text-zeus-status-success" />
+                        <Icon icon="check" className="w-3.5 h-3.5 text-zeus-status-success" />
                       ) : (
-                        <Copy className="w-3.5 h-3.5 text-zeus-text-tertiary" />
+                        <Icon icon="copy" className="w-3.5 h-3.5 text-zeus-text-tertiary" />
                       )}
                     </button>
                   </TooltipTrigger>
@@ -198,9 +190,9 @@ const TokenInfoPanel = React.forwardRef<HTMLDivElement, TokenInfoPanelProps>(
           >
             View Details
             {detailsOpen ? (
-              <ChevronUp className="w-3.5 h-3.5" />
+              <Icon icon="chevron-up" className="w-3.5 h-3.5" />
             ) : (
-              <Plus className="w-3.5 h-3.5" />
+              <Icon icon="plus" className="w-3.5 h-3.5" />
             )}
           </button>
 

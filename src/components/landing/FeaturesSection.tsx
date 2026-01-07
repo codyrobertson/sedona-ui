@@ -4,17 +4,7 @@ import * as React from "react"
 import { motion } from "motion/react"
 import { cn } from "@/lib/utils"
 import { PaperTextureOverlay } from "@/components/ui/lazy-paper-texture"
-import {
-  ShieldCheck,
-  FileCheck,
-  Eye,
-  Trophy,
-  Target,
-  TrendingUp,
-  Droplets,
-  Scale,
-  Handshake
-} from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 
 export interface FeaturesSectionProps {
   className?: string
@@ -25,27 +15,27 @@ const features = [
     title: "Verifiable Evaluation",
     description: "Every agent score is provably verified using Trusted Execution Environments (TEEs). No misleading benchmarks—just transparent, auditable results you can trust.",
     items: [
-      { icon: ShieldCheck, text: "Scores Verified via TEE Attestations" },
-      { icon: FileCheck, text: "One Consistent Evaluation Standard" },
-      { icon: Eye, text: "Publicly Published & Independently Verifiable" },
+      { iconName: "shield-check", text: "Scores Verified via TEE Attestations" },
+      { iconName: "file-check", text: "One Consistent Evaluation Standard" },
+      { iconName: "eye", text: "Publicly Published & Independently Verifiable" },
     ],
   },
   {
     title: "Competition-Based Discovery",
     description: "Unlike permissionless launchpads, Sedona uses monthly competitions to surface the best agents. Quality rises to the top through real performance, not hype.",
     items: [
-      { icon: Trophy, text: "Monthly Competition Cycles" },
-      { icon: Target, text: "Objective-Driven Challenges" },
-      { icon: TrendingUp, text: "Market-Driven Agent Selection" },
+      { iconName: "trophy", text: "Monthly Competition Cycles" },
+      { iconName: "bullseye", text: "Objective-Driven Challenges" },
+      { iconName: "arrow-trend-up", text: "Market-Driven Agent Selection" },
     ],
   },
   {
     title: "Winner-Takes-All",
     description: "Top performers earn verified scores and enhanced liquidity. Winning tokens migrate to deep liquidity pools—the market decides who survives.",
     items: [
-      { icon: Scale, text: "TWAP Market Cap Determines Winners" },
-      { icon: Droplets, text: "Winners Get Enhanced Liquidity Depth" },
-      { icon: Handshake, text: "Aligned Incentives for Quality" },
+      { iconName: "scale-balanced", text: "TWAP Market Cap Determines Winners" },
+      { iconName: "droplet", text: "Winners Get Enhanced Liquidity Depth" },
+      { iconName: "handshake", text: "Aligned Incentives for Quality" },
     ],
   },
 ]
@@ -94,7 +84,7 @@ export function FeaturesSection({ className }: FeaturesSectionProps) {
               <ul className="space-y-4">
                 {feature.items.map((item, itemIndex) => (
                   <li key={itemIndex} className="flex items-center gap-3">
-                    <item.icon className="w-5 h-5 flex-shrink-0 text-zeus-highlight-gold" />
+                    <Icon icon={item.iconName} className="w-5 h-5 flex-shrink-0 text-zeus-highlight-gold" />
                     <span className="font-grotesk text-sm text-zeus-text-primary">
                       {item.text}
                     </span>

@@ -3,7 +3,7 @@
 import * as React from "react"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
-import { TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 
 // ============================================================================
 // TOKEN ITEM - For displaying token/pool info in marquee
@@ -41,9 +41,9 @@ const TokenItem = React.forwardRef<HTMLDivElement, TokenItemProps>(
           {change.toFixed(2)}%
           {showIcon && (
             isPositive ? (
-              <TrendingUp className="w-3 h-3" />
+              <Icon icon="arrow-trend-up" className="w-3 h-3" />
             ) : (
-              <TrendingDown className="w-3 h-3" />
+              <Icon icon="arrow-trend-down" className="w-3 h-3" />
             )
           )}
         </span>
@@ -86,9 +86,9 @@ const TradeItem = React.forwardRef<HTMLDivElement, TradeItemProps>(
         >
           {showIcon && (
             isBuy ? (
-              <ArrowUpRight className="w-3 h-3" />
+              <Icon icon="arrow-up-right" className="w-3 h-3" />
             ) : (
-              <ArrowDownRight className="w-3 h-3" />
+              <Icon icon="arrow-down-right" className="w-3 h-3" />
             )
           )}
           {isBuy ? "BUY" : "SELL"}

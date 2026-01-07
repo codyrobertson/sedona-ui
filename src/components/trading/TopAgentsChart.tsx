@@ -17,7 +17,7 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu"
-import { ChevronDown } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 
 export interface TopAgentsChartProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Agent data with historical market cap */
@@ -192,7 +192,7 @@ const TopAgentsChart = React.forwardRef<HTMLDivElement, TopAgentsChartProps>(
                 <DropdownMenuTrigger asChild>
                   <button className="flex items-center gap-1 text-zeus-text-primary text-caption-l font-medium hover:text-sedona-500 transition-colors focus:outline-none">
                     {sortBy}
-                    <ChevronDown className="w-4 h-4" />
+                    <Icon icon="chevron-down" className="w-4 h-4" />
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="min-w-[250px]">

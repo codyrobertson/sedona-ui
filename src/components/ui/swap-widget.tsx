@@ -15,14 +15,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import {
-  ChevronsUpDown,
-  Settings,
-  ArrowDownUp,
-  Loader2,
-  RefreshCw,
-  AlertTriangle,
-} from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 import { TokenAvatar } from "@/components/ui/token-avatar"
 
 // ============================================================================
@@ -211,7 +204,7 @@ const SwapCard = ({
 
         {isCalculating ? (
           <div className="flex-1 flex items-center" aria-live="polite" aria-busy="true">
-            <Loader2 className="w-5 h-5 text-zeus-text-tertiary animate-spin" />
+            <Icon icon="spinner" className="w-5 h-5 text-zeus-text-tertiary animate-spin" />
             <span className="sr-only">Calculating...</span>
           </div>
         ) : (
@@ -245,7 +238,7 @@ const SwapCard = ({
           <span className="text-zeus-text-primary text-sm font-semibold">
             {token.symbol}
           </span>
-          <ChevronsUpDown className="w-4 h-4 text-zeus-text-tertiary" />
+          <Icon icon="arrows-up-down" className="w-4 h-4 text-zeus-text-tertiary" />
         </button>
       </div>
 
@@ -289,7 +282,7 @@ const SlippagePopover = ({
           <span className="text-sedona-500 font-medium">
             {value === "Auto" ? "Auto" : `${value}%`}
           </span>
-          <Settings className="w-3 h-3 text-zeus-text-tertiary" aria-hidden="true" />
+          <Icon icon="gear" className="w-3 h-3 text-zeus-text-tertiary" />
         </button>
       </PopoverTrigger>
       <PopoverContent
@@ -647,7 +640,7 @@ const SwapWidget = React.forwardRef<HTMLDivElement, SwapWidgetProps>(
         {/* Trading Status Banner */}
         {isTradingDisabled && (
           <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-zeus-status-warning/10 border border-zeus-status-warning/20">
-            <AlertTriangle className="w-4 h-4 text-zeus-status-warning flex-shrink-0" />
+            <Icon icon="triangle-exclamation" className="w-4 h-4 text-zeus-status-warning flex-shrink-0" />
             <span className="text-caption-s text-zeus-status-warning">
               {tradingStatusMessage || getTradingStatusMessage(tradingStatus)}
             </span>
@@ -678,12 +671,12 @@ const SwapWidget = React.forwardRef<HTMLDivElement, SwapWidgetProps>(
                 aria-label="Refresh quote"
                 className="p-1 rounded-full hover:bg-zeus-surface-elevated transition-colors disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-sedona-500/50"
               >
-                <RefreshCw
+                <Icon
+                  icon="arrows-rotate"
                   className={cn(
                     "w-3 h-3 text-zeus-text-tertiary",
                     status === "quoting" && "animate-spin"
                   )}
-                  aria-hidden="true"
                 />
               </button>
             )}
@@ -726,7 +719,7 @@ const SwapWidget = React.forwardRef<HTMLDivElement, SwapWidgetProps>(
             aria-label="Swap pay and receive tokens"
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 p-2.5 rounded-full bg-zeus-surface-elevated border border-zeus-border-alpha hover:bg-zeus-surface-neutral-subtle transition-colors disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-sedona-500/50"
           >
-            <ArrowDownUp className="w-4 h-4 text-zeus-text-secondary" aria-hidden="true" />
+            <Icon icon="arrow-down-arrow-up" className="w-4 h-4 text-zeus-text-secondary" />
           </button>
         </div>
 
@@ -737,7 +730,7 @@ const SwapWidget = React.forwardRef<HTMLDivElement, SwapWidgetProps>(
           onClick={handleSwap}
           disabled={buttonConfig.disabled}
         >
-          {status === "swapping" && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+          {status === "swapping" && <Icon icon="spinner" className="w-4 h-4 mr-2 animate-spin" />}
           {buttonConfig.text}
         </Button>
 
@@ -765,7 +758,7 @@ const SwapWidget = React.forwardRef<HTMLDivElement, SwapWidgetProps>(
         {/* Error Display */}
         {error && status === "error" && (
           <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-zeus-status-destructive/10 text-caption-s text-zeus-status-destructive">
-            <AlertTriangle className="w-3 h-3 flex-shrink-0" />
+            <Icon icon="triangle-exclamation" className="w-3 h-3 flex-shrink-0" />
             {error.message}
           </div>
         )}

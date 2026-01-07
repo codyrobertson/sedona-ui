@@ -2,14 +2,7 @@
 
 import * as React from "react"
 import { motion } from "motion/react"
-import {
-  Trophy,
-  TrendingUp,
-  ExternalLink,
-  Shield,
-  CheckCircle2,
-  Clock
-} from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
@@ -159,13 +152,13 @@ function OverallScoreDisplay({ score, rank, percentile, animate = true }: Overal
       <div className="flex items-center justify-center gap-4 mt-4">
         {rank && (
           <div className="flex items-center gap-1.5 text-zeus-highlight-gold">
-            <Trophy className="w-4 h-4" />
+            <Icon icon="trophy" className="w-4 h-4" />
             <span className="text-body-s font-semibold">Rank #{rank}</span>
           </div>
         )}
         {percentile && (
           <div className="flex items-center gap-1.5 text-zeus-text-secondary">
-            <TrendingUp className="w-4 h-4" />
+            <Icon icon="arrow-trend-up" className="w-4 h-4" />
             <span className="text-caption-l">Top {100 - percentile}%</span>
           </div>
         )}
@@ -182,12 +175,12 @@ function AttestationDisplay({ attestation }: AttestationDisplayProps) {
   return (
     <div className="p-4 rounded-lg bg-zeus-surface-default border border-zeus-border-alpha">
       <div className="flex items-center gap-2 mb-3">
-        <Shield className="w-4 h-4 text-zeus-status-success" />
+        <Icon icon="shield" className="w-4 h-4 text-zeus-status-success" />
         <span className="text-caption-l font-medium text-zeus-text-primary">
           TEE Attestation
         </span>
         <Badge variant="success" size="sm">
-          <CheckCircle2 className="w-3 h-3 mr-1" />
+          <Icon icon="circle-check" className="w-3 h-3 mr-1" />
           Verified
         </Badge>
       </div>
@@ -221,7 +214,7 @@ function AttestationDisplay({ attestation }: AttestationDisplayProps) {
           className="flex items-center gap-1.5 text-caption-m text-zeus-accent-blue hover:underline mt-3 pt-3 border-t border-zeus-border-alpha"
         >
           Verify on chain
-          <ExternalLink className="w-3 h-3" />
+          <Icon icon="arrow-up-right-from-square" className="w-3 h-3" />
         </a>
       )}
     </div>
@@ -270,7 +263,7 @@ export function ScoreBreakdown({
           </span>
           {score.rank && (
             <Badge variant="gold" size="sm">
-              <Trophy className="w-3 h-3 mr-1" />
+              <Icon icon="trophy" className="w-3 h-3 mr-1" />
               #{score.rank}
             </Badge>
           )}
@@ -299,7 +292,7 @@ export function ScoreBreakdown({
           )}
           {completedAt && (
             <div className="flex items-center gap-1.5 text-caption-m text-zeus-text-tertiary">
-              <Clock className="w-3.5 h-3.5" />
+              <Icon icon="clock" className="w-3.5 h-3.5" />
               {formatDate(completedAt)}
               {durationMs && (
                 <span className="ml-2">
@@ -374,7 +367,7 @@ export function ScoreInline({ score, rank, className }: ScoreInlineProps) {
       </span>
       {rank && (
         <span className="text-caption-m text-zeus-highlight-gold flex items-center gap-0.5">
-          <Trophy className="w-3 h-3" />
+          <Icon icon="trophy" className="w-3 h-3" />
           #{rank}
         </span>
       )}

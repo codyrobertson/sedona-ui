@@ -9,7 +9,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { Info } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 import { parseMarketCap } from "@/fixtures"
 
 export type EliminationStatus = "safe" | "close" | "risk"
@@ -217,7 +217,7 @@ const EliminationProgress = React.forwardRef<HTMLDivElement, EliminationProgress
             <Tooltip>
               <TooltipTrigger asChild>
                 <button className="p-0.5 rounded hover:bg-zeus-surface-neutral transition-colors">
-                  <Info className="w-3.5 h-3.5 text-zeus-text-quaternary" />
+                  <Icon icon="circle-info" className="w-3.5 h-3.5 text-zeus-text-quaternary" />
                 </button>
               </TooltipTrigger>
               <TooltipContent side="left" className="max-w-[200px]">

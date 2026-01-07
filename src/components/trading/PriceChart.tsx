@@ -3,7 +3,7 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { createChart, ColorType, CandlestickSeries, IChartApi, ISeriesApi, PriceScaleMode } from "lightweight-charts"
-import { ChevronDown } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 import { getChartDataForTicker, CHART_COLORS, type TickResolution } from "@/fixtures"
 
 // Re-export for compatibility
@@ -249,7 +249,7 @@ const PriceChart = React.forwardRef<HTMLDivElement, PriceChartProps>(
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center gap-1 text-zeus-text-tertiary text-caption-s hover:text-zeus-text-secondary transition-colors">
                   {DATE_RANGE_LABELS[dateRange]}
-                  <ChevronDown className="w-3 h-3" />
+                  <Icon icon="chevron-down" className="w-3 h-3" />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent

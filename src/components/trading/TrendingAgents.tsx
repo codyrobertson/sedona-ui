@@ -3,7 +3,7 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
-import { Search } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 import { AgentListItem, AgentListItemProps } from "./AgentListItem"
 import { EmptyState } from "@/components/ui/empty-state"
 import { TopAgentsChart } from "./TopAgentsChart"
@@ -74,7 +74,7 @@ const TrendingAgents = React.forwardRef<HTMLDivElement, TrendingAgentsProps>(
             onChange={handleSearchChange}
             className="w-full pl-4 pr-10 bg-zeus-surface-elevated border-zeus-border-alpha text-zeus-text-primary placeholder:text-zeus-text-tertiary"
           />
-          <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zeus-text-tertiary" />
+          <Icon icon="magnifying-glass" className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zeus-text-tertiary" />
         </div>
 
         {/* Agent Table */}

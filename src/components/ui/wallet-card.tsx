@@ -3,7 +3,7 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { useClipboard } from "@/hooks/useClipboard"
-import { ChevronDown } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 import {
   Tooltip,
   TooltipContent,
@@ -116,7 +116,7 @@ const WalletCard = React.forwardRef<HTMLDivElement, WalletCardProps>(
               <button
                 className="px-2 py-2 hover:bg-zeus-surface-elevated transition-colors"
               >
-                <ChevronDown className={cn(
+                <Icon icon="chevron-down" className={cn(
                   "w-4 h-4 text-zeus-text-tertiary transition-transform",
                   dropdownOpen && "rotate-180"
                 )} />

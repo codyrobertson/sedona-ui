@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { NavLink, type NavLinkProps } from "./nav-link"
 import { WalletButton } from "./wallet-button"
-import { X, Plus } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 
 export interface MobileNavItem {
   label: string
@@ -128,7 +128,7 @@ const MobileMenu = React.forwardRef<HTMLDivElement, MobileMenuProps>(
               className="p-2"
               aria-label="Close menu"
             >
-              <X className="w-5 h-5" />
+              <Icon icon="xmark" className="w-5 h-5" />
             </Button>
           </div>
 
@@ -161,7 +161,7 @@ const MobileMenu = React.forwardRef<HTMLDivElement, MobileMenuProps>(
                 onClick={handleCreateAgent}
                 className="w-full bg-sedona-500 hover:bg-sedona-600 text-white"
               >
-                <Plus className="w-4 h-4 mr-2" />
+                <Icon icon="plus" className="w-4 h-4 mr-2" />
                 Create Agent
               </Button>
 

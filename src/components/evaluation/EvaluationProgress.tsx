@@ -2,19 +2,7 @@
 
 import * as React from "react"
 import { motion, AnimatePresence } from "motion/react"
-import {
-  Clock,
-  CheckCircle2,
-  AlertCircle,
-  Loader2,
-  ChevronDown,
-  ChevronUp,
-  Terminal,
-  Cpu,
-  Shield,
-  Upload,
-  Activity
-} from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 import { cn } from "@/lib/utils"
 import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
@@ -46,15 +34,15 @@ function formatTimestamp(timestamp: number): string {
   })
 }
 
-const STEP_CONFIG: Record<EvaluationStep, { label: string; icon: React.ComponentType<{ className?: string }> }> = {
-  queued: { label: "Queued", icon: Clock },
-  loading_model: { label: "Loading Model", icon: Upload },
-  initializing: { label: "Initializing", icon: Cpu },
-  running_benchmark: { label: "Running Benchmark", icon: Activity },
-  generating_attestation: { label: "Generating Attestation", icon: Shield },
-  publishing_results: { label: "Publishing Results", icon: Upload },
-  completed: { label: "Completed", icon: CheckCircle2 },
-  failed: { label: "Failed", icon: AlertCircle },
+const STEP_CONFIG: Record<EvaluationStep, { label: string; iconName: string }> = {
+  queued: { label: "Queued", iconName: "clock" },
+  loading_model: { label: "Loading Model", iconName: "upload" },
+  initializing: { label: "Initializing", iconName: "microchip" },
+  running_benchmark: { label: "Running Benchmark", iconName: "chart-line" },
+  generating_attestation: { label: "Generating Attestation", iconName: "shield" },
+  publishing_results: { label: "Publishing Results", iconName: "upload" },
+  completed: { label: "Completed", iconName: "circle-check" },
+  failed: { label: "Failed", iconName: "circle-exclamation" },
 }
 
 const LOG_LEVEL_COLORS: Record<string, string> = {
@@ -95,7 +83,6 @@ interface StepIndicatorProps {
 
 function StepIndicator({ step, isActive }: StepIndicatorProps) {
   const config = STEP_CONFIG[step]
-  const Icon = config.icon
 
   return (
     <div className={cn(
@@ -105,9 +92,9 @@ function StepIndicator({ step, isActive }: StepIndicatorProps) {
         : "text-zeus-text-tertiary"
     )}>
       {isActive ? (
-        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+        <Icon icon="spinner-third" spin className="w-3.5 h-3.5" />
       ) : (
-        <Icon className="w-3.5 h-3.5" />
+        <Icon icon={config.iconName} className="w-3.5 h-3.5" />
       )}
       <span className="text-caption-m font-medium">{config.label}</span>
     </div>
@@ -192,7 +179,7 @@ export function EvaluationProgress({
           {/* Timer */}
           <div className="flex items-center gap-4 text-caption-l">
             <div className="flex items-center gap-1.5 text-zeus-text-secondary">
-              <Clock className="w-3.5 h-3.5" />
+              <Icon icon="clock" className="w-3.5 h-3.5" />
               <span className="font-mono">{formatTime(progress.elapsedTimeMs)}</span>
             </div>
             {progress.estimatedRemainingMs && isRunning && (
@@ -236,7 +223,7 @@ export function EvaluationProgress({
           >
             <div className="p-4 bg-zeus-status-destructive/10">
               <div className="flex items-start gap-3">
-                <AlertCircle className="w-5 h-5 text-zeus-status-destructive shrink-0 mt-0.5" />
+                <Icon icon="circle-exclamation" className="w-5 h-5 text-zeus-status-destructive shrink-0 mt-0.5" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-mono text-caption-m text-zeus-status-destructive">
@@ -270,15 +257,15 @@ export function EvaluationProgress({
           className="w-full justify-between px-4 py-2 rounded-none hover:bg-zeus-surface-elevated"
         >
           <div className="flex items-center gap-2 text-zeus-text-secondary">
-            <Terminal className="w-4 h-4" />
+            <Icon icon="terminal" className="w-4 h-4" />
             <span className="text-caption-l">
               Logs ({progress.logs.length})
             </span>
           </div>
           {logsExpanded ? (
-            <ChevronUp className="w-4 h-4 text-zeus-text-tertiary" />
+            <Icon icon="chevron-up" className="w-4 h-4 text-zeus-text-tertiary" />
           ) : (
-            <ChevronDown className="w-4 h-4 text-zeus-text-tertiary" />
+            <Icon icon="chevron-down" className="w-4 h-4 text-zeus-text-tertiary" />
           )}
         </Button>
 
@@ -336,13 +323,13 @@ export function EvaluationProgressCompact({
     <div className={cn("flex items-center gap-3", className)}>
       {/* Status indicator */}
       {isRunning ? (
-        <Loader2 className="w-4 h-4 text-sedona-400 animate-spin" />
+        <Icon icon="spinner-third" spin className="w-4 h-4 text-sedona-400" />
       ) : isCompleted ? (
-        <CheckCircle2 className="w-4 h-4 text-zeus-status-success" />
+        <Icon icon="circle-check" className="w-4 h-4 text-zeus-status-success" />
       ) : isFailed ? (
-        <AlertCircle className="w-4 h-4 text-zeus-status-destructive" />
+        <Icon icon="circle-exclamation" className="w-4 h-4 text-zeus-status-destructive" />
       ) : (
-        <Clock className="w-4 h-4 text-zeus-text-tertiary" />
+        <Icon icon="clock" className="w-4 h-4 text-zeus-text-tertiary" />
       )}
 
       {/* Progress info */}

@@ -2,18 +2,7 @@
 
 import * as React from "react"
 import { motion } from "motion/react"
-import {
-  ExternalLink,
-  Trophy,
-  TrendingUp,
-  TrendingDown,
-  BarChart3,
-  Coins,
-  Users,
-  Award,
-  ChevronRight,
-  Loader2
-} from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -60,9 +49,9 @@ function StatItem({ label, value, icon, change, className }: StatItemProps) {
             change >= 0 ? "text-zeus-status-success" : "text-zeus-status-destructive"
           )}>
             {change >= 0 ? (
-              <TrendingUp className="w-3 h-3" />
+              <Icon icon="arrow-trend-up" className="w-3 h-3" />
             ) : (
-              <TrendingDown className="w-3 h-3" />
+              <Icon icon="arrow-trend-down" className="w-3 h-3" />
             )}
             {Math.abs(change).toFixed(1)}%
           </span>
@@ -86,7 +75,7 @@ function CompetitionBadge({ entry, className }: CompetitionBadgeProps) {
       "flex items-center gap-2 px-3 py-2 rounded-lg bg-zeus-surface-default border border-zeus-border-alpha",
       className
     )}>
-      <Trophy className={cn(
+      <Icon icon="trophy" className={cn(
         "w-4 h-4",
         hasPlacement && entry.finalRank !== undefined && entry.finalRank <= 3
           ? "text-zeus-highlight-gold"
@@ -112,7 +101,7 @@ function CompetitionBadge({ entry, className }: CompetitionBadgeProps) {
         </p>
       </div>
       {isActive && (
-        <Loader2 className="w-3.5 h-3.5 text-sedona-400 animate-spin" />
+        <Icon icon="spinner-third" spin className="w-3.5 h-3.5 text-sedona-400" />
       )}
     </div>
   )
@@ -192,13 +181,13 @@ export function MyAgentCard({
           <div className="flex flex-col items-end gap-1 shrink-0">
             {isEvaluating && (
               <Badge variant="warning" size="sm" showPulse pulseColor="bg-zeus-accent-orange">
-                <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                <Icon icon="spinner-third" spin className="w-3 h-3 mr-1" />
                 Evaluating
               </Badge>
             )}
             {hasCurrentCompetition && (
               <Badge variant="brand" size="sm">
-                <Trophy className="w-3 h-3 mr-1" />
+                <Icon icon="trophy" className="w-3 h-3 mr-1" />
                 Competing
               </Badge>
             )}
@@ -211,25 +200,25 @@ export function MyAgentCard({
         <StatItem
           label="Best Score"
           value={agent.analytics.bestScore.toFixed(1)}
-          icon={<BarChart3 className="w-3 h-3" />}
+          icon={<Icon icon="chart-bar" className="w-3 h-3" />}
         />
         <StatItem
           label="Evaluations"
           value={agent.analytics.totalEvaluations}
-          icon={<Award className="w-3 h-3" />}
+          icon={<Icon icon="award" className="w-3 h-3" />}
         />
         {agent.token ? (
           <>
             <StatItem
               label="Market Cap"
               value={agent.token.marketCap}
-              icon={<Coins className="w-3 h-3" />}
+              icon={<Icon icon="coins" className="w-3 h-3" />}
               change={agent.token.priceChange24h}
             />
             <StatItem
               label="Holders"
               value={agent.token.holders}
-              icon={<Users className="w-3 h-3" />}
+              icon={<Icon icon="users" className="w-3 h-3" />}
             />
           </>
         ) : (
@@ -237,12 +226,12 @@ export function MyAgentCard({
             <StatItem
               label="Competitions"
               value={agent.analytics.competitionsEntered}
-              icon={<Trophy className="w-3 h-3" />}
+              icon={<Icon icon="trophy" className="w-3 h-3" />}
             />
             <StatItem
               label="Prize Earnings"
               value={agent.analytics.totalPrizeEarnings || "-"}
-              icon={<Coins className="w-3 h-3" />}
+              icon={<Icon icon="coins" className="w-3 h-3" />}
             />
           </>
         )}
@@ -259,7 +248,7 @@ export function MyAgentCard({
             className="flex items-center gap-1 text-caption-m text-sedona-400 hover:underline"
           >
             <span className="font-mono">{activeVersion.huggingFace.commitHashShort}</span>
-            <ExternalLink className="w-3 h-3" />
+            <Icon icon="arrow-up-right-from-square" className="w-3 h-3" />
           </a>
         </div>
         <div className="flex items-center justify-between">
@@ -337,7 +326,7 @@ export function MyAgentCard({
             variant="ghost"
             size="sm"
             onClick={() => onViewDetails(agent)}
-            icon={<ChevronRight className="w-4 h-4" />}
+            icon={<Icon icon="chevron-right" className="w-4 h-4" />}
             iconPosition="right"
             className="ml-auto"
           >
@@ -420,10 +409,10 @@ export function MyAgentCardCompact({
 
       {/* Status */}
       {isEvaluating && (
-        <Loader2 className="w-4 h-4 text-sedona-400 animate-spin shrink-0" />
+        <Icon icon="spinner-third" spin className="w-4 h-4 text-sedona-400 shrink-0" />
       )}
 
-      <ChevronRight className="w-4 h-4 text-zeus-text-tertiary shrink-0" />
+      <Icon icon="chevron-right" className="w-4 h-4 text-zeus-text-tertiary shrink-0" />
     </button>
   )
 }

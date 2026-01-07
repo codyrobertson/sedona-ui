@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { Clock, Trophy, BarChart3 } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 import { Counter, TimeCounter, CurrencyCounter } from "@/components/ui/counter"
 import { TokenMarquee, TradeMarquee, type TokenMarqueeData, type TradeMarqueeData } from "@/components/ui/marquee"
 
@@ -91,7 +91,7 @@ const PlatformStats = React.forwardRef<HTMLDivElement, PlatformStatsProps>(
           </span>
 
           <StatBadge
-            icon={<Clock className="w-3.5 h-3.5" />}
+            icon={<Icon icon="clock" className="w-3.5 h-3.5" />}
             label="Ends In:"
             value={endsIn}
             numericValue={endsInSeconds}
@@ -100,7 +100,7 @@ const PlatformStats = React.forwardRef<HTMLDivElement, PlatformStatsProps>(
           />
 
           <StatBadge
-            icon={<Trophy className="w-3.5 h-3.5" />}
+            icon={<Icon icon="trophy" className="w-3.5 h-3.5" />}
             label="Jackpot:"
             value={jackpot}
             numericValue={jackpotValue}
@@ -110,7 +110,7 @@ const PlatformStats = React.forwardRef<HTMLDivElement, PlatformStatsProps>(
 
           <div className="hidden sm:block">
             <StatBadge
-              icon={<BarChart3 className="w-3.5 h-3.5" />}
+              icon={<Icon icon="chart-simple" className="w-3.5 h-3.5" />}
               label="Tokens:"
               numericValue={tokens}
               type="number"

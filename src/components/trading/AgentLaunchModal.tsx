@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { GridScan } from "@/components/ui/grid-scan"
-import { Search, Loader2, Lock, GitBranch, Check } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 import { SedonaLogo } from "@/components/sedona/sedona-logo"
 import { getHFRepos, formatHFDate, type HFRepo, type HFCommit } from "@/fixtures"
 
@@ -157,7 +157,7 @@ const AgentLaunchModal = ({
 
                   <div className="space-y-2 pt-3 border-t border-zeus-border-alpha">
                     <div className="flex items-center gap-2 text-caption-s">
-                      <GitBranch className="w-3.5 h-3.5 text-zeus-text-tertiary" />
+                      <Icon icon="code-branch" className="w-3.5 h-3.5 text-zeus-text-tertiary" />
                       <span className="text-zeus-text-tertiary">Model:</span>
                       <span className="text-zeus-text-primary font-mono truncate">
                         {selectedRepo?.name}
@@ -182,7 +182,7 @@ const AgentLaunchModal = ({
 
                 {/* Search */}
                 <div className="relative mb-3">
-                  <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-zeus-text-tertiary" />
+                  <Icon icon="magnifying-glass" className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-zeus-text-tertiary" />
                   <input
                     type="text"
                     placeholder="Search models..."
@@ -216,10 +216,10 @@ const AgentLaunchModal = ({
                             {repo.name}
                           </span>
                           {repo.isPrivate && (
-                            <Lock className="w-3 h-3 text-zeus-text-tertiary shrink-0" />
+                            <Icon icon="lock" className="w-3 h-3 text-zeus-text-tertiary shrink-0" />
                           )}
                           {isSelected && (
-                            <Check className="w-4 h-4 text-sedona-500 shrink-0" />
+                            <Icon icon="check" className="w-4 h-4 text-sedona-500 shrink-0" />
                           )}
                         </div>
                         <span className="text-zeus-text-tertiary text-caption-s truncate">
@@ -339,7 +339,7 @@ const AgentLaunchModal = ({
                               </p>
                             </div>
                             {isSelected && (
-                              <Check className="w-4 h-4 text-sedona-500 shrink-0" />
+                              <Icon icon="check" className="w-4 h-4 text-sedona-500 shrink-0" />
                             )}
                           </button>
                         )
@@ -359,7 +359,7 @@ const AgentLaunchModal = ({
                   // No repo selected yet
                   <div className="flex-1 flex flex-col items-center justify-center text-center">
                     <div className="w-12 h-12 rounded-xl bg-zeus-surface-elevated border border-zeus-border-alpha border-dashed flex items-center justify-center mb-4">
-                      <GitBranch className="w-5 h-5 text-zeus-text-tertiary" />
+                      <Icon icon="code-branch" className="w-5 h-5 text-zeus-text-tertiary" />
                     </div>
                     <h4 className="text-zeus-text-primary text-body-s font-medium mb-2">
                       Select a Model
@@ -387,7 +387,7 @@ const AgentLaunchModal = ({
 
                 {/* Selected model badge */}
                 <div className="flex items-center gap-2 px-3 py-2 bg-zeus-surface-elevated border border-zeus-border-alpha rounded-lg mb-4">
-                  <GitBranch className="w-4 h-4 text-zeus-text-tertiary" />
+                  <Icon icon="code-branch" className="w-4 h-4 text-zeus-text-tertiary" />
                   <span className="text-zeus-text-primary text-caption-l font-mono flex-1 truncate">
                     {selectedRepo?.fullName}
                   </span>
@@ -463,7 +463,7 @@ const AgentLaunchModal = ({
                   </h3>
 
                   <div className="flex items-center gap-2 mb-3">
-                    <Loader2 className="w-5 h-5 text-sedona-500 animate-spin" />
+                    <Icon icon="spinner-third" spin className="w-5 h-5 text-sedona-500" />
                     <span className="text-zeus-text-primary text-body-m font-medium">
                       Starting evaluation...
                     </span>

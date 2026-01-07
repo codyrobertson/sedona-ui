@@ -3,7 +3,7 @@
 import * as React from "react"
 import { motion } from "motion/react"
 import { cn } from "@/lib/utils"
-import { Zap } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 
 export interface ProblemStatementProps {
   className?: string
@@ -25,7 +25,7 @@ export function ProblemStatement({ className }: ProblemStatementProps) {
           transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
         >
           {/* Icon */}
-          <Zap className="w-8 h-8 mx-auto mb-6 text-zeus-highlight-gold" />
+          <Icon icon="bolt" className="w-8 h-8 mx-auto mb-6 text-zeus-highlight-gold" />
 
           {/* Problem */}
           <p className="font-grotesk text-lg md:text-xl text-zeus-text-secondary leading-relaxed mb-8">

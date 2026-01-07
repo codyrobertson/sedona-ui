@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { X, ArrowRight, Sparkles, Megaphone, Flame, Gift } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 import { cva, type VariantProps } from "class-variance-authority"
 import Link from "next/link"
 
@@ -25,10 +25,10 @@ const announcementVariants = cva(
 )
 
 const iconMap = {
-  sparkles: Sparkles,
-  megaphone: Megaphone,
-  flame: Flame,
-  gift: Gift,
+  sparkles: "sparkles",
+  megaphone: "bullhorn",
+  flame: "fire-flame-curved",
+  gift: "gift",
 } as const
 
 export interface AnnouncementBarProps
@@ -69,7 +69,7 @@ const AnnouncementBar = React.forwardRef<HTMLDivElement, AnnouncementBarProps>(
     },
     ref
   ) => {
-    const Icon = iconMap[icon]
+    const iconName = iconMap[icon]
 
     if (isDismissed) {
       return null
@@ -78,6 +78,7 @@ const AnnouncementBar = React.forwardRef<HTMLDivElement, AnnouncementBarProps>(
     const content = (
       <>
         <Icon
+          icon={iconName}
           className={cn(
             "w-4 h-4 flex-shrink-0",
             animateIcon && "animate-pulse"
@@ -87,7 +88,7 @@ const AnnouncementBar = React.forwardRef<HTMLDivElement, AnnouncementBarProps>(
         {href && (
           <span className="inline-flex items-center gap-1 flex-shrink-0 hover:underline">
             {linkText}
-            <ArrowRight className="w-3 h-3" />
+            <Icon icon="arrow-right" className="w-3 h-3" />
           </span>
         )}
       </>
@@ -120,7 +121,7 @@ const AnnouncementBar = React.forwardRef<HTMLDivElement, AnnouncementBarProps>(
             className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded hover:bg-white/10 transition-colors"
             aria-label="Dismiss announcement"
           >
-            <X className="w-3.5 h-3.5" />
+            <Icon icon="xmark" className="w-3.5 h-3.5" />
           </button>
         )}
       </div>

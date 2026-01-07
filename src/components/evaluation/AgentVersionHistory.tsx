@@ -2,16 +2,7 @@
 
 import * as React from "react"
 import { motion, AnimatePresence } from "motion/react"
-import {
-  ExternalLink,
-  GitCommit,
-  ChevronRight,
-  CheckCircle2,
-  Clock,
-  AlertCircle,
-  Loader2,
-  Trophy
-} from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -46,12 +37,12 @@ function formatTimeAgo(timestamp: number): string {
 const STATUS_CONFIG: Record<VersionStatus, {
   label: string
   variant: "success" | "warning" | "danger" | "default"
-  icon: React.ComponentType<{ className?: string }>
+  iconName: string
 }> = {
-  active: { label: "Active", variant: "success", icon: CheckCircle2 },
-  evaluating: { label: "Evaluating", variant: "warning", icon: Loader2 },
-  historical: { label: "Historical", variant: "default", icon: Clock },
-  failed: { label: "Failed", variant: "danger", icon: AlertCircle },
+  active: { label: "Active", variant: "success", iconName: "circle-check" },
+  evaluating: { label: "Evaluating", variant: "warning", iconName: "spinner-third" },
+  historical: { label: "Historical", variant: "default", iconName: "clock" },
+  failed: { label: "Failed", variant: "danger", iconName: "circle-exclamation" },
 }
 
 // ============================================================================
@@ -74,7 +65,6 @@ function VersionRow({
   onReEvaluate
 }: VersionRowProps) {
   const statusConfig = STATUS_CONFIG[version.status]
-  const StatusIcon = statusConfig.icon
   const isEvaluating = version.status === "evaluating"
   const hasScore = version.evaluation?.score.overall !== undefined
 
@@ -90,7 +80,7 @@ function VersionRow({
         )}
       >
         {/* Expand chevron */}
-        <ChevronRight className={cn(
+        <Icon icon="chevron-right" className={cn(
           "w-4 h-4 text-zeus-text-tertiary transition-transform shrink-0",
           isExpanded && "rotate-90"
         )} />
@@ -110,9 +100,9 @@ function VersionRow({
           onClick={(e) => e.stopPropagation()}
           className="flex items-center gap-1.5 text-caption-l font-mono text-zeus-text-secondary hover:text-sedona-400 transition-colors"
         >
-          <GitCommit className="w-3.5 h-3.5" />
+          <Icon icon="code-commit" className="w-3.5 h-3.5" />
           <span>{version.huggingFace.commitHashShort}</span>
-          <ExternalLink className="w-3 h-3 opacity-50" />
+          <Icon icon="arrow-up-right-from-square" className="w-3 h-3 opacity-50" />
         </a>
 
         {/* Score or progress */}
@@ -129,7 +119,7 @@ function VersionRow({
               </span>
               {version.evaluation?.score.rank && (
                 <div className="flex items-center gap-1 text-zeus-accent-orange">
-                  <Trophy className="w-3 h-3" />
+                  <Icon icon="trophy" className="w-3 h-3" />
                   <span className="text-caption-m">#{version.evaluation.score.rank}</span>
                 </div>
               )}
@@ -147,10 +137,7 @@ function VersionRow({
           pulseColor={isEvaluating ? "bg-zeus-accent-orange" : undefined}
           className="shrink-0"
         >
-          <StatusIcon className={cn(
-            "w-3 h-3 mr-1",
-            isEvaluating && "animate-spin"
-          )} />
+          <Icon icon={statusConfig.iconName} spin={isEvaluating} className="w-3 h-3 mr-1" />
           {statusConfig.label}
         </Badge>
 
@@ -272,7 +259,7 @@ function VersionRow({
                             className="flex items-center gap-1.5 text-caption-m text-zeus-accent-blue hover:underline"
                           >
                             <span>Verify attestation ({version.evaluation.attestation.teeType.toUpperCase()})</span>
-                            <ExternalLink className="w-3 h-3" />
+                            <Icon icon="arrow-up-right-from-square" className="w-3 h-3" />
                           </a>
                         </div>
                       )}
@@ -314,7 +301,7 @@ function VersionRow({
                   <Button
                     variant="ghost"
                     size="sm"
-                    icon={<ExternalLink className="w-3.5 h-3.5" />}
+                    icon={<Icon icon="arrow-up-right-from-square" className="w-3.5 h-3.5" />}
                     iconPosition="right"
                   >
                     View on HuggingFace

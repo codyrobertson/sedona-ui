@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { SedonaLogo } from "@/components/sedona/sedona-logo"
 import { NavLink } from "./nav-link"
 import { WalletButton } from "./wallet-button"
-import { Menu, Plus, ExternalLink } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 
 export interface NavItem {
   /** Link label */
@@ -119,7 +119,7 @@ const NavBar = React.forwardRef<HTMLElement, NavBarProps>(
                 rel={item.external ? "noopener noreferrer" : undefined}
               >
                 {item.label}
-                {item.external && <ExternalLink className="w-2.5 h-2.5 ml-1" />}
+                {item.external && <Icon icon="arrow-up-right-from-square" className="w-2.5 h-2.5 ml-1" />}
               </a>
             </Button>
           ))}
@@ -132,7 +132,7 @@ const NavBar = React.forwardRef<HTMLElement, NavBarProps>(
               onClick={onCreateAgent}
               className="hidden sm:inline-flex h-6 px-2 text-caption-s bg-sedona-500 hover:bg-sedona-600 text-white"
             >
-              <Plus className="w-2.5 h-2.5 mr-1" />
+              <Icon icon="plus" className="w-2.5 h-2.5 mr-1" />
               Create Agent
             </Button>
           )}
@@ -156,7 +156,7 @@ const NavBar = React.forwardRef<HTMLElement, NavBarProps>(
             className="md:hidden p-1.5"
             aria-label="Toggle mobile menu"
           >
-            <Menu className="w-4 h-4" />
+            <Icon icon="bars" className="w-4 h-4" />
           </Button>
         </div>
       </nav>

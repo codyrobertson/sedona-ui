@@ -20,7 +20,7 @@ import {
   VolumeCell,
   SparklineCell,
 } from "./cells"
-import { BarChart3 } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 
 // ============================================================================
 // LEADERBOARD TABLE - Composed table for token/agent rankings
@@ -101,7 +101,7 @@ const LeaderboardTable = React.forwardRef<HTMLDivElement, LeaderboardTableProps>
       return (
         <DataTable ref={ref} className={className} {...props}>
           <DataTableEmpty
-            icon={<BarChart3 className="w-10 h-10" />}
+            icon={<Icon icon="chart-simple" className="w-10 h-10" />}
             title={emptyTitle}
             description={emptyDescription}
           />

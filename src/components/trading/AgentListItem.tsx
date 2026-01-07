@@ -4,7 +4,7 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { TrendingUp, TrendingDown } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 
 export interface AgentListItemProps extends React.HTMLAttributes<HTMLDivElement> {
   rank: number
@@ -107,9 +107,9 @@ const AgentListItem = React.forwardRef<HTMLDivElement, AgentListItemProps>(
             <>
               {volume}
               {isVolumePositive ? (
-                <TrendingUp className="w-3 h-3" />
+                <Icon icon="arrow-trend-up" className="w-3 h-3" />
               ) : (
-                <TrendingDown className="w-3 h-3" />
+                <Icon icon="arrow-trend-down" className="w-3 h-3" />
               )}
             </>
           ) : (

@@ -10,15 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import {
-  Wallet,
-  Copy,
-  ExternalLink,
-  LogOut,
-  ChevronDown,
-  Loader2,
-  Check,
-} from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 
 export interface WalletButtonProps {
   /** Whether user is authenticated */
@@ -117,7 +109,7 @@ const WalletButton = React.forwardRef<HTMLButtonElement, WalletButtonProps>(
             className
           )}
         >
-          <Loader2 className={cn(iconSize, iconGap, "animate-spin")} />
+          <Icon icon="spinner-third" spin className={cn(iconSize, iconGap)} />
           Connecting...
         </Button>
       )
@@ -138,7 +130,7 @@ const WalletButton = React.forwardRef<HTMLButtonElement, WalletButtonProps>(
             className
           )}
         >
-          <Wallet className={cn(iconSize, iconGap)} />
+          <Icon icon="wallet" className={cn(iconSize, iconGap)} />
           Connect
         </Button>
       )
@@ -167,7 +159,7 @@ const WalletButton = React.forwardRef<HTMLButtonElement, WalletButtonProps>(
               <div className={cn(dotSize, "rounded-full bg-zeus-status-success animate-pulse")} />
               <span className="font-medium">{formatBalance(balance)}</span>
               <span className="text-zeus-text-tertiary">SOL</span>
-              <ChevronDown className={cn(chevronSize, "text-zeus-text-tertiary")} />
+              <Icon icon="chevron-down" className={cn(chevronSize, "text-zeus-text-tertiary")} />
             </div>
           </Button>
         </DropdownMenuTrigger>
@@ -192,9 +184,9 @@ const WalletButton = React.forwardRef<HTMLButtonElement, WalletButtonProps>(
             className="cursor-pointer text-zeus-text-secondary hover:text-zeus-text-primary hover:bg-zeus-surface-neutral"
           >
             {copied ? (
-              <Check className="w-4 h-4 mr-2 text-zeus-status-success" />
+              <Icon icon="check" className="w-4 h-4 mr-2 text-zeus-status-success" />
             ) : (
-              <Copy className="w-4 h-4 mr-2" />
+              <Icon icon="copy" className="w-4 h-4 mr-2" />
             )}
             {copied ? "Copied!" : "Copy Address"}
           </DropdownMenuItem>
@@ -203,7 +195,7 @@ const WalletButton = React.forwardRef<HTMLButtonElement, WalletButtonProps>(
             onClick={handleExplorer}
             className="cursor-pointer text-zeus-text-secondary hover:text-zeus-text-primary hover:bg-zeus-surface-neutral"
           >
-            <ExternalLink className="w-4 h-4 mr-2" />
+            <Icon icon="arrow-up-right-from-square" className="w-4 h-4 mr-2" />
             View on Explorer
           </DropdownMenuItem>
 
@@ -213,7 +205,7 @@ const WalletButton = React.forwardRef<HTMLButtonElement, WalletButtonProps>(
             onClick={onDisconnect}
             className="cursor-pointer text-zeus-status-error hover:text-zeus-status-error hover:bg-zeus-status-error/10"
           >
-            <LogOut className="w-4 h-4 mr-2" />
+            <Icon icon="arrow-right-from-bracket" className="w-4 h-4 mr-2" />
             Disconnect
           </DropdownMenuItem>
         </DropdownMenuContent>

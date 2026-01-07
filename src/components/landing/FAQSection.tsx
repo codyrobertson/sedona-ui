@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { motion } from "motion/react"
-import { ChevronDown, Rocket, Code } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { PaperTextureOverlay } from "@/components/ui/lazy-paper-texture"
@@ -64,7 +64,7 @@ function AccordionItem({
           <span className="font-grotesk font-medium text-zeus-text-primary">
             {question}
           </span>
-          <ChevronDown className="w-5 h-5 text-zeus-highlight-gold transition-transform duration-200 group-data-[state=open]:rotate-180" />
+          <Icon icon="chevron-down" className="w-5 h-5 text-zeus-highlight-gold transition-transform duration-200 group-data-[state=open]:rotate-180" />
         </Accordion.Trigger>
       </Accordion.Header>
       <Accordion.Content className="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
@@ -115,7 +115,7 @@ export function FAQSection({ className, onLaunchAgent }: FAQSectionProps) {
               variant="brand"
               size="lg"
               onClick={onLaunchAgent}
-              icon={<Rocket className="w-4 h-4" />}
+              icon={<Icon icon="rocket" className="w-4 h-4" />}
               iconPosition="right"
             >
               Launch Agent
@@ -124,7 +124,7 @@ export function FAQSection({ className, onLaunchAgent }: FAQSectionProps) {
               variant="outline"
               size="lg"
               onClick={() => window.open('#', '_blank')}
-              icon={<Code className="w-4 h-4" />}
+              icon={<Icon icon="code" className="w-4 h-4" />}
               iconPosition="right"
             >
               Start Building

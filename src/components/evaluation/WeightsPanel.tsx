@@ -2,19 +2,7 @@
 
 import * as React from "react"
 import { motion, AnimatePresence } from "motion/react"
-import {
-  Terminal,
-  Clock,
-  CheckCircle2,
-  AlertCircle,
-  Loader2,
-  Download,
-  Copy,
-  ExternalLink,
-  GitCommit,
-  ChevronDown,
-  Server
-} from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -120,9 +108,9 @@ function ProgressHeader({ progress, version }: ProgressHeaderProps) {
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 text-caption-l font-mono text-zeus-text-secondary hover:text-sedona-400 transition-colors"
           >
-            <GitCommit className="w-3.5 h-3.5" />
+            <Icon icon="code-commit" className="w-3.5 h-3.5" />
             <span>{version.huggingFace.commitHashShort}</span>
-            <ExternalLink className="w-3 h-3 opacity-50" />
+            <Icon icon="arrow-up-right-from-square" className="w-3 h-3 opacity-50" />
           </a>
         </div>
         <Badge
@@ -131,9 +119,9 @@ function ProgressHeader({ progress, version }: ProgressHeaderProps) {
           showPulse={isRunning}
           pulseColor={isRunning ? "bg-zeus-accent-orange" : undefined}
         >
-          {isRunning && <Loader2 className="w-3 h-3 mr-1 animate-spin" />}
-          {isCompleted && <CheckCircle2 className="w-3 h-3 mr-1" />}
-          {isFailed && <AlertCircle className="w-3 h-3 mr-1" />}
+          {isRunning && <Icon icon="spinner-third" spin className="w-3 h-3 mr-1" />}
+          {isCompleted && <Icon icon="circle-check" className="w-3 h-3 mr-1" />}
+          {isFailed && <Icon icon="circle-exclamation" className="w-3 h-3 mr-1" />}
           {progress.status.charAt(0).toUpperCase() + progress.status.slice(1)}
         </Badge>
       </div>
@@ -142,7 +130,7 @@ function ProgressHeader({ progress, version }: ProgressHeaderProps) {
       <div className="space-y-2">
         <div className="flex items-center justify-between text-caption-m">
           <div className="flex items-center gap-2 text-zeus-text-secondary">
-            <Server className="w-3.5 h-3.5" />
+            <Icon icon="server" className="w-3.5 h-3.5" />
             <span>{STEP_LABELS[progress.currentStep] || progress.currentStep}</span>
           </div>
           <span className="font-mono text-zeus-text-primary">
@@ -163,7 +151,7 @@ function ProgressHeader({ progress, version }: ProgressHeaderProps) {
       {/* Timer */}
       <div className="flex items-center justify-between mt-3 text-caption-m">
         <div className="flex items-center gap-1.5 text-zeus-text-secondary">
-          <Clock className="w-3.5 h-3.5" />
+          <Icon icon="clock" className="w-3.5 h-3.5" />
           <span>Elapsed: </span>
           <span className="font-mono text-zeus-text-primary">
             {formatTime(progress.elapsedTimeMs)}
@@ -250,7 +238,7 @@ export function WeightsPanel({
             <div className="flex items-center gap-3">
               <Badge variant="default" size="sm">v{version.versionNumber}</Badge>
               <Badge variant="success" size="sm">
-                <CheckCircle2 className="w-3 h-3 mr-1" />
+                <Icon icon="circle-check" className="w-3 h-3 mr-1" />
                 Completed
               </Badge>
             </div>
@@ -261,7 +249,7 @@ export function WeightsPanel({
               className="flex items-center gap-1.5 text-caption-m text-sedona-400 hover:underline"
             >
               <span className="font-mono">{version.huggingFace.commitHashShort}</span>
-              <ExternalLink className="w-3 h-3" />
+              <Icon icon="arrow-up-right-from-square" className="w-3 h-3" />
             </a>
           </div>
         </div>
@@ -298,7 +286,7 @@ export function WeightsPanel({
               className="flex items-center gap-1.5 text-caption-m text-zeus-accent-blue hover:underline mt-4 pt-4 border-t border-zeus-border-alpha"
             >
               Verify TEE Attestation ({version.evaluation.attestation.teeType.toUpperCase()})
-              <ExternalLink className="w-3 h-3" />
+              <Icon icon="arrow-up-right-from-square" className="w-3 h-3" />
             </a>
           )}
         </div>
@@ -314,7 +302,7 @@ export function WeightsPanel({
         className
       )}>
         <div className="p-8 text-center">
-          <Terminal className="w-8 h-8 text-zeus-text-tertiary mx-auto mb-3" />
+          <Icon icon="terminal" className="w-8 h-8 text-zeus-text-tertiary mx-auto mb-3" />
           <p className="text-body-s text-zeus-text-secondary">
             No evaluation data available
           </p>
@@ -344,7 +332,7 @@ export function WeightsPanel({
           >
             <div className="p-4 bg-zeus-status-destructive/10 border-b border-zeus-border-alpha">
               <div className="flex items-start gap-3">
-                <AlertCircle className="w-5 h-5 text-zeus-status-destructive shrink-0" />
+                <Icon icon="circle-exclamation" className="w-5 h-5 text-zeus-status-destructive shrink-0" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-mono text-caption-m text-zeus-status-destructive">
@@ -372,7 +360,7 @@ export function WeightsPanel({
       {/* Logs header */}
       <div className="px-4 py-2 border-b border-zeus-border-alpha flex items-center justify-between bg-zeus-surface-default">
         <div className="flex items-center gap-2 text-zeus-text-secondary">
-          <Terminal className="w-4 h-4" />
+          <Icon icon="terminal" className="w-4 h-4" />
           <span className="text-caption-l font-medium">Evaluation Logs</span>
           <Badge variant="default" size="sm">{logs.length}</Badge>
         </div>
@@ -382,7 +370,7 @@ export function WeightsPanel({
             size="xs"
             onClick={handleCopyLogs}
             disabled={logs.length === 0}
-            icon={<Copy className="w-3.5 h-3.5" />}
+            icon={<Icon icon="copy" className="w-3.5 h-3.5" />}
           >
             Copy
           </Button>
@@ -391,7 +379,7 @@ export function WeightsPanel({
             size="xs"
             onClick={handleDownloadLogs}
             disabled={logs.length === 0}
-            icon={<Download className="w-3.5 h-3.5" />}
+            icon={<Icon icon="download" className="w-3.5 h-3.5" />}
           >
             Download
           </Button>
@@ -405,7 +393,7 @@ export function WeightsPanel({
       >
         {logs.length === 0 ? (
           <div className="p-8 text-center">
-            <Loader2 className="w-6 h-6 text-zeus-text-tertiary mx-auto mb-2 animate-spin" />
+            <Icon icon="spinner-third" spin className="w-6 h-6 text-zeus-text-tertiary mx-auto mb-2" />
             <p className="text-caption-m text-zeus-text-tertiary">
               Waiting for logs...
             </p>

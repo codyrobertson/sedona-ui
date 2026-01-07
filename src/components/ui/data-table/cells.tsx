@@ -4,7 +4,7 @@ import * as React from "react"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
-import { Crown, TrendingUp, TrendingDown } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 
 // ============================================================================
 // RANK CELL - Position with crown for #1
@@ -30,10 +30,10 @@ const RankCell = React.forwardRef<HTMLDivElement, RankCellProps>(
         {...props}
       >
         {isFirst && showCrown ? (
-          <Crown
+          <Icon
+            icon="crown"
             className="w-4 h-4"
             style={{ color: crownColor }}
-            fill={crownColor}
           />
         ) : (
           <span className="text-caption-l font-semibold text-zeus-text-secondary tabular-nums">
@@ -163,9 +163,9 @@ const PercentCell = React.forwardRef<HTMLDivElement, PercentCellProps>(
       >
         {showIcon && (
           isPositive ? (
-            <TrendingUp className="w-3.5 h-3.5" />
+            <Icon icon="arrow-trend-up" className="w-3.5 h-3.5" />
           ) : (
-            <TrendingDown className="w-3.5 h-3.5" />
+            <Icon icon="arrow-trend-down" className="w-3.5 h-3.5" />
           )
         )}
         <span className="font-semibold text-caption-l">
@@ -270,9 +270,9 @@ const VolumeCell = React.forwardRef<HTMLDivElement, VolumeCellProps>(
         {trend !== "neutral" && (
           <div className={cn("flex items-center", trendColors[trend])}>
             {trend === "up" ? (
-              <TrendingUp className="w-3 h-3" />
+              <Icon icon="arrow-trend-up" className="w-3 h-3" />
             ) : (
-              <TrendingDown className="w-3 h-3" />
+              <Icon icon="arrow-trend-down" className="w-3 h-3" />
             )}
           </div>
         )}

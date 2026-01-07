@@ -4,7 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { BarChart3, Trophy, Coins, Bot } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 import {
   Header,
   PlatformStats,
@@ -369,7 +369,7 @@ export default function PortfolioClient() {
                               />
                             ) : (
                               <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-zeus-surface-default flex items-center justify-center shrink-0">
-                                <Bot className="w-4 h-4 sm:w-5 sm:h-5 text-zeus-text-tertiary" />
+                                <Icon icon="robot" className="w-4 h-4 sm:w-5 sm:h-5 text-zeus-text-tertiary" />
                               </div>
                             )}
                             <div className="min-w-0">
@@ -418,7 +418,7 @@ export default function PortfolioClient() {
                               </span>
                             ) : hasCompetition ? (
                               <span className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full bg-sedona-500/10 text-sedona-400 text-[10px] sm:text-caption-s font-medium">
-                                <Trophy className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+                                <Icon icon="trophy" className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                                 Live
                               </span>
                             ) : (

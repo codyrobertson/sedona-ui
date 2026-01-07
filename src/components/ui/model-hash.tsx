@@ -11,7 +11,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Badge } from "@/components/ui/badge"
-import { Hash, Copy, Check, ChevronRight, ExternalLink } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 import { useClipboard } from "@/hooks/useClipboard"
 
 // ============================================================================
@@ -118,10 +118,10 @@ const ModelHashTrigger = React.forwardRef<HTMLDivElement, ModelHashTriggerProps>
           onClick={onClick}
           className="flex items-center gap-2 flex-1 min-w-0 group"
         >
-          <Hash className="w-3.5 h-3.5 text-zeus-text-tertiary group-hover:text-zeus-text-secondary transition-colors flex-shrink-0" />
+          <Icon icon="hashtag" className="w-3.5 h-3.5 text-zeus-text-tertiary group-hover:text-zeus-text-secondary transition-colors flex-shrink-0" />
           <span className="text-zeus-text-tertiary text-[10px] uppercase tracking-wider flex-shrink-0">Hash</span>
           <span className="text-zeus-text-secondary text-caption-s font-mono truncate">{truncatedHash}</span>
-          <ChevronRight className="w-4 h-4 text-zeus-text-quaternary group-hover:text-zeus-text-tertiary group-hover:translate-x-0.5 transition-all flex-shrink-0" />
+          <Icon icon="chevron-right" className="w-4 h-4 text-zeus-text-quaternary group-hover:text-zeus-text-tertiary group-hover:translate-x-0.5 transition-all flex-shrink-0" />
         </button>
 
         {/* Divider */}
@@ -136,7 +136,7 @@ const ModelHashTrigger = React.forwardRef<HTMLDivElement, ModelHashTriggerProps>
             onClick={handleLinkClick}
             className="flex items-center gap-1.5 px-2 py-1 rounded-md text-zeus-text-secondary hover:text-white hover:bg-zeus-surface-neutral transition-colors flex-shrink-0"
           >
-            <ExternalLink className="w-3.5 h-3.5" />
+            <Icon icon="arrow-up-right-from-square" className="w-3.5 h-3.5" />
             <span className="text-caption-s font-medium">View Model</span>
           </a>
         )}
@@ -212,9 +212,9 @@ const ModelVersionItem = ({ version, onCopy, onSelect }: ModelVersionItemProps) 
           title="Copy hash"
         >
           {copied ? (
-            <Check className="w-3.5 h-3.5 text-zeus-status-success" />
+            <Icon icon="check" className="w-3.5 h-3.5 text-zeus-status-success" />
           ) : (
-            <Copy className="w-3.5 h-3.5 text-zeus-text-tertiary" />
+            <Icon icon="copy" className="w-3.5 h-3.5 text-zeus-text-tertiary" />
           )}
         </button>
       </div>
@@ -302,7 +302,7 @@ const ModelHash = React.forwardRef<HTMLDivElement, ModelHashProps>(
               {/* Empty state */}
               {displayVersions.length === 0 && (
                 <div className="flex flex-col items-center justify-center py-12 text-center">
-                  <Hash className="w-10 h-10 text-zeus-text-quaternary mb-2" />
+                  <Icon icon="hashtag" className="w-10 h-10 text-zeus-text-quaternary mb-2" />
                   <p className="text-zeus-text-tertiary text-caption-l">No versions yet</p>
                 </div>
               )}
@@ -317,7 +317,7 @@ const ModelHash = React.forwardRef<HTMLDivElement, ModelHashProps>(
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-lg bg-zeus-surface-elevated hover:bg-zeus-surface-neutral border border-zeus-border-alpha text-zeus-text-primary text-caption-l font-medium transition-colors"
                 >
-                  <ExternalLink className="w-4 h-4" />
+                  <Icon icon="arrow-up-right-from-square" className="w-4 h-4" />
                   View on HuggingFace
                 </a>
               </div>

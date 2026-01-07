@@ -3,7 +3,7 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
-import { ChevronDown, Wallet } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 
 export interface TokenInputProps {
   /** Current input value */
@@ -77,11 +77,11 @@ const TokenInput = React.forwardRef<HTMLInputElement, TokenInputProps>(
             <span className="text-zeus-text-primary text-caption-s font-medium">
               {token}
             </span>
-            <ChevronDown className="w-3.5 h-3.5 text-zeus-text-tertiary" />
+            <Icon icon="chevron-down" className="w-3.5 h-3.5 text-zeus-text-tertiary" />
           </button>
         </div>
         <div className="flex items-center gap-1 text-[10px] text-zeus-text-tertiary">
-          <Wallet className="w-3 h-3" />
+          <Icon icon="wallet" className="w-3 h-3" />
           <span>
             Balance: {balance} {token}
           </span>

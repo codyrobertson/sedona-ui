@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { MessageCircle, Terminal } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 
 export interface FooterProps extends React.HTMLAttributes<HTMLElement> {}
 
@@ -27,7 +27,7 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 text-zeus-text-secondary hover:text-zeus-text-primary transition-colors text-caption-m ml-4"
           >
-            <MessageCircle className="w-3.5 h-3.5" />
+            <Icon icon={["fab", "discord"]} className="w-3.5 h-3.5" />
             Discord
           </a>
           <a
@@ -36,7 +36,7 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 text-zeus-text-secondary hover:text-zeus-text-primary transition-colors text-caption-m ml-4"
           >
-            <Terminal className="w-3.5 h-3.5" />
+            <Icon icon="terminal" className="w-3.5 h-3.5" />
             API
           </a>
           <a

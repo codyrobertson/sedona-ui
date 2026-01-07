@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
 import { TokenAvatar } from "@/components/ui/token-avatar"
 import { StatsGrid } from "@/components/ui/stats-grid"
-import { Copy, Check } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 import { useClipboard } from "@/hooks/useClipboard"
 import { EliminationProgress } from "@/components/ui/elimination-progress"
 import { ModelHash, type ModelVersion } from "@/components/ui/model-hash"
@@ -162,9 +162,9 @@ const TokenSwapCard = React.forwardRef<HTMLDivElement, TokenSwapCardProps>(
                 title={copied ? "Copied!" : "Copy contract address"}
               >
                 {copied ? (
-                  <Check className="w-3 h-3 text-zeus-status-success" />
+                  <Icon icon="check" className="w-3 h-3 text-zeus-status-success" />
                 ) : (
-                  <Copy className="w-3 h-3 text-zeus-text-tertiary" />
+                  <Icon icon="copy" className="w-3 h-3 text-zeus-text-tertiary" />
                 )}
               </button>
             </div>
