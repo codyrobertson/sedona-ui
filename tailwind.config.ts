@@ -21,6 +21,8 @@ const config: Config = {
       fontFamily: {
         sans: ["Inter", "ui-sans-serif", "system-ui"],
         mono: ["JetBrains Mono", "Source Code Pro", "Fira Code", "ui-monospace", "monospace"],
+        souvenir: ["Souvenir", "Georgia", "serif"],
+        grotesk: ["Monument Grotesk", "Inter", "ui-sans-serif", "system-ui"],
       },
       fontWeight: {
         regular: '400',
