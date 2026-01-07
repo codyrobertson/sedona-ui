@@ -3,7 +3,7 @@
 import * as React from "react"
 import dynamic from "next/dynamic"
 import { cn } from "@/lib/utils"
-import { ExternalLink, X } from "lucide-react"
+import { ExternalLink, X, ArrowRight } from "lucide-react"
 
 const FaultyTerminal = dynamic(() => import("@/components/ui/faulty-terminal"), {
   ssr: false,
@@ -26,11 +26,10 @@ export interface AboutSedonaProps extends React.HTMLAttributes<HTMLDivElement> {
   topPools?: TopPool[]
   infoCards?: InfoCard[]
   onDismiss?: () => void
-  onLearnMore?: () => void
 }
 
 const AboutSedona = React.forwardRef<HTMLDivElement, AboutSedonaProps>(
-  ({ className, topPools = [], infoCards = [], onDismiss, onLearnMore, ...props }, ref) => {
+  ({ className, topPools = [], infoCards = [], onDismiss, ...props }, ref) => {
     return (
       <div
         ref={ref}
@@ -64,10 +63,10 @@ const AboutSedona = React.forwardRef<HTMLDivElement, AboutSedonaProps>(
         </div>
 
         {/* Content */}
-        <div className="relative px-8 py-6">
+        <div className="relative px-4 py-4 sm:px-6 sm:py-5 md:px-8 md:py-6">
           <div className="space-y-3 max-w-2xl">
             <h2 className="text-body-l font-semibold text-zeus-text-primary">
-              About Sedona
+              How Sedona Works
             </h2>
             <p className="text-zeus-text-secondary text-caption-l leading-relaxed">
               Trade AI agents as performance-based tokens on Solana. Our weekly market
@@ -75,24 +74,24 @@ const AboutSedona = React.forwardRef<HTMLDivElement, AboutSedonaProps>(
               continuous opportunities for profit.
             </p>
 
-            {/* Links */}
-            <div className="flex items-center gap-4 pt-1">
+            {/* Buttons */}
+            <div className="flex items-center gap-3 pt-2">
               <a
                 href="https://docs.sedona.io"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-sedona-500 hover:text-sedona-400 text-caption-m font-medium transition-colors"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-zeus-border-alpha bg-zeus-surface-neutral hover:bg-zeus-surface-elevated text-zeus-text-primary text-caption-m font-medium transition-colors"
               >
                 View Docs
-                <ExternalLink className="w-3 h-3" />
+                <ExternalLink className="w-3.5 h-3.5" />
               </a>
-              <button
-                onClick={onLearnMore}
-                className="inline-flex items-center gap-1.5 text-sedona-500 hover:text-sedona-400 text-caption-m font-medium transition-colors"
+              <a
+                href="/"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-sedona-500 hover:bg-sedona-600 text-white text-caption-m font-medium transition-colors"
               >
-                Learn More
-                <ExternalLink className="w-3 h-3" />
-              </button>
+                Explore Sedona
+                <ArrowRight className="w-3.5 h-3.5" />
+              </a>
             </div>
           </div>
 
