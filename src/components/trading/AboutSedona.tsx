@@ -26,10 +26,11 @@ export interface AboutSedonaProps extends React.HTMLAttributes<HTMLDivElement> {
   topPools?: TopPool[]
   infoCards?: InfoCard[]
   onDismiss?: () => void
+  onLearnMore?: () => void
 }
 
 const AboutSedona = React.forwardRef<HTMLDivElement, AboutSedonaProps>(
-  ({ className, topPools = [], infoCards = [], onDismiss, ...props }, ref) => {
+  ({ className, topPools = [], infoCards = [], onDismiss, onLearnMore, ...props }, ref) => {
     return (
       <div
         ref={ref}
@@ -85,15 +86,13 @@ const AboutSedona = React.forwardRef<HTMLDivElement, AboutSedonaProps>(
                 View Docs
                 <ExternalLink className="w-3 h-3" />
               </a>
-              <a
-                href="https://sedona.io/about"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={onLearnMore}
                 className="inline-flex items-center gap-1.5 text-sedona-500 hover:text-sedona-400 text-caption-m font-medium transition-colors"
               >
                 Learn More
                 <ExternalLink className="w-3 h-3" />
-              </a>
+              </button>
             </div>
           </div>
 
