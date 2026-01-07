@@ -74,13 +74,15 @@ export default function TradingPageClient({ initialHeroMode = false }: TradingPa
       onLaunchAgent={() => setShowModal(true)}
     >
       <div className="min-h-screen bg-zeus-surface-default">
-      {/* Header */}
-      <Header
-        onCreateCoin={() => setShowModal(true)}
-        onConnect={() => {
-          router.push("/trading/portfolio")
-        }}
-      />
+      {/* Header - hidden in hero mode (landing nav takes over) */}
+      {!isHeroMode && (
+        <Header
+          onCreateCoin={() => setShowModal(true)}
+          onConnect={() => {
+            router.push("/trading/portfolio")
+          }}
+        />
+      )}
 
       <main>
         <h1 className="sr-only">AI Agent Trading</h1>
