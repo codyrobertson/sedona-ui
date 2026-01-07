@@ -31,6 +31,12 @@ export const metadata: Metadata = {
   },
   description: "Trade AI agents on Solana. Real-time charts, swap tokens, and track your portfolio with Sedona's modern trading interface.",
   keywords: ['AI agents', 'trading', 'Solana', 'DeFi', 'crypto trading', 'token swap'],
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    apple: '/apple-icon.svg',
+  },
   alternates: {
     canonical: SEO_CONFIG.baseUrl,
   },

@@ -164,18 +164,18 @@ const config: Config = {
         },
         // Sedona design system colors from Figma
         sedona: {
-          50: "#fef7ed",
-          100: "#fdead5", 
-          200: "#fbd1aa",
-          300: "#f7b174",
-          400: "#f2883c",
-          500: "#de7001", // Primary Sedona orange
-          600: "#c25e00",
-          700: "#a14800", 
-          800: "#833b02",
-          900: "#6c3108",
+          50: "#fef6ed",
+          100: "#fde8d6",
+          200: "#fbcdab",
+          300: "#f8aa76",
+          400: "#f4803e",
+          500: "#D56B12", // Primary Sedona orange - warm, balanced
+          600: "#c26012",
+          700: "#a24d10",
+          800: "#833f0e",
+          900: "#6b340c",
           // Design system semantic colors
-          primary: "#de7001",
+          primary: "#D56B12",
         },
         // 5-step color scales for design system
         neutral: {
@@ -378,6 +378,10 @@ const config: Config = {
           "0%": { top: "0%" },
           "100%": { top: "100%" },
         },
+        "shimmer": {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(100%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -385,6 +389,7 @@ const config: Config = {
         "marquee": "marquee 20s linear infinite",
         "scan-x": "scan-x 1.5s ease-in-out infinite alternate",
         "scan-y": "scan-y 2s ease-in-out infinite alternate",
+        "shimmer": "shimmer 3s infinite",
       },
     },
   },
