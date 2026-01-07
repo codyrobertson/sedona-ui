@@ -4,6 +4,7 @@ import { join } from "path"
 const OUTPUT_PATH = join(process.cwd(), "public/og-backgrounds/sedona-og-final.png")
 const WIDTH = 1200
 const HEIGHT = 630
+const DEV_URL = process.env.DEV_URL || "http://localhost:3002"
 
 async function generateSedonaOG() {
   console.log("Launching browser...")
@@ -15,7 +16,7 @@ async function generateSedonaOG() {
   const page = await context.newPage()
 
   console.log("Navigating to OG render page...")
-  await page.goto("http://localhost:3002/og-render", {
+  await page.goto(`${DEV_URL}/og-render`, {
     waitUntil: "networkidle",
   })
 

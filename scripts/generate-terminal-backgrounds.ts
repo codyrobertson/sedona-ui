@@ -6,6 +6,7 @@ const OUTPUT_DIR = join(process.cwd(), "public/og-backgrounds")
 const NUM_VARIANTS = 20
 const WIDTH = 600
 const HEIGHT = 630
+const DEV_URL = process.env.DEV_URL || "http://localhost:3002"
 
 async function generateBackgrounds() {
   // Ensure output directory exists
@@ -25,7 +26,7 @@ async function generateBackgrounds() {
     const page = await context.newPage()
 
     // Navigate to terminal render page with seed
-    await page.goto(`http://localhost:3002/terminal-render?seed=${i}`, {
+    await page.goto(`${DEV_URL}/terminal-render?seed=${i}`, {
       waitUntil: "networkidle",
     })
 
