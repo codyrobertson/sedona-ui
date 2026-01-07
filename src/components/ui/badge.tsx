@@ -12,6 +12,12 @@ const badgeVariants = cva(
         // Default badge - theme-aware background, proper contrast, mono for tokens only
         default:
           "bg-muted border border-border text-muted-foreground font-mono font-bold dark:bg-zeus-surface-neutral dark:border-zeus-border-alpha dark:text-zeus-text-secondary",
+        // Live badge - border only with white text, used for status indicators like "Live on Solana"
+        live:
+          "border border-white/30 text-white bg-transparent font-grotesk font-medium gap-2 rounded-full",
+        // Gold outline badge - gold border and text
+        gold:
+          "bg-zeus-highlight-gold/10 text-zeus-highlight-gold border border-zeus-highlight-gold/30 font-grotesk font-medium rounded-full",
         // Success badge - theme-aware backgrounds with status colors
         success:
           "bg-muted border border-border text-zeus-status-success font-sans font-semibold dark:bg-zeus-surface-default dark:border-zeus-border-normal",
@@ -43,9 +49,10 @@ const badgeVariants = cva(
           "bg-muted border border-border text-sedona-500 font-sans font-semibold dark:bg-zeus-surface-default dark:border-zeus-border-normal",
       },
       size: {
-        default: "px-1 py-0.5 text-[12px] leading-4 h-6",
-        sm: "px-1 py-0.5 text-[10px] leading-[14px] h-5",
-        lg: "px-2 py-1 text-[12px] leading-4 h-7",
+        default: "px-2 py-1 text-[12px] leading-4",
+        sm: "px-1.5 py-0.5 text-[10px] leading-[14px]",
+        md: "px-3 py-1.5 text-[13px] leading-4",
+        lg: "px-4 py-2 text-[14px] leading-5",
       },
     },
     defaultVariants: {
@@ -57,11 +64,34 @@ const badgeVariants = cva(
 
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof badgeVariants> {}
+    VariantProps<typeof badgeVariants> {
+  /** Show animated pulse dot (for "live" status indicators) */
+  showPulse?: boolean
+  /** Pulse dot color class - defaults to success green */
+  pulseColor?: string
+}
 
-function Badge({ className, variant, size, ...props }: BadgeProps) {
+function Badge({ className, variant, size, showPulse, pulseColor = "bg-zeus-status-success", children, ...props }: BadgeProps) {
   return (
-    <div className={cn(badgeVariants({ variant, size }), className)} {...props} />
+    <div className={cn(badgeVariants({ variant, size }), className)} {...props}>
+      {showPulse && (
+        <span className="relative flex h-2 w-2">
+          <span
+            className={cn(
+              "animate-ping absolute inline-flex h-full w-full rounded-full opacity-75",
+              pulseColor
+            )}
+          />
+          <span
+            className={cn(
+              "relative inline-flex rounded-full h-2 w-2",
+              pulseColor
+            )}
+          />
+        </span>
+      )}
+      {children}
+    </div>
   )
 }
 
