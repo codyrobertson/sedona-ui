@@ -14,7 +14,7 @@ export { AboutSedona } from "./AboutSedona"
 export type { AboutSedonaProps, TopPool, InfoCard } from "./AboutSedona"
 
 export { AgentLaunchModal } from "./AgentLaunchModal"
-export type { AgentLaunchModalProps, AgentModel } from "./AgentLaunchModal"
+export type { AgentLaunchModalProps, CreateAgentData } from "./AgentLaunchModal"
 
 export { PriceChart } from "./PriceChart"
 export type { PriceChartProps } from "./PriceChart"

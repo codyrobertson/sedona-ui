@@ -9,6 +9,17 @@ export {
 export { DEFAULT_AGENT_MODELS, AGENT_STRATEGIES } from "./agents"
 export type { AgentStrategy } from "./agents"
 
+// HuggingFace integration (user repos after OAuth)
+export {
+  MOCK_HF_USER,
+  getHFUser,
+  getHFRepos,
+  getHFRepoById,
+  getHFRepoByName,
+  formatHFDate,
+} from "./huggingface"
+export type { HFCommit, HFRepo, HFUser } from "./huggingface"
+
 // =============================================================================
 // UNIFIED AGENTS (new - matches production API)
 // =============================================================================

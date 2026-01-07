@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { AgentLaunchModal } from "@/components/trading"
+import { AgentLaunchModal, type CreateAgentData } from "@/components/trading"
 
 interface AgentLaunchContextValue {
   /** Open the create agent modal */
@@ -10,6 +10,8 @@ interface AgentLaunchContextValue {
   closeCreateAgent: () => void
   /** Whether the modal is currently open */
   isOpen: boolean
+  /** Whether user is authenticated with HuggingFace */
+  isHFAuthenticated: boolean
 }
 
 const AgentLaunchContext = React.createContext<AgentLaunchContextValue | null>(null)
@@ -28,7 +30,7 @@ interface AgentLaunchProviderProps {
 
 export function AgentLaunchProvider({ children }: AgentLaunchProviderProps) {
   const [isOpen, setIsOpen] = React.useState(false)
-  const [isAuthenticated, setIsAuthenticated] = React.useState(false)
+  const [isHFAuthenticated, setIsHFAuthenticated] = React.useState(false)
 
   const openCreateAgent = React.useCallback(() => {
     setIsOpen(true)
@@ -38,13 +40,27 @@ export function AgentLaunchProvider({ children }: AgentLaunchProviderProps) {
     setIsOpen(false)
   }, [])
 
+  const handleSignIn = React.useCallback(() => {
+    // TODO: Implement actual HuggingFace OAuth
+    setIsHFAuthenticated(true)
+  }, [])
+
+  const handleCreateAgent = React.useCallback((data: CreateAgentData) => {
+    console.log("Creating agent:", data)
+    console.log("  - HuggingFace repo:", data.huggingFaceRepo)
+    console.log("  - Commit:", data.commitHash)
+    // TODO: Call API to create agent and start evaluation
+    // The modal handles its own close and redirect
+  }, [])
+
   const value = React.useMemo(
     () => ({
       openCreateAgent,
       closeCreateAgent,
       isOpen,
+      isHFAuthenticated,
     }),
-    [openCreateAgent, closeCreateAgent, isOpen]
+    [openCreateAgent, closeCreateAgent, isOpen, isHFAuthenticated]
   )
 
   return (
@@ -53,17 +69,9 @@ export function AgentLaunchProvider({ children }: AgentLaunchProviderProps) {
       <AgentLaunchModal
         open={isOpen}
         onOpenChange={setIsOpen}
-        isAuthenticated={isAuthenticated}
-        onSignIn={() => setIsAuthenticated(true)}
-        onSelectModel={() => {}}
-        onCreateAgent={(data) => {
-          console.log("Creating agent:", data)
-          // TODO: Integrate with actual agent creation
-          setIsOpen(false)
-        }}
-        onLaunch={() => {
-          setIsOpen(false)
-        }}
+        isAuthenticated={isHFAuthenticated}
+        onSignIn={handleSignIn}
+        onCreateAgent={handleCreateAgent}
       />
     </AgentLaunchContext.Provider>
   )
