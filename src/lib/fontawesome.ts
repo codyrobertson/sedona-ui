@@ -1,43 +1,47 @@
 /**
  * Font Awesome Configuration
  *
- * This file sets up Font Awesome with:
- * - Free solid, regular, and brands icons
- * - Custom kit icons (etch, utility-fill, whiteboard styles)
- *
- * Import this file once in your app layout to initialize the library.
+ * This file sets up Font Awesome with the icons we need.
  *
  * Available prefixes:
+ * - fass: Sharp Solid
  * - fas: Free Solid
  * - far: Free Regular
  * - fab: Free Brands
- * - faes: Kit Etch Solid (custom)
- * - faufsb: Kit Utility Fill Semibold (custom)
- * - fawsb: Kit Whiteboard Semibold (custom)
+ * - faes: Kit Etch Solid (use for landing/branding)
+ * - faufsb: Kit Utility Fill Semibold
+ * - fawsb: Kit Whiteboard Semibold
+ *
+ * USAGE:
+ * - For common UI icons: <Icon icon="check" /> (uses DEFAULT_ICON_PREFIX)
+ * - For kit icons: <Icon icon={["faes", "check"]} />
+ * - For brands: <Icon icon={["fab", "discord"]} />
  */
 
-import { library, config } from "@fortawesome/fontawesome-svg-core"
+import { library, config, type IconPrefix } from "@fortawesome/fontawesome-svg-core"
 import "@fortawesome/fontawesome-svg-core/styles.css"
 
 // Prevent Font Awesome from adding its CSS since we're doing it manually
 config.autoAddCss = false
 
-// Free icon packs
+/**
+ * DEFAULT ICON PREFIX
+ * Change this to switch all icons to a different style.
+ * Options: "fass" (Sharp Solid), "fas" (Free Solid), "faes" (Etch), etc.
+ */
+export const DEFAULT_ICON_PREFIX: IconPrefix = "fass"
+
+// Import Sharp Solid (primary)
+import { fass } from "@fortawesome/sharp-solid-svg-icons"
+// Import free icons as fallback
 import { fas } from "@fortawesome/free-solid-svg-icons"
 import { far } from "@fortawesome/free-regular-svg-icons"
 import { fab } from "@fortawesome/free-brands-svg-icons"
 
-// Custom kit icons
+// Import kit icons
 import { faes, faufsb, fawsb } from "@awesome.me/kit-1655babbde/icons"
 
-// Add all icons to the library
-library.add(
-  fas,    // Free solid icons (fas prefix)
-  far,    // Free regular icons (far prefix)
-  fab,    // Free brands icons (fab prefix)
-  faes,   // Kit: Etch Solid (faes prefix)
-  faufsb, // Kit: Utility Fill Semibold (faufsb prefix)
-  fawsb,  // Kit: Whiteboard Semibold (fawsb prefix)
-)
+// Register all icon packs with the library
+library.add(fass, fas, far, fab, faes, faufsb, fawsb)
 
 export { library, config }
