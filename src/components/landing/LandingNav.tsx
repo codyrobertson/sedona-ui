@@ -22,22 +22,35 @@ export function LandingNav({ onLaunchAgent, className }: LandingNavProps) {
   }, [])
 
   React.useEffect(() => {
+    let rafId: number | null = null
+
     const handleScroll = () => {
-      // Get the features section position (first section after hero)
-      const featuresSection = document.getElementById("features")
-      if (featuresSection) {
-        const rect = featuresSection.getBoundingClientRect()
-        // Trigger sticky when features section reaches top
-        setIsSticky(rect.top <= 60)
-      } else {
-        // Fallback: trigger after scrolling 500px
-        setIsSticky(window.scrollY > 500)
-      }
+      // Throttle using requestAnimationFrame
+      if (rafId !== null) return
+
+      rafId = requestAnimationFrame(() => {
+        // Get the features section position (first section after hero)
+        const featuresSection = document.getElementById("features")
+        if (featuresSection) {
+          const rect = featuresSection.getBoundingClientRect()
+          // Trigger sticky when features section reaches top
+          setIsSticky(rect.top <= 60)
+        } else {
+          // Fallback: trigger after scrolling 500px
+          setIsSticky(window.scrollY > 500)
+        }
+        rafId = null
+      })
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true })
     handleScroll() // Check initial position
-    return () => window.removeEventListener("scroll", handleScroll)
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId)
+      }
+    }
   }, [])
 
   return (
@@ -70,7 +83,7 @@ export function LandingNav({ onLaunchAgent, className }: LandingNavProps) {
           Features
         </a>
         <a
-          href="#how-it-works"
+          href="#nutshell"
           className="font-grotesk text-sm text-zeus-text-secondary hover:text-zeus-text-primary transition-colors"
         >
           How It Works
