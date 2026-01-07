@@ -10,6 +10,7 @@ import {
   AgentLaunchModal,
   Footer,
 } from "@/components/trading"
+import { LandingPageWrapper } from "@/components/landing"
 import { getDummyAgents, getDummyPools, generateDummyPools } from "@/lib/dummy-data"
 
 // Generate 300 dummy agents
@@ -34,15 +35,45 @@ const INFO_CARDS = [
   { title: "Top Gain", value: "+47.3%", change: 47.3 },
 ]
 
-export default function TradingPageClient() {
+interface TradingPageClientProps {
+  initialHeroMode?: boolean
+}
+
+export default function TradingPageClient({ initialHeroMode = false }: TradingPageClientProps) {
   const router = useRouter()
   const [showModal, setShowModal] = React.useState(false)
   const [sortBy, setSortBy] = React.useState("Highest Market Capitalization")
   const [showHero, setShowHero] = React.useState(true)
   const [isAuthenticated, setIsAuthenticated] = React.useState(false)
 
+  // Hero mode state - initialized from route, then state-controlled for animations
+  const [isHeroMode, setIsHeroMode] = React.useState(initialHeroMode)
+
+  // Sync URL when hero mode changes (without navigation - just URL update)
+  React.useEffect(() => {
+    const newUrl = isHeroMode ? "/landing" : "/trading"
+    window.history.replaceState({}, "", newUrl)
+  }, [isHeroMode])
+
+  const handleToggleMode = () => {
+    if (isHeroMode) {
+      // Exiting hero mode
+      localStorage.setItem("sedona_visited", "true")
+    }
+    setIsHeroMode(!isHeroMode)
+  }
+
+  const handleLearnMore = () => {
+    setIsHeroMode(true)
+  }
+
   return (
-    <div className="min-h-screen bg-zeus-surface-default">
+    <LandingPageWrapper
+      isHeroMode={isHeroMode}
+      onToggle={handleToggleMode}
+      onLaunchAgent={() => setShowModal(true)}
+    >
+      <div className="min-h-screen bg-zeus-surface-default">
       {/* Header */}
       <Header
         onCreateCoin={() => setShowModal(true)}
@@ -62,7 +93,10 @@ export default function TradingPageClient() {
         {/* Hero: About Sedona */}
         {showHero && (
           <section aria-label="About Sedona">
-            <AboutSedona onDismiss={() => setShowHero(false)} />
+            <AboutSedona
+              onDismiss={() => setShowHero(false)}
+              onLearnMore={handleLearnMore}
+            />
           </section>
         )}
 
@@ -98,6 +132,8 @@ export default function TradingPageClient() {
           setShowModal(false)
         }}
       />
+
     </div>
+    </LandingPageWrapper>
   )
 }
