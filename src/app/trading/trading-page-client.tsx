@@ -106,9 +106,6 @@ export default function TradingPageClient({ initialHeroMode = false }: TradingPa
     setIsHeroMode(!isHeroMode)
   }
 
-  const handleLearnMore = () => {
-    setIsHeroMode(true)
-  }
 
   return (
     <LandingPageWrapper
@@ -145,7 +142,6 @@ export default function TradingPageClient({ initialHeroMode = false }: TradingPa
           <section aria-label="About Sedona">
             <AboutSedona
               onDismiss={() => setShowHero(false)}
-              onLearnMore={handleLearnMore}
             />
           </section>
         )}

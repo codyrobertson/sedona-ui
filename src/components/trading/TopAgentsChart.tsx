@@ -195,10 +195,7 @@ const TopAgentsChart = React.forwardRef<HTMLDivElement, TopAgentsChartProps>(
                     <ChevronDown className="w-4 h-4" />
                   </button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  align="start"
-                  className="min-w-[250px] bg-zeus-surface-neutral border-zeus-border-alpha"
-                >
+                <DropdownMenuContent align="start" className="min-w-[250px]">
                   <DropdownMenuRadioGroup
                     value={sortBy}
                     onValueChange={(value) => onSortChange?.(value)}
@@ -207,12 +204,6 @@ const TopAgentsChart = React.forwardRef<HTMLDivElement, TopAgentsChartProps>(
                       <DropdownMenuRadioItem
                         key={option}
                         value={option}
-                        className={cn(
-                          "px-4 py-2 cursor-pointer",
-                          option === sortBy
-                            ? "text-sedona-500 bg-zeus-surface-neutral-subtle"
-                            : "text-zeus-text-primary hover:bg-zeus-surface-neutral-subtle"
-                        )}
                       >
                         {option}
                       </DropdownMenuRadioItem>

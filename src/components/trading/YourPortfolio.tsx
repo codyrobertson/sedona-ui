@@ -74,17 +74,12 @@ const YourPortfolio = React.forwardRef<HTMLDivElement, YourPortfolioProps>(
               >
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-zeus-surface-elevated border-zeus-border-alpha min-w-[140px]">
+              <SelectContent className="min-w-[140px]">
                 {sortOptions.map((option) => (
                   <SelectItem
                     key={option}
                     value={option}
-                    className={cn(
-                      "text-caption-l hover:bg-zeus-surface-neutral cursor-pointer",
-                      option === sortBy
-                        ? "text-sedona-500"
-                        : "text-zeus-text-primary"
-                    )}
+                    className="text-caption-l cursor-pointer"
                   >
                     {option}
                   </SelectItem>
