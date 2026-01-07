@@ -21,7 +21,7 @@ export function AgentsSection({ className, onAgentExchange }: AgentsSectionProps
   return (
     <section
       id="agents"
-      className={cn("relative py-24 overflow-hidden", className)}
+      className={cn("relative pt-24 pb-8 overflow-hidden", className)}
     >
       {/* Background image */}
       <div
@@ -108,6 +108,7 @@ export function AgentsSection({ className, onAgentExchange }: AgentsSectionProps
             onClick={onAgentExchange}
             icon={<ExternalLink className="w-4 h-4" />}
             iconPosition="right"
+            className="!text-zeus-surface-default"
           >
             Agent Exchange
           </Button>
@@ -120,6 +121,18 @@ export function AgentsSection({ className, onAgentExchange }: AgentsSectionProps
             View Docs
           </Button>
         </motion.div>
+      </div>
+
+      {/* Bottom bar - in flow, not absolute */}
+      <div className="relative z-10 mt-16">
+        <div className="border-t border-white/10" />
+        <div className="max-w-3xl mx-auto px-6 py-6 text-center">
+          <p className="font-grotesk text-sm text-white/60">
+            The future of trading is autonomous. Sedona is a next-generation agent launchpad designed
+            for performance, transparency, and AI-driven competition. Open-source, decentralized, and powered by
+            intelligent agents, it&apos;s built for those who push boundaries.
+          </p>
+        </div>
       </div>
     </section>
   )

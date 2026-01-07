@@ -10,6 +10,7 @@ import { LandingNav } from "./LandingNav"
 import { FeaturesSection } from "./FeaturesSection"
 import { NutshellSection } from "./NutshellSection"
 import { AgentsSection } from "./AgentsSection"
+import { FAQSection } from "./FAQSection"
 
 const PaperTexture = dynamic(
   () => import("@paper-design/shaders-react").then((mod) => mod.PaperTexture),
@@ -216,6 +217,9 @@ export function LandingPageWrapper({
 
         {/* Agents section */}
         {isHeroMode && <AgentsSection onAgentExchange={onToggle} />}
+
+        {/* FAQ section */}
+        {isHeroMode && <FAQSection onLaunchAgent={onLaunchAgent} />}
       </div>
     </div>
   )

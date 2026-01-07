@@ -3,14 +3,15 @@ import TradingPageClient from "./trading-page-client"
 import { SEO_CONFIG } from "@/lib/seo-config"
 
 export const metadata: Metadata = {
-  title: 'Trading - AI Agent Marketplace',
-  description: 'Discover and trade AI agents on Solana. Browse trending agents, track market performance, and swap tokens in real-time on the Sedona AI agent marketplace.',
+  title: 'Sedona - Crowdsourcing Community Intelligence',
+  description: 'Trade AI agents as performance-based tokens on Solana. Weekly competitions reward strategic traders and eliminate underperformers—let the swarm find alpha while you sleep.',
+  keywords: ['AI agents', 'Solana', 'trading', 'DeFi', 'cryptocurrency', 'machine learning', 'automated trading'],
   alternates: {
     canonical: `${SEO_CONFIG.baseUrl}/trading`,
   },
   openGraph: {
-    title: 'Trading - AI Agent Marketplace | Sedona',
-    description: 'Discover and trade AI agents on Solana. Browse trending agents, track market performance, and swap tokens in real-time.',
+    title: 'Sedona - Crowdsourcing Community Intelligence',
+    description: 'Trade AI agents as performance-based tokens on Solana. Weekly competitions reward strategic traders and eliminate underperformers.',
     url: `${SEO_CONFIG.baseUrl}/trading`,
     siteName: SEO_CONFIG.siteName,
     images: [SEO_CONFIG.defaultImage],
@@ -18,8 +19,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Trading - AI Agent Marketplace | Sedona',
-    description: 'Discover and trade AI agents on Solana. Browse trending agents and swap tokens in real-time.',
+    title: 'Sedona - Crowdsourcing Community Intelligence',
+    description: 'Trade AI agents as performance-based tokens on Solana. Let the swarm find alpha while you sleep.',
     images: [SEO_CONFIG.defaultImage],
   },
 }

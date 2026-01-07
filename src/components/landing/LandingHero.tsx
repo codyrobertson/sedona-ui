@@ -48,13 +48,13 @@ export function LandingHero({
       <motion.div
         variants={fadeUp}
         transition={spring}
-        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-sedona-500/10 border border-sedona-500/20 mb-6"
+        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/30 mb-6"
       >
         <span className="relative flex h-2 w-2">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-zeus-status-success opacity-75" />
           <span className="relative inline-flex rounded-full h-2 w-2 bg-zeus-status-success" />
         </span>
-        <span className="font-grotesk text-caption-m text-sedona-500 font-medium">
+        <span className="font-grotesk text-caption-m text-white font-medium">
           Live on Solana
         </span>
       </motion.div>

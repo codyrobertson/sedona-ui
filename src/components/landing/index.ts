@@ -18,3 +18,6 @@ export type { NutshellSectionProps } from "./NutshellSection"
 
 export { AgentsSection } from "./AgentsSection"
 export type { AgentsSectionProps } from "./AgentsSection"
+
+export { FAQSection } from "./FAQSection"
+export type { FAQSectionProps } from "./FAQSection"

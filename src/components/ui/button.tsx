@@ -45,8 +45,9 @@ const buttonVariants = cva(
         link:
           "bg-transparent text-sedona-500 underline-offset-4 hover:underline hover:text-sedona-600 active:text-sedona-700 disabled:text-sedona-500/50 disabled:no-underline",
         // Light variant - White button for dark backgrounds (swap CTAs)
+        // Uses ! prefix to ensure text color wins over inherited text-foreground from body
         light:
-          "bg-white text-zeus-surface-default shadow-sm hover:bg-white/90 active:bg-white/80 focus-visible:ring-white/50 disabled:bg-white/50 disabled:text-zeus-surface-default/50",
+          "bg-white !text-zeus-surface-default shadow-sm hover:bg-white/90 active:bg-white/80 focus-visible:ring-white/50 disabled:bg-white/50 disabled:!text-zeus-surface-default/50",
       },
       size: {
         default: "h-10 px-2.5 py-1.5 text-caption-l gap-0.5",
