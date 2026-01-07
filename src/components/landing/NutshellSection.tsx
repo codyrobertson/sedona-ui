@@ -67,7 +67,7 @@ export function NutshellSection({ className }: NutshellSectionProps) {
     <section
       id="nutshell"
       className={cn("py-20 px-6 relative overflow-hidden", className)}
-      style={{ backgroundColor: "#2A1610" }}
+      style={{ backgroundColor: "var(--zeus-surface-nutshell, #2A1610)" }}
     >
       {/* Paper texture overlay */}
       <div className="absolute inset-0 z-[1] pointer-events-none opacity-20" style={{ mixBlendMode: "soft-light" }}>
@@ -91,17 +91,15 @@ export function NutshellSection({ className }: NutshellSectionProps) {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          <SquirrelIcon className="w-10 h-10 mb-4 text-[#ECD89B]" />
+          <SquirrelIcon className="w-10 h-10 mb-4 text-zeus-highlight-gold" />
 
           {/* Title with decorative lines */}
           <div className="flex items-center gap-4 mb-6 w-full max-w-xl">
-            <div className="flex-1 h-px" style={{ backgroundColor: "rgba(236, 216, 155, 0.3)" }} />
-            <h2
-              className="font-souvenir font-bold text-2xl md:text-3xl uppercase tracking-wide text-white"
-            >
+            <div className="flex-1 h-px bg-zeus-highlight-gold/30" />
+            <h2 className="font-souvenir font-bold text-2xl md:text-3xl uppercase tracking-wide text-white">
               In a Nutshell
             </h2>
-            <div className="flex-1 h-px" style={{ backgroundColor: "rgba(236, 216, 155, 0.3)" }} />
+            <div className="flex-1 h-px bg-zeus-highlight-gold/30" />
           </div>
 
           {/* Description */}
@@ -114,8 +112,7 @@ export function NutshellSection({ className }: NutshellSectionProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* How It Works Card */}
           <motion.div
-            className="relative border border-dashed rounded-xl p-8"
-            style={{ borderColor: "rgba(236, 216, 155, 0.3)" }}
+            className="relative border border-dashed border-zeus-highlight-gold/30 rounded-xl p-8"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
@@ -136,10 +133,7 @@ export function NutshellSection({ className }: NutshellSectionProps) {
             </div>
 
             {/* Card Title */}
-            <h3
-              className="font-souvenir font-bold text-lg uppercase text-center mb-8 mt-4"
-              style={{ color: "#ECD89B" }}
-            >
+            <h3 className="font-souvenir font-bold text-lg uppercase text-center mb-8 mt-4 text-zeus-highlight-gold">
               How It Works
             </h3>
 
@@ -147,10 +141,7 @@ export function NutshellSection({ className }: NutshellSectionProps) {
             <div className="space-y-6">
               {howItWorksItems.map((item) => (
                 <div key={item.number} className="flex gap-4">
-                  <div
-                    className="flex-shrink-0 w-8 h-8 rounded-full border border-zeus-accent-default/30 flex items-center justify-center font-souvenir font-bold text-sm"
-                    style={{ color: "#ECD89B" }}
-                  >
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full border border-zeus-highlight-gold/30 flex items-center justify-center font-souvenir font-bold text-sm text-zeus-highlight-gold">
                     {item.number}
                   </div>
                   <div className="space-y-1">
@@ -168,8 +159,7 @@ export function NutshellSection({ className }: NutshellSectionProps) {
 
           {/* Why We Chose This Model Card */}
           <motion.div
-            className="relative border border-dashed rounded-xl p-8"
-            style={{ borderColor: "rgba(236, 216, 155, 0.3)" }}
+            className="relative border border-dashed border-zeus-highlight-gold/30 rounded-xl p-8"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
@@ -190,10 +180,7 @@ export function NutshellSection({ className }: NutshellSectionProps) {
             </div>
 
             {/* Card Title */}
-            <h3
-              className="font-souvenir font-bold text-lg uppercase text-center mb-8 mt-4"
-              style={{ color: "#ECD89B" }}
-            >
+            <h3 className="font-souvenir font-bold text-lg uppercase text-center mb-8 mt-4 text-zeus-highlight-gold">
               Why We Chose This Model
             </h3>
 
@@ -201,10 +188,7 @@ export function NutshellSection({ className }: NutshellSectionProps) {
             <div className="space-y-6">
               {whyWeChoseItems.map((item) => (
                 <div key={item.number} className="flex gap-4">
-                  <div
-                    className="flex-shrink-0 w-8 h-8 rounded-full border border-zeus-accent-default/30 flex items-center justify-center font-souvenir font-bold text-sm"
-                    style={{ color: "#ECD89B" }}
-                  >
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full border border-zeus-highlight-gold/30 flex items-center justify-center font-souvenir font-bold text-sm text-zeus-highlight-gold">
                     {item.number}
                   </div>
                   <div className="space-y-1">

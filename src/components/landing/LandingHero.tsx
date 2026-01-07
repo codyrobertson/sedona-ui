@@ -48,13 +48,13 @@ export function LandingHero({
       <motion.div
         variants={fadeUp}
         transition={spring}
-        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-zeus-accent-default/10 border border-zeus-accent-default/20 mb-6"
+        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-sedona-500/10 border border-sedona-500/20 mb-6"
       >
         <span className="relative flex h-2 w-2">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-zeus-status-success opacity-75" />
           <span className="relative inline-flex rounded-full h-2 w-2 bg-zeus-status-success" />
         </span>
-        <span className="font-grotesk text-caption-m text-zeus-accent-default font-medium">
+        <span className="font-grotesk text-caption-m text-sedona-500 font-medium">
           Live on Solana
         </span>
       </motion.div>
@@ -63,9 +63,8 @@ export function LandingHero({
       <motion.h1
         variants={fadeUp}
         transition={spring}
-        className="font-souvenir font-bold text-[40px] md:text-[64px] leading-[105%] uppercase mb-6 max-w-4xl mx-auto"
+        className="font-souvenir font-bold text-[40px] md:text-[64px] leading-[105%] uppercase mb-6 max-w-4xl mx-auto text-zeus-highlight-gold"
         style={{
-          color: "#ECD89B",
           textShadow: "4px 4px 0px #181F21",
         }}
       >

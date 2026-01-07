@@ -144,6 +144,10 @@ const config: Config = {
           // Highlight
           "highlight": "#f6e78a",
           "highlight-secondary": "#f6e78a99",
+          "highlight-gold": "#ECD89B",
+          "highlight-gold-secondary": "#ECD89B99",
+          // Landing page surfaces
+          "surface-nutshell": "#2A1610",
           // Special accents
           "accent-purple-new": "#aa97d3",
           "accent-cyan": "#81d9c3",

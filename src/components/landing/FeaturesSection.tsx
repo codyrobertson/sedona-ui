@@ -93,10 +93,7 @@ export function FeaturesSection({ className }: FeaturesSectionProps) {
               }}
             >
               {/* Title */}
-              <h3
-                className="font-souvenir font-bold text-xl"
-                style={{ color: "#ECD89B" }}
-              >
+              <h3 className="font-souvenir font-bold text-xl text-zeus-highlight-gold">
                 {feature.title}
               </h3>
 
@@ -112,10 +109,7 @@ export function FeaturesSection({ className }: FeaturesSectionProps) {
               <ul className="space-y-4">
                 {feature.items.map((item, itemIndex) => (
                   <li key={itemIndex} className="flex items-center gap-3">
-                    <item.icon
-                      className="w-5 h-5 flex-shrink-0"
-                      style={{ color: "#ECD89B" }}
-                    />
+                    <item.icon className="w-5 h-5 flex-shrink-0 text-zeus-highlight-gold" />
                     <span className="font-grotesk text-sm text-zeus-text-primary">
                       {item.text}
                     </span>

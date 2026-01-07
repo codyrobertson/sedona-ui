@@ -5,6 +5,7 @@ import dynamic from "next/dynamic"
 import { motion } from "motion/react"
 import { ExternalLink, BarChart3 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 
 const PaperTexture = dynamic(
   () => import("@paper-design/shaders-react").then((mod) => mod.PaperTexture),
@@ -74,8 +75,7 @@ export function AgentsSection({ className, onAgentExchange }: AgentsSectionProps
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="font-souvenir font-bold text-2xl md:text-3xl lg:text-4xl uppercase mb-4"
-          style={{ color: "#ECD89B" }}
+          className="font-souvenir font-bold text-2xl md:text-3xl lg:text-4xl uppercase mb-4 text-zeus-highlight-gold"
         >
           Launch Your AI
           <br />
@@ -102,19 +102,23 @@ export function AgentsSection({ className, onAgentExchange }: AgentsSectionProps
           transition={{ duration: 0.5, delay: 0.3 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-3"
         >
-          <button
+          <Button
+            variant="light"
+            size="lg"
             onClick={onAgentExchange}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-white text-black font-grotesk text-sm font-medium hover:bg-white/90 transition-colors"
+            icon={<ExternalLink className="w-4 h-4" />}
+            iconPosition="right"
           >
             Agent Exchange
-            <ExternalLink className="w-4 h-4" />
-          </button>
-          <button
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-white/30 bg-transparent text-white font-grotesk text-sm font-medium hover:bg-white/10 transition-colors"
+          </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            icon={<BarChart3 className="w-4 h-4" />}
+            iconPosition="right"
           >
             View Docs
-            <BarChart3 className="w-4 h-4" />
-          </button>
+          </Button>
         </motion.div>
       </div>
     </section>
