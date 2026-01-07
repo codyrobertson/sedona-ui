@@ -57,22 +57,22 @@ export function LandingPageWrapper({
               background: "linear-gradient(180deg, #141311 0%, #1a1816 100%)",
             }}
           >
-            <div className="absolute inset-0 opacity-[0.10]">
+            <div className="absolute inset-0 opacity-[0.12]">
               <FaultyTerminal
-                scale={1.8}
-                gridMul={[3, 2]}
-                digitSize={1.4}
-                timeScale={0.6}
+                scale={1.6}
+                gridMul={[4, 3]}
+                digitSize={1.2}
+                timeScale={0.8}
                 pause={false}
-                scanlineIntensity={0.25}
-                glitchAmount={0.6}
-                flickerAmount={0.4}
-                noiseAmp={1.2}
+                scanlineIntensity={0.35}
+                glitchAmount={0.85}
+                flickerAmount={0.65}
+                noiseAmp={1.8}
                 curvature={0}
                 tint="#f97316"
                 mouseReact={false}
                 pageLoadAnimation={false}
-                brightness={1}
+                brightness={1.1}
               />
             </div>
           </motion.div>
