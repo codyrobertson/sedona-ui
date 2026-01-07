@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { AGENT_DETAILS, getAgentOrDefault } from "@/fixtures"
+import { AGENTS, getAgentOrDefault, formatMarketCap } from "@/fixtures"
 import { JsonLd } from "@/components/seo"
 import AgentDetailClient from "./agent-detail-client"
 import { SEO_CONFIG } from "@/lib/seo-config"
@@ -9,8 +9,8 @@ type Props = {
 }
 
 export async function generateStaticParams() {
-  return Object.keys(AGENT_DETAILS).map((ticker) => ({
-    ticker,
+  return AGENTS.map((agent) => ({
+    ticker: agent.ticker.toLowerCase(),
   }))
 }
 
@@ -38,9 +38,6 @@ export default async function AgentDetailPage({ params }: Props) {
   const normalizedTicker = ticker?.toLowerCase() || "test"
   const agent = getAgentOrDefault(normalizedTicker)
 
-  // Parse price string to get numeric value (e.g., "$0.0074" -> 0.0074)
-  const priceValue = parseFloat(agent.price.replace(/[^0-9.]/g, ""))
-
   const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -53,7 +50,7 @@ export default async function AgentDetailPage({ params }: Props) {
     },
     offers: {
       "@type": "Offer",
-      price: priceValue,
+      price: agent.price_usd ?? 0,
       priceCurrency: "USD",
       availability: "https://schema.org/InStock",
       url: `${SEO_CONFIG.baseUrl}/trading/${agent.ticker.toLowerCase()}`,
@@ -63,17 +60,17 @@ export default async function AgentDetailPage({ params }: Props) {
       {
         "@type": "PropertyValue",
         name: "Market Cap",
-        value: agent.marketCap,
+        value: formatMarketCap(agent.market_cap_usd_latest),
       },
       {
         "@type": "PropertyValue",
         name: "24h Volume",
-        value: agent.volume24h,
+        value: formatMarketCap(agent.volume_24h_usd ?? 0),
       },
       {
         "@type": "PropertyValue",
-        name: "Model Types",
-        value: agent.modelTypes.join(", "),
+        name: "HuggingFace Model",
+        value: agent.agent_url,
       },
     ],
   }

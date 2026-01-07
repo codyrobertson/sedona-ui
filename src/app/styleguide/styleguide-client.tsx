@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableRow, DotMatrixGrid } from "@/components/ui/table"
 import { OutlineCard } from "@/components/ui/outline-card"
+import { DashedCard } from "@/components/ui/dashed-card"
 import { ChatInterface, MessageBubble, AgentAvatar, TypingIndicator } from "@/components/chat"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -1209,6 +1210,31 @@ export default function StyleguideClient() {
                 </div>
               </div>
 
+              {/* Landing Page Badge Variants */}
+              <div>
+                <h3 className="text-heading-sm font-semibold mb-4">Landing Page Variants</h3>
+                <p className="text-muted-foreground mb-4">
+                  Special badge variants for landing pages and hero sections.
+                </p>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  <div className="text-center p-4 border rounded-lg bg-zeus-surface-default">
+                    <Badge variant="live" showPulse size="md" className="mb-3">Live on Solana</Badge>
+                    <h4 className="font-medium text-caption-s text-white">Live</h4>
+                    <p className="text-caption-s text-white/60">Transparent with border, pulse animation</p>
+                  </div>
+                  <div className="text-center p-4 border rounded-lg bg-zeus-surface-default">
+                    <Badge variant="gold" size="md" className="mb-3">Featured</Badge>
+                    <h4 className="font-medium text-caption-s text-white">Gold</h4>
+                    <p className="text-caption-s text-white/60">Gold highlight accent</p>
+                  </div>
+                  <div className="text-center p-4 border rounded-lg bg-zeus-surface-default">
+                    <Badge variant="live" showPulse pulseColor="bg-zeus-highlight-gold" size="md" className="mb-3">Monthly Competition</Badge>
+                    <h4 className="font-medium text-caption-s text-white">Live + Custom Pulse</h4>
+                    <p className="text-caption-s text-white/60">Custom pulse color via pulseColor prop</p>
+                  </div>
+                </div>
+              </div>
+
               {/* Badge Group Component */}
               <div>
                 <h3 className="text-heading-sm font-semibold mb-4">Badge Groups</h3>
@@ -1257,6 +1283,8 @@ export default function StyleguideClient() {
                   <Badge variant="brand">ACCENT</Badge>
                   <Badge variant="destructive">DESTRUCTIVE</Badge>
                   <Badge variant="outline">OUTLINE</Badge>
+                  <Badge variant="live" showPulse>LIVE</Badge>
+                  <Badge variant="gold">GOLD</Badge>
                 </div>
               </div>
 
@@ -1264,9 +1292,22 @@ export default function StyleguideClient() {
               <div>
                 <h3 className="text-heading-sm font-semibold mb-4">Badge Sizes</h3>
                 <div className="flex gap-4 items-center flex-wrap">
-                  <Badge size="sm">Small</Badge>
-                  <Badge size="default">Default</Badge>
-                  <Badge size="lg">Large</Badge>
+                  <div className="text-center">
+                    <Badge size="sm" className="mb-2">Small</Badge>
+                    <p className="text-caption-s text-muted-foreground">sm</p>
+                  </div>
+                  <div className="text-center">
+                    <Badge size="default" className="mb-2">Default</Badge>
+                    <p className="text-caption-s text-muted-foreground">default</p>
+                  </div>
+                  <div className="text-center">
+                    <Badge size="md" className="mb-2">Medium</Badge>
+                    <p className="text-caption-s text-muted-foreground">md</p>
+                  </div>
+                  <div className="text-center">
+                    <Badge size="lg" className="mb-2">Large</Badge>
+                    <p className="text-caption-s text-muted-foreground">lg</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1421,6 +1462,35 @@ export default function StyleguideClient() {
                       <Button variant="outline" className="w-full">Learn More</Button>
                     </CardFooter>
                   </Card>
+                </div>
+              </div>
+
+              {/* DashedCard */}
+              <div>
+                <h3 className="text-heading-sm font-semibold mb-4">Dashed Cards</h3>
+                <p className="text-muted-foreground mb-4">
+                  Cards with dashed borders and optional corner icons, ideal for landing pages and feature sections.
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-zeus-surface-default p-6 rounded-lg">
+                  <DashedCard>
+                    <h4 className="font-grotesk font-medium text-white mb-2">Basic Dashed Card</h4>
+                    <p className="text-caption-l text-white/60">Simple dashed border card without corner icons.</p>
+                  </DashedCard>
+                  <DashedCard
+                    cornerIcons={[
+                      () => <span>◆</span>,
+                      () => <span>◆</span>,
+                      () => <span>◆</span>,
+                      () => <span>◆</span>,
+                    ]}
+                  >
+                    <h4 className="font-grotesk font-medium text-white mb-2">With Corner Icons</h4>
+                    <p className="text-caption-l text-white/60">Dashed card with decorative corner icons.</p>
+                  </DashedCard>
+                  <DashedCard className="bg-zeus-surface-elevated">
+                    <h4 className="font-grotesk font-medium text-white mb-2">Custom Background</h4>
+                    <p className="text-caption-l text-white/60">Cards support custom backgrounds via className.</p>
+                  </DashedCard>
                 </div>
               </div>
             </div>

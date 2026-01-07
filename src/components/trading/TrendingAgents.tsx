@@ -7,7 +7,7 @@ import { Search } from "lucide-react"
 import { AgentListItem, AgentListItemProps } from "./AgentListItem"
 import { EmptyState } from "@/components/ui/empty-state"
 import { TopAgentsChart } from "./TopAgentsChart"
-import { getTopAgentsWithHistory } from "@/fixtures/agent-history"
+import { getTopAgentsWithHistory } from "@/fixtures"
 
 export interface TrendingAgentsProps extends React.HTMLAttributes<HTMLDivElement> {
   agents?: Omit<AgentListItemProps, "onSelect" | "rank">[]

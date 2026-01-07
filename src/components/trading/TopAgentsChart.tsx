@@ -8,7 +8,7 @@ import {
   type AgentHistory,
   filterHistoryByTimeframe,
   formatMarketCap,
-} from "@/fixtures/agent-history"
+} from "@/fixtures"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import {
   DropdownMenu,

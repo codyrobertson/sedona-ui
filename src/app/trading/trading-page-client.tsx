@@ -7,33 +7,44 @@ import {
   PlatformStats,
   TrendingAgents,
   AboutSedona,
-  AgentLaunchModal,
   Footer,
 } from "@/components/trading"
 import { LandingPageWrapper } from "@/components/landing"
-import { getDummyAgents, getDummyPools, generateDummyPools } from "@/lib/dummy-data"
+import {
+  AGENTS,
+  formatMarketCap,
+  searchAgents,
+} from "@/fixtures"
+import { useAgentLaunch } from "@/contexts"
+import type { AgentWithMetrics } from "@/types/agent"
 
-// Generate 300 dummy agents
-const DUMMY_AGENTS = getDummyAgents(300)
+// Map unified Agent to TrendingAgents format
+function mapAgentToListItem(agent: AgentWithMetrics) {
+  return {
+    name: agent.name,
+    ticker: agent.ticker,
+    description: agent.description,
+    avatarUrl: undefined, // Could use agent.uri for metadata image
+    avatarFallback: agent.ticker[0],
+    change24h: agent.price_change_percent_in_24_hours,
+    marketCap: formatMarketCap(agent.market_cap_usd_latest),
+    volume: formatMarketCap(agent.volume_24h_usd ?? 0),
+    volumeChange: 0,
+  }
+}
 
-// Get top pools for sidebar
-const DUMMY_TOP_POOLS = generateDummyPools(DUMMY_AGENTS, 5).map((p, i) => ({
-  rank: i + 1,
-  ticker: p.ticker,
-  marketCap: DUMMY_AGENTS.find(a => a.ticker === p.ticker)?.marketCap || "$0",
-  change24h: p.change,
+// Get agents mapped for the list
+const MAPPED_AGENTS = AGENTS.map(mapAgentToListItem)
+
+// Build marquee pools from agents
+const MARQUEE_POOLS = AGENTS.slice(0, 30).map((agent) => ({
+  name: agent.name,
+  ticker: agent.ticker,
+  price: `$${(agent.price_usd ?? 0).toFixed(4)}`,
+  change: agent.price_change_percent_in_24_hours,
+  volume: formatMarketCap(agent.volume_24h_usd ?? 0),
+  marketCap: formatMarketCap(agent.market_cap_usd_latest),
 }))
-
-// Get pools for marquee
-const MARQUEE_POOLS = getDummyPools(30)
-
-// Info cards data
-const INFO_CARDS = [
-  { title: "Total Volume", value: "$1.2M", change: 15.3 },
-  { title: "Active Agents", value: "156", change: 8.2 },
-  { title: "Avg. Return", value: "+12.4%", change: 3.1 },
-  { title: "Top Gain", value: "+47.3%", change: 47.3 },
-]
 
 interface TradingPageClientProps {
   initialHeroMode?: boolean
@@ -41,10 +52,10 @@ interface TradingPageClientProps {
 
 export default function TradingPageClient({ initialHeroMode = false }: TradingPageClientProps) {
   const router = useRouter()
-  const [showModal, setShowModal] = React.useState(false)
+  const { openCreateAgent } = useAgentLaunch()
   const [sortBy, setSortBy] = React.useState("Highest Market Capitalization")
   const [showHero, setShowHero] = React.useState(true)
-  const [isAuthenticated, setIsAuthenticated] = React.useState(false)
+  const [searchQuery, setSearchQuery] = React.useState("")
 
   // Hero mode state - initialized from route, then state-controlled for animations
   const [isHeroMode, setIsHeroMode] = React.useState(initialHeroMode)
@@ -54,6 +65,38 @@ export default function TradingPageClient({ initialHeroMode = false }: TradingPa
     const newUrl = isHeroMode ? "/landing" : "/trading"
     window.history.replaceState({}, "", newUrl)
   }, [isHeroMode])
+
+  // Sort and filter agents
+  const displayAgents = React.useMemo(() => {
+    let agents = [...AGENTS]
+
+    // Apply search filter
+    if (searchQuery) {
+      agents = searchAgents(searchQuery)
+    }
+
+    // Apply sort
+    switch (sortBy) {
+      case "Highest Market Capitalization":
+        agents = [...agents].sort((a, b) => b.market_cap_usd_latest - a.market_cap_usd_latest)
+        break
+      case "Lowest Market Capitalization":
+        agents = [...agents].sort((a, b) => a.market_cap_usd_latest - b.market_cap_usd_latest)
+        break
+      case "Highest Volume":
+        agents = [...agents].sort((a, b) => (b.volume_24h_usd ?? 0) - (a.volume_24h_usd ?? 0))
+        break
+      case "Highest 24h Change":
+        agents = [...agents].sort((a, b) => b.price_change_percent_in_24_hours - a.price_change_percent_in_24_hours)
+        break
+      case "Recently Created":
+        // For now, reverse order (newest first) - would need createdAt field
+        agents = [...agents].reverse()
+        break
+    }
+
+    return agents.map(mapAgentToListItem)
+  }, [sortBy, searchQuery])
 
   const handleToggleMode = () => {
     if (isHeroMode) {
@@ -71,13 +114,13 @@ export default function TradingPageClient({ initialHeroMode = false }: TradingPa
     <LandingPageWrapper
       isHeroMode={isHeroMode}
       onToggle={handleToggleMode}
-      onLaunchAgent={() => setShowModal(true)}
+      onLaunchAgent={openCreateAgent}
     >
       <div className="min-h-screen bg-zeus-surface-default">
       {/* Header - hidden in hero mode (landing nav takes over) */}
       {!isHeroMode && (
         <Header
-          onCreateCoin={() => setShowModal(true)}
+          onCreateCoin={openCreateAgent}
           onConnect={() => {
             router.push("/trading/portfolio")
           }}
@@ -89,7 +132,12 @@ export default function TradingPageClient({ initialHeroMode = false }: TradingPa
 
         {/* Platform Stats */}
         <section aria-label="Platform Statistics">
-          <PlatformStats endsIn="0m 0s" jackpot="$201" tokens={1} topPools={MARQUEE_POOLS} />
+          <PlatformStats
+            endsInSeconds={754}
+            jackpotValue={2450}
+            tokens={AGENTS.length}
+            topPools={MARQUEE_POOLS}
+          />
         </section>
 
         {/* Hero: About Sedona */}
@@ -106,10 +154,10 @@ export default function TradingPageClient({ initialHeroMode = false }: TradingPa
         <section className="px-6 py-8 pb-20" aria-label="Trending Agents">
           {/* Trending Agents */}
           <TrendingAgents
-            agents={DUMMY_AGENTS}
+            agents={displayAgents}
             sortBy={sortBy}
             onSortChange={setSortBy}
-            onSearch={() => {}}
+            onSearch={setSearchQuery}
             onAgentSelect={(ticker) => {
               router.push(`/trading/${ticker.toLowerCase()}`)
             }}
@@ -119,22 +167,6 @@ export default function TradingPageClient({ initialHeroMode = false }: TradingPa
 
       {/* Footer */}
       <Footer />
-
-      {/* Agent Launch Modal */}
-      <AgentLaunchModal
-        open={showModal}
-        onOpenChange={setShowModal}
-        isAuthenticated={isAuthenticated}
-        onSignIn={() => {
-          setIsAuthenticated(true)
-        }}
-        onSelectModel={() => {}}
-        onCreateAgent={() => {}}
-        onLaunch={() => {
-          setShowModal(false)
-        }}
-      />
-
     </div>
     </LandingPageWrapper>
   )

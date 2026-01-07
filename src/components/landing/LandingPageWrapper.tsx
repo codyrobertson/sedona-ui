@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import dynamic from "next/dynamic"
 import { motion, AnimatePresence } from "motion/react"
 import { cn } from "@/lib/utils"
 import { BrowserChrome } from "./BrowserChrome"
@@ -14,11 +13,6 @@ import { NutshellSection } from "./NutshellSection"
 import { DeveloperStats } from "./DeveloperStats"
 import { AgentsSection } from "./AgentsSection"
 import { FAQSection } from "./FAQSection"
-
-const PaperTexture = dynamic(
-  () => import("@paper-design/shaders-react").then((mod) => mod.PaperTexture),
-  { ssr: false }
-)
 
 export interface LandingPageWrapperProps {
   children: React.ReactNode

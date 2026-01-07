@@ -9,7 +9,7 @@ import {
   PaginationItem,
   PaginationLink,
 } from "@/components/ui/pagination"
-import { MOCK_TRANSACTIONS } from "@/fixtures/transactions"
+import { MOCK_TRANSACTIONS } from "@/fixtures"
 
 export interface Transaction {
   id: string

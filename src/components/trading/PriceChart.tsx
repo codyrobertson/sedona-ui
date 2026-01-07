@@ -4,7 +4,10 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 import { createChart, ColorType, CandlestickSeries, IChartApi, ISeriesApi, PriceScaleMode } from "lightweight-charts"
 import { ChevronDown } from "lucide-react"
-import { getChartDataByTimeframe, CHART_COLORS, type ChartTimeframe } from "@/fixtures"
+import { getChartDataForTicker, CHART_COLORS, type TickResolution } from "@/fixtures"
+
+// Re-export for compatibility
+type ChartTimeframe = TickResolution
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -150,8 +153,8 @@ const PriceChart = React.forwardRef<HTMLDivElement, PriceChartProps>(
 
       seriesRef.current = candlestickSeries
 
-      // Set initial data
-      const data = getChartDataByTimeframe(currentTimeframe)
+      // Set initial data for this agent
+      const data = getChartDataForTicker(ticker, currentTimeframe)
       candlestickSeries.setData(data)
 
       // Fit content
@@ -178,13 +181,14 @@ const PriceChart = React.forwardRef<HTMLDivElement, PriceChartProps>(
           seriesRef.current = null
         }
       }
-    }, [mounted]) // Only recreate chart on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [mounted]) // Only recreate chart on mount - data updates handled separately
 
-    // Update data when timeframe changes
+    // Update data when timeframe or ticker changes
     React.useEffect(() => {
       if (!mounted || !seriesRef.current || !chartRef.current) return
 
-      const data = getChartDataByTimeframe(currentTimeframe)
+      const data = getChartDataForTicker(ticker, currentTimeframe)
       seriesRef.current.setData(data)
 
       // Update time scale visibility based on timeframe
@@ -195,7 +199,7 @@ const PriceChart = React.forwardRef<HTMLDivElement, PriceChartProps>(
       })
 
       chartRef.current.timeScale().fitContent()
-    }, [currentTimeframe, mounted])
+    }, [ticker, currentTimeframe, mounted])
 
     return (
       <div
@@ -274,7 +278,7 @@ const PriceChart = React.forwardRef<HTMLDivElement, PriceChartProps>(
               </DropdownMenuContent>
             </DropdownMenu>
             <div className="flex items-center gap-3 text-caption-s">
-              <span className="text-zeus-text-tertiary">
+              <span className="text-zeus-text-tertiary" suppressHydrationWarning>
                 {new Date().toLocaleTimeString('en-US', { hour12: false, timeZone: 'UTC' })} (UTC)
               </span>
               <span className="text-zeus-text-quaternary">|</span>

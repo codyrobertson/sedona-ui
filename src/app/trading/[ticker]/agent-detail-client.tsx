@@ -8,13 +8,22 @@ import {
   TokenSwapCard,
   TransactionsTable,
 } from "@/components/trading"
-import { getAgentOrDefault, RECENT_TRADES, type ChartTimeframe } from "@/fixtures"
+import {
+  getAgentOrDefault,
+  AGENTS,
+  formatMarketCap,
+  formatPrice,
+  RECENT_TRADES,
+  type ChartTimeframe,
+} from "@/fixtures"
+import { useAgentLaunch } from "@/contexts"
 
 interface AgentDetailClientProps {
   ticker: string
 }
 
 export default function AgentDetailClient({ ticker }: AgentDetailClientProps) {
+  const { openCreateAgent } = useAgentLaunch()
   const [timeframe, setTimeframe] = React.useState<ChartTimeframe>("1d")
   const agent = getAgentOrDefault(ticker?.toLowerCase() || "test")
 
@@ -26,11 +35,38 @@ export default function AgentDetailClient({ ticker }: AgentDetailClientProps) {
     time: trade.time,
   }))
 
+  // Map unified agent fields to TokenSwapCard props
+  const tokenSwapProps = {
+    name: agent.name,
+    ticker: agent.ticker,
+    price: formatPrice(agent.price_usd ?? 0),
+    priceChange: (agent.price_change_percent_in_24_hours >= 0 ? "up" : "down") as "up" | "down",
+    description: agent.description,
+    tokenAddress: agent.base_mint,
+    huggingFaceUrl: agent.agent_url,
+    modelTypes: ["Transformer"], // Placeholder - not in API
+    modelVersions: [], // Evaluation data - TBD by dev
+    marketCap: formatMarketCap(agent.market_cap_usd_latest),
+    volume24h: formatMarketCap(agent.volume_24h_usd ?? 0),
+    tvl: formatMarketCap(agent.tvl_usd ?? 0),
+    change1h: agent.price_change_percent_1h ?? 0,
+    change24h: agent.price_change_percent_in_24_hours,
+    change7d: agent.price_change_percent_7d ?? 0,
+    change30d: agent.price_change_percent_30d ?? 0,
+    rank: AGENTS.findIndex(a => a.pool === agent.pool) + 1,
+    totalAgents: AGENTS.length,
+    eliminationThreshold: "$50K", // Game-related - hardcoded for now
+    payBalance: "200",
+    receiveBalance: "0",
+    tradingStatus: "active" as const,
+    onSwap: async () => {},
+  }
+
   return (
     <div className="h-screen bg-zeus-surface-default flex flex-col overflow-hidden">
       {/* Header */}
       <Header
-        onCreateCoin={() => {}}
+        onCreateCoin={openCreateAgent}
         onConnect={() => {}}
         onDisconnect={() => {}}
       />
@@ -43,7 +79,7 @@ export default function AgentDetailClient({ ticker }: AgentDetailClientProps) {
           <PlatformStats
             endsInSeconds={754}
             jackpotValue={2450}
-            tokens={47}
+            tokens={AGENTS.length}
             ticker={agent.ticker}
             recentTrades={recentTrades}
           />
@@ -61,31 +97,7 @@ export default function AgentDetailClient({ ticker }: AgentDetailClientProps) {
 
             {/* TokenSwapCard - Mobile only (under chart) */}
             <article className="lg:hidden" aria-label="Token Swap">
-              <TokenSwapCard
-                name={agent.name}
-                ticker={agent.ticker}
-                price={agent.price}
-                priceChange={agent.priceChange}
-                description={agent.description}
-                tokenAddress={agent.tokenAddress}
-                huggingFaceUrl={agent.huggingFaceUrl}
-                modelTypes={agent.modelTypes}
-                modelVersions={agent.modelVersions}
-                marketCap={agent.marketCap}
-                volume24h={agent.volume24h}
-                tvl={agent.tvl}
-                change1h={agent.change1h}
-                change24h={agent.change24h}
-                change7d={agent.change7d}
-                change30d={agent.change30d}
-                rank={agent.rank}
-                totalAgents={agent.totalAgents}
-                eliminationThreshold={agent.eliminationThreshold}
-                payBalance="200"
-                receiveBalance="0"
-                tradingStatus="active"
-                onSwap={async () => {}}
-              />
+              <TokenSwapCard {...tokenSwapProps} />
             </article>
 
             <TransactionsTable ticker={agent.ticker} className="flex-1" />
@@ -93,31 +105,7 @@ export default function AgentDetailClient({ ticker }: AgentDetailClientProps) {
 
           {/* Right Column - Combined Token + Swap Card */}
           <aside className="hidden lg:flex lg:flex-col w-[380px] flex-shrink-0" aria-label="Token Swap">
-            <TokenSwapCard
-              name={agent.name}
-              ticker={agent.ticker}
-              price={agent.price}
-              priceChange={agent.priceChange}
-              description={agent.description}
-              tokenAddress={agent.tokenAddress}
-              huggingFaceUrl={agent.huggingFaceUrl}
-              modelTypes={agent.modelTypes}
-              modelVersions={agent.modelVersions}
-              marketCap={agent.marketCap}
-              volume24h={agent.volume24h}
-              tvl={agent.tvl}
-              change1h={agent.change1h}
-              change24h={agent.change24h}
-              change7d={agent.change7d}
-              change30d={agent.change30d}
-              rank={agent.rank}
-              totalAgents={agent.totalAgents}
-              eliminationThreshold={agent.eliminationThreshold}
-              payBalance="200"
-              receiveBalance="0"
-              tradingStatus="active"
-              onSwap={async () => {}}
-            />
+            <TokenSwapCard {...tokenSwapProps} />
           </aside>
         </div>
       </main>

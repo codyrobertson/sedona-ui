@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next'
-import { AGENT_DETAILS } from '@/fixtures'
+import { AGENTS } from '@/fixtures'
 import { SEO_CONFIG } from '@/lib/seo-config'
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -27,10 +27,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]
 
-  // Dynamic trading pages from AGENT_DETAILS fixture
-  const agentTickers = Object.keys(AGENT_DETAILS)
-  const tradingPages: MetadataRoute.Sitemap = agentTickers.map((ticker) => ({
-    url: `${SEO_CONFIG.baseUrl}/trading/${ticker}`,
+  // Dynamic trading pages from unified AGENTS fixture
+  const tradingPages: MetadataRoute.Sitemap = AGENTS.map((agent) => ({
+    url: `${SEO_CONFIG.baseUrl}/trading/${agent.ticker.toLowerCase()}`,
     lastModified,
     changeFrequency: 'hourly' as const,
     priority: 0.9,

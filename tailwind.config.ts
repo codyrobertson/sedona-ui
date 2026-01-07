@@ -19,10 +19,10 @@ const config: Config = {
     },
     extend: {
       fontFamily: {
-        sans: ["Inter", "ui-sans-serif", "system-ui"],
+        sans: ["var(--font-geist-sans)", "Geist", "ui-sans-serif", "system-ui"],
         mono: ["JetBrains Mono", "Source Code Pro", "Fira Code", "ui-monospace", "monospace"],
         souvenir: ["Souvenir", "Georgia", "serif"],
-        grotesk: ["Monument Grotesk", "Inter", "ui-sans-serif", "system-ui"],
+        grotesk: ["Monument Grotesk", "Geist", "ui-sans-serif", "system-ui"],
       },
       fontWeight: {
         regular: '400',

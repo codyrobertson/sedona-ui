@@ -1,11 +1,10 @@
 import type { Metadata, Viewport } from "next"
-import { Inter } from "next/font/google"
+import { GeistSans } from "geist/font/sans"
 import "./globals.css"
 import { Footer } from "@/components/trading/Footer"
 import { JsonLd } from "@/components/seo"
 import { SEO_CONFIG } from "@/lib/seo-config"
-
-const inter = Inter({ subsets: ["latin"] })
+import { AgentLaunchProvider } from "@/contexts"
 
 const organizationSchema = {
   "@context": "https://schema.org",
@@ -64,9 +63,11 @@ export default function RootLayout({
         <JsonLd data={organizationSchema} />
         <JsonLd data={websiteSchema} />
       </head>
-      <body className={inter.className}>
-        {children}
-        <Footer />
+      <body className={GeistSans.className}>
+        <AgentLaunchProvider>
+          {children}
+          <Footer />
+        </AgentLaunchProvider>
       </body>
     </html>
   )
