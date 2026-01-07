@@ -18,6 +18,11 @@ export type { AgentLaunchModalProps, CreateAgentData } from "./AgentLaunchModal"
 
 export { PriceChart } from "./PriceChart"
 export type { PriceChartProps } from "./PriceChart"
+export { PriceChartLazy } from "./PriceChartLazy"
+
+export { TopAgentsChart } from "./TopAgentsChart"
+export type { TopAgentsChartProps } from "./TopAgentsChart"
+export { TopAgentsChartLazy } from "./TopAgentsChartLazy"
 
 export { YourTokens } from "./YourTokens"
 export type { YourTokensProps, TokenBalance } from "./YourTokens"
