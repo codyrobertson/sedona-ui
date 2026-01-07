@@ -6,10 +6,13 @@ import { motion, AnimatePresence } from "motion/react"
 import { cn } from "@/lib/utils"
 import { BrowserChrome } from "./BrowserChrome"
 import { LandingHero } from "./LandingHero"
+import { LandingNav } from "./LandingNav"
+import { FeaturesSection } from "./FeaturesSection"
 
-const FaultyTerminal = dynamic(() => import("@/components/ui/faulty-terminal"), {
-  ssr: false,
-})
+const PaperTexture = dynamic(
+  () => import("@paper-design/shaders-react").then((mod) => mod.PaperTexture),
+  { ssr: false }
+)
 
 export interface LandingPageWrapperProps {
   children: React.ReactNode
@@ -44,7 +47,7 @@ export function LandingPageWrapper({
 }: LandingPageWrapperProps) {
   return (
     <div className={cn("relative", className)}>
-      {/* FaultyTerminal background for hero mode */}
+      {/* Hero section - fixed height container */}
       <AnimatePresence>
         {isHeroMode && (
           <motion.div
@@ -52,36 +55,44 @@ export function LandingPageWrapper({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={transition}
-            className="fixed inset-0 z-0"
-            style={{
-              background: "linear-gradient(180deg, #141311 0%, #1a1816 100%)",
-            }}
+            className="fixed inset-0 z-0 h-screen overflow-hidden"
           >
-            <div className="absolute inset-0 opacity-[0.12]">
-              <FaultyTerminal
-                scale={1.6}
-                gridMul={[4, 3]}
-                digitSize={1.2}
-                timeScale={0.8}
-                pause={false}
-                scanlineIntensity={0.35}
-                glitchAmount={0.85}
-                flickerAmount={0.65}
-                noiseAmp={1.8}
-                curvature={0}
-                tint="#f97316"
-                mouseReact={false}
-                pageLoadAnimation={false}
-                brightness={1.1}
-              />
-            </div>
+            {/* Background image */}
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: "url(/sedona-bg.png)",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            />
+            {/* Dark overlay */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background: "linear-gradient(180deg, rgba(10, 9, 8, 0.5) 0%, rgba(10, 9, 8, 0.65) 100%)"
+              }}
+            />
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Content container */}
-      <div className="relative">
-        {/* Hero content - absolute so it doesn't affect document flow */}
+      {/* Content container - hero section is 100vh but page scrolls */}
+      <div
+        className="relative"
+        style={{
+          minHeight: isHeroMode ? "100vh" : "auto",
+        }}
+      >
+        {/* Clip container for mockup only */}
+        <div
+          style={{
+            height: isHeroMode ? "100vh" : "auto",
+            overflow: isHeroMode ? "hidden" : "visible",
+            position: "relative",
+          }}
+        >
+        {/* Navigation - absolute positioned at top */}
         <AnimatePresence>
           {isHeroMode && (
             <motion.div
@@ -89,7 +100,22 @@ export function LandingPageWrapper({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={transition}
-              className="absolute inset-x-0 top-0 z-20 pt-8"
+              className="absolute inset-x-0 top-0 z-30"
+            >
+              <LandingNav onLaunchAgent={onLaunchAgent} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Hero content - absolute positioned below nav */}
+        <AnimatePresence>
+          {isHeroMode && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={transition}
+              className="absolute inset-x-0 top-16 z-20"
             >
               <LandingHero
                 onEnterApp={onToggle || (() => {})}
@@ -103,12 +129,12 @@ export function LandingPageWrapper({
         <motion.div
           initial={false}
           animate={{
-            height: isHeroMode ? 580 : 0,
+            height: isHeroMode ? 600 : 0,
           }}
           transition={transition}
         />
 
-        {/* Dashboard with browser frame - everything scales together */}
+        {/* Dashboard with browser frame */}
         <div className="relative z-10">
           <motion.div
             initial={false}
@@ -121,7 +147,7 @@ export function LandingPageWrapper({
             }}
             className="relative"
           >
-            {/* Browser chrome - absolute so it doesn't affect layout during exit */}
+            {/* Browser chrome */}
             <AnimatePresence>
               {isHeroMode && (
                 <motion.div
@@ -145,7 +171,7 @@ export function LandingPageWrapper({
 
             {/* Mockup container */}
             <div className="relative">
-              {/* Frame border - wraps dashboard */}
+              {/* Frame border */}
               <AnimatePresence>
                 {isHeroMode && (
                   <motion.div
@@ -170,26 +196,29 @@ export function LandingPageWrapper({
               >
                 {children}
               </div>
-
-              {/* Bottom scrim - gradient fade */}
-              <AnimatePresence>
-                {isHeroMode && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={transition}
-                    className="absolute bottom-0 left-0 right-0 h-48 z-30 pointer-events-none"
-                    style={{
-                      background: "linear-gradient(to top, #1e1c17 0%, #1e1c17 30%, transparent 100%)",
-                    }}
-                  />
-                )}
-              </AnimatePresence>
             </div>
           </motion.div>
         </div>
 
+        {/* Bottom scrim - gradient fade at bottom of hero */}
+        <AnimatePresence>
+          {isHeroMode && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={transition}
+              className="absolute bottom-0 left-0 right-0 h-64 z-30 pointer-events-none"
+              style={{
+                background: "linear-gradient(to top, rgba(10, 9, 8, 1) 0%, rgba(10, 9, 8, 1) 20%, rgba(10, 9, 8, 0.6) 60%, transparent 100%)",
+              }}
+            />
+          )}
+        </AnimatePresence>
+        </div>
+
+        {/* Features section - below the hero fold */}
+        {isHeroMode && <FeaturesSection />}
       </div>
     </div>
   )
