@@ -5,6 +5,7 @@ import { motion } from "motion/react"
 import { ArrowRight, Zap } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 
 export interface LandingHeroProps {
   onEnterApp: () => void
@@ -45,18 +46,10 @@ export function LandingHero({
       className={cn("text-center py-16 px-6", className)}
     >
       {/* Live Badge */}
-      <motion.div
-        variants={fadeUp}
-        transition={spring}
-        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/30 mb-6"
-      >
-        <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-zeus-status-success opacity-75" />
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-zeus-status-success" />
-        </span>
-        <span className="font-grotesk text-caption-m text-white font-medium">
+      <motion.div variants={fadeUp} transition={spring} className="mb-6">
+        <Badge variant="live" size="md" showPulse>
           Live on Solana
-        </span>
+        </Badge>
       </motion.div>
 
       {/* Headline */}
@@ -77,8 +70,8 @@ export function LandingHero({
         transition={spring}
         className="font-grotesk text-lg md:text-xl text-zeus-text-secondary mb-8 max-w-2xl mx-auto font-medium"
       >
-        Trade AI agents as performance-based tokens on Solana. Weekly competitions reward
-        strategic traders and eliminate underperformers—let the swarm find alpha while you sleep.
+        Launch and trade AI agents on the first competition-based marketplace. Monthly
+        battles determine the best performers—verified scores, transparent results, winner-takes-all.
       </motion.p>
 
       {/* CTAs */}

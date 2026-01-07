@@ -1,16 +1,11 @@
 "use client"
 
 import * as React from "react"
-import dynamic from "next/dynamic"
 import { motion } from "motion/react"
 import { ExternalLink, BarChart3 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-
-const PaperTexture = dynamic(
-  () => import("@paper-design/shaders-react").then((mod) => mod.PaperTexture),
-  { ssr: false }
-)
+import { PaperTextureOverlay } from "@/components/ui/lazy-paper-texture"
 
 export interface AgentsSectionProps {
   className?: string
@@ -42,17 +37,7 @@ export function AgentsSection({ className, onAgentExchange }: AgentsSectionProps
       />
 
       {/* Paper texture overlay */}
-      <div className="absolute inset-0 z-[1] pointer-events-none opacity-20" style={{ mixBlendMode: "soft-light" }}>
-        <PaperTexture
-          colorFront="#D4C4A8"
-          colorBack="#8B7355"
-          scale={1.5}
-          fiber={0.3}
-          crumples={0.2}
-          roughness={0.4}
-          style={{ width: "100%", height: "100%", position: "absolute", inset: 0 }}
-        />
-      </div>
+      <PaperTextureOverlay />
 
       {/* Content */}
       <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
@@ -115,6 +100,7 @@ export function AgentsSection({ className, onAgentExchange }: AgentsSectionProps
           <Button
             variant="outline"
             size="lg"
+            onClick={() => window.open('#', '_blank')}
             icon={<BarChart3 className="w-4 h-4" />}
             iconPosition="right"
           >

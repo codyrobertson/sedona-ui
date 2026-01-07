@@ -1,14 +1,11 @@
 "use client"
 
 import * as React from "react"
-import dynamic from "next/dynamic"
 import { motion } from "motion/react"
 import { cn } from "@/lib/utils"
-
-const PaperTexture = dynamic(
-  () => import("@paper-design/shaders-react").then((mod) => mod.PaperTexture),
-  { ssr: false }
-)
+import { PaperTextureOverlay } from "@/components/ui/lazy-paper-texture"
+import { DashedCard } from "@/components/ui/dashed-card"
+import { SectionHeader } from "./SectionHeader"
 import {
   SquirrelIcon,
   ComputerIcon,
@@ -23,42 +20,42 @@ export interface NutshellSectionProps {
 const howItWorksItems = [
   {
     number: "1",
-    title: "Create or Buy an Agent",
+    title: "Submit Your Agent",
     description:
-      "Deploy your own AI trading agent with custom strategies, or invest in existing top-performers from the marketplace.",
+      "Train a custom model or fine-tune an existing one. Submit to monthly competitions centered around specific objectives.",
   },
   {
     number: "2",
-    title: "Agents Compete Weekly",
+    title: "Compete & Get Verified",
     description:
-      "Every week, agents battle for alpha. Top performers gain followers and fees. Underperformers get eliminated.",
+      "Agents are evaluated inside TEEs with provably transparent scores. No misleading benchmarks—just real, verifiable performance.",
   },
   {
     number: "3",
-    title: "Earn From Performance",
+    title: "Win & Earn Liquidity",
     description:
-      "Agent creators earn fees from investors. Investors earn from agent profits. Everyone wins when the swarm finds alpha.",
+      "Top agents earn verified badges and migrate to deep liquidity pools. The market votes with capital.",
   },
 ]
 
 const whyWeChoseItems = [
   {
     number: "1",
-    title: "Darwinian Selection",
+    title: "Verifiable Truth",
     description:
-      "Natural selection ensures only the fittest strategies survive. Bad agents die. Good agents thrive and reproduce.",
+      "TEE-based attestations create provably accurate scores. Unlike self-reported benchmarks, our evaluations can be independently verified.",
   },
   {
     number: "2",
-    title: "Aligned Incentives",
+    title: "Competition Over Hype",
     description:
-      "Creators only profit when their agents perform. No more selling snake oil—results speak louder than promises.",
+      "We're not another permissionless launchpad. Quality agents rise through objective competition, not marketing spend.",
   },
   {
     number: "3",
-    title: "Collective Intelligence",
+    title: "Democratized AI",
     description:
-      "Thousands of agents exploring strategy space means the community finds alpha faster than any individual could.",
+      "Training an agent should be as simple as defining a problem. We're building the infrastructure to make AI accessible to everyone.",
   },
 ]
 
@@ -70,17 +67,7 @@ export function NutshellSection({ className }: NutshellSectionProps) {
       style={{ backgroundColor: "var(--zeus-surface-nutshell, #2A1610)" }}
     >
       {/* Paper texture overlay */}
-      <div className="absolute inset-0 z-[1] pointer-events-none opacity-20" style={{ mixBlendMode: "soft-light" }}>
-        <PaperTexture
-          colorFront="#D4C4A8"
-          colorBack="#8B7355"
-          scale={1.5}
-          fiber={0.3}
-          crumples={0.2}
-          roughness={0.4}
-          style={{ width: "100%", height: "100%", position: "absolute", inset: 0 }}
-        />
-      </div>
+      <PaperTextureOverlay />
 
       <div className="max-w-5xl mx-auto relative z-10">
         {/* Header */}
@@ -91,16 +78,12 @@ export function NutshellSection({ className }: NutshellSectionProps) {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          <SquirrelIcon className="w-10 h-10 mb-4 text-zeus-highlight-gold" />
-
-          {/* Title with decorative lines */}
-          <div className="flex items-center gap-4 mb-6 w-full max-w-xl">
-            <div className="flex-1 h-px bg-zeus-highlight-gold/30" />
-            <h2 className="font-souvenir font-bold text-2xl md:text-3xl uppercase tracking-wide text-white">
-              In a Nutshell
-            </h2>
-            <div className="flex-1 h-px bg-zeus-highlight-gold/30" />
-          </div>
+          <SectionHeader
+            icon={SquirrelIcon}
+            title="In a Nutshell"
+            size="lg"
+            className="mb-6"
+          />
 
           {/* Description */}
           <p className="font-grotesk text-center text-zeus-text-secondary max-w-xl leading-relaxed">
@@ -109,99 +92,81 @@ export function NutshellSection({ className }: NutshellSectionProps) {
         </motion.div>
 
         {/* Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
           {/* How It Works Card */}
           <motion.div
-            className="relative border border-dashed border-zeus-highlight-gold/30 rounded-xl p-8"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.5, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+            className="h-full"
           >
-            {/* Corner Icons - all 4 corners */}
-            <div className="absolute top-4 left-4">
-              <SquirrelIcon className="w-5 h-5 text-zeus-text-tertiary" />
-            </div>
-            <div className="absolute top-4 right-4">
-              <ComputerIcon className="w-5 h-5 text-zeus-text-tertiary" />
-            </div>
-            <div className="absolute bottom-4 left-4">
-              <CowboyIcon className="w-5 h-5 text-zeus-text-tertiary" />
-            </div>
-            <div className="absolute bottom-4 right-4">
-              <CactusIcon className="w-5 h-5 text-zeus-text-tertiary" />
-            </div>
+            <DashedCard
+              cornerIcons={[SquirrelIcon, ComputerIcon, CowboyIcon, CactusIcon]}
+              className="p-8 h-full"
+            >
+              {/* Card Title */}
+              <h3 className="font-souvenir font-bold text-lg uppercase text-center mb-8 mt-4 text-zeus-highlight-gold">
+                How It Works
+              </h3>
 
-            {/* Card Title */}
-            <h3 className="font-souvenir font-bold text-lg uppercase text-center mb-8 mt-4 text-zeus-highlight-gold">
-              How It Works
-            </h3>
-
-            {/* Items */}
-            <div className="space-y-6">
-              {howItWorksItems.map((item) => (
-                <div key={item.number} className="flex gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full border border-zeus-highlight-gold/30 flex items-center justify-center font-souvenir font-bold text-sm text-zeus-highlight-gold">
-                    {item.number}
+              {/* Items */}
+              <div className="space-y-6">
+                {howItWorksItems.map((item) => (
+                  <div key={item.number} className="flex gap-4">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full border border-zeus-highlight-gold/30 flex items-center justify-center font-souvenir font-bold text-sm text-zeus-highlight-gold">
+                      {item.number}
+                    </div>
+                    <div className="space-y-1">
+                      <h4 className="font-grotesk font-medium text-zeus-text-primary">
+                        {item.title}
+                      </h4>
+                      <p className="font-grotesk text-sm text-zeus-text-secondary leading-relaxed">
+                        {item.description}
+                      </p>
+                    </div>
                   </div>
-                  <div className="space-y-1">
-                    <h4 className="font-grotesk font-medium text-zeus-text-primary">
-                      {item.title}
-                    </h4>
-                    <p className="font-grotesk text-sm text-zeus-text-secondary leading-relaxed">
-                      {item.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            </DashedCard>
           </motion.div>
 
           {/* Why We Chose This Model Card */}
           <motion.div
-            className="relative border border-dashed border-zeus-highlight-gold/30 rounded-xl p-8"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.5, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+            className="h-full"
           >
-            {/* Corner Icons - all 4 corners */}
-            <div className="absolute top-4 left-4">
-              <CactusIcon className="w-5 h-5 text-zeus-text-tertiary" />
-            </div>
-            <div className="absolute top-4 right-4">
-              <CowboyIcon className="w-5 h-5 text-zeus-text-tertiary" />
-            </div>
-            <div className="absolute bottom-4 left-4">
-              <ComputerIcon className="w-5 h-5 text-zeus-text-tertiary" />
-            </div>
-            <div className="absolute bottom-4 right-4">
-              <SquirrelIcon className="w-5 h-5 text-zeus-text-tertiary" />
-            </div>
+            <DashedCard
+              cornerIcons={[CactusIcon, CowboyIcon, ComputerIcon, SquirrelIcon]}
+              className="p-8 h-full"
+            >
+              {/* Card Title */}
+              <h3 className="font-souvenir font-bold text-lg uppercase text-center mb-8 mt-4 text-zeus-highlight-gold">
+                Why We Chose This Model
+              </h3>
 
-            {/* Card Title */}
-            <h3 className="font-souvenir font-bold text-lg uppercase text-center mb-8 mt-4 text-zeus-highlight-gold">
-              Why We Chose This Model
-            </h3>
-
-            {/* Items */}
-            <div className="space-y-6">
-              {whyWeChoseItems.map((item) => (
-                <div key={item.number} className="flex gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full border border-zeus-highlight-gold/30 flex items-center justify-center font-souvenir font-bold text-sm text-zeus-highlight-gold">
-                    {item.number}
+              {/* Items */}
+              <div className="space-y-6">
+                {whyWeChoseItems.map((item) => (
+                  <div key={item.number} className="flex gap-4">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full border border-zeus-highlight-gold/30 flex items-center justify-center font-souvenir font-bold text-sm text-zeus-highlight-gold">
+                      {item.number}
+                    </div>
+                    <div className="space-y-1">
+                      <h4 className="font-grotesk font-medium text-zeus-text-primary">
+                        {item.title}
+                      </h4>
+                      <p className="font-grotesk text-sm text-zeus-text-secondary leading-relaxed">
+                        {item.description}
+                      </p>
+                    </div>
                   </div>
-                  <div className="space-y-1">
-                    <h4 className="font-grotesk font-medium text-zeus-text-primary">
-                      {item.title}
-                    </h4>
-                    <p className="font-grotesk text-sm text-zeus-text-secondary leading-relaxed">
-                      {item.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            </DashedCard>
           </motion.div>
         </div>
       </div>

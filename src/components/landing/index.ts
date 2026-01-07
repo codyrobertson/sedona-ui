@@ -21,3 +21,15 @@ export type { AgentsSectionProps } from "./AgentsSection"
 
 export { FAQSection } from "./FAQSection"
 export type { FAQSectionProps } from "./FAQSection"
+
+export { SectionHeader } from "./SectionHeader"
+export type { SectionHeaderProps } from "./SectionHeader"
+
+export { ProblemStatement } from "./ProblemStatement"
+export type { ProblemStatementProps } from "./ProblemStatement"
+
+export { TrustedByMarquee } from "./TrustedByMarquee"
+export type { TrustedByMarqueeProps } from "./TrustedByMarquee"
+
+export { DeveloperStats } from "./DeveloperStats"
+export type { DeveloperStatsProps } from "./DeveloperStats"

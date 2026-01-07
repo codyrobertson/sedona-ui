@@ -1,11 +1,13 @@
 "use client"
 
 import * as React from "react"
-import dynamic from "next/dynamic"
 import { motion } from "motion/react"
 import { ChevronDown, Rocket, Code } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { PaperTextureOverlay } from "@/components/ui/lazy-paper-texture"
+import { DashedCard } from "@/components/ui/dashed-card"
+import { SectionHeader } from "./SectionHeader"
 import {
   SquirrelIcon,
   ComputerIcon,
@@ -13,11 +15,6 @@ import {
   CactusIcon,
 } from "@/components/ui/icons/western-icons"
 import * as Accordion from "@radix-ui/react-accordion"
-
-const PaperTexture = dynamic(
-  () => import("@paper-design/shaders-react").then((mod) => mod.PaperTexture),
-  { ssr: false }
-)
 
 export interface FAQSectionProps {
   className?: string
@@ -27,27 +24,27 @@ export interface FAQSectionProps {
 const faqItems = [
   {
     question: "What is Sedona?",
-    answer: "Sedona is a decentralized launchpad for AI trading agents. It allows developers to build, deploy, and monetize autonomous trading strategies while investors can discover and invest in top-performing agents.",
+    answer: "Sedona Marketplace is a competition-based launchpad for AI agents and open-source models. Agents compete monthly, scores are verified via TEEs (Trusted Execution Environments), and winners earn enhanced liquidity.",
   },
   {
     question: "How do AI agents compete?",
-    answer: "Every week, agents compete in live trading competitions. Performance is tracked transparently on-chain. Top performers gain followers and generate fees, while underperformers are gradually eliminated from the marketplace.",
+    answer: "Monthly competitions are centered around specific objectives. Agents are evaluated inside Trusted Execution Environments (TEEs), producing verifiable scores that can be independently confirmed. Winners are determined by highest TWAP market cap.",
   },
   {
-    question: "How do I earn as a creator?",
-    answer: "Agent creators earn performance fees from investors who follow their agents. The better your agent performs, the more investors it attracts, and the more fees you earn. It's a meritocratic system where results speak louder than promises.",
+    question: "What is verifiable evaluation?",
+    answer: "All agent scores are generated inside TEEs—secure processor areas that provide cryptographic proof of accurate evaluation. These attestations can be verified using CPU manufacturer tools, ensuring no misleading benchmarks.",
   },
   {
-    question: "How do I earn as an investor?",
-    answer: "Investors earn by backing successful agents. When an agent you've invested in generates profits, you receive a share proportional to your stake. You can diversify across multiple agents to spread risk.",
+    question: "How is Sedona different from other launchpads?",
+    answer: "Unlike permissionless platforms, Sedona uses competition-based discovery. Agents must prove their worth through objective evaluation, not just marketing. This aligns incentives between users and builders.",
+  },
+  {
+    question: "What happens to winning agents?",
+    answer: "Winners receive verified scores publicly displayed alongside their tokens. Their tokens migrate to Uniswap V2-style pools with enhanced liquidity depth, giving them the best chance to succeed long-term.",
   },
   {
     question: "Is Sedona open source?",
-    answer: "Yes, Sedona is fully open-source and transparent. Every line of code is auditable, and the protocol is governed by the community. We believe in building trust through transparency.",
-  },
-  {
-    question: "What blockchain is Sedona built on?",
-    answer: "Sedona is built on Solana for its speed, low fees, and robust DeFi ecosystem. This allows for real-time agent performance tracking and instant settlement of trades.",
+    answer: "Yes, Sedona is fully open-source and transparent. Every line of code is auditable. We believe in building trust through transparency and verifiable systems.",
   },
 ]
 
@@ -89,17 +86,7 @@ export function FAQSection({ className, onLaunchAgent }: FAQSectionProps) {
       className={cn("py-20 px-6 relative overflow-hidden bg-zeus-surface-default", className)}
     >
       {/* Paper texture overlay */}
-      <div className="absolute inset-0 z-[1] pointer-events-none opacity-20" style={{ mixBlendMode: "soft-light" }}>
-        <PaperTexture
-          colorFront="#D4C4A8"
-          colorBack="#8B7355"
-          scale={1.5}
-          fiber={0.3}
-          crumples={0.2}
-          roughness={0.4}
-          style={{ width: "100%", height: "100%", position: "absolute", inset: 0 }}
-        />
-      </div>
+      <PaperTextureOverlay />
 
       <div className="max-w-3xl mx-auto relative z-10">
         {/* What Will You Build Header */}
@@ -110,19 +97,12 @@ export function FAQSection({ className, onLaunchAgent }: FAQSectionProps) {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          {/* Icon */}
-          <div className="flex justify-center mb-4">
-            <CowboyIcon className="w-10 h-10 text-zeus-highlight-gold" />
-          </div>
-
-          {/* Title with decorative lines */}
-          <div className="flex items-center gap-4 mb-6 justify-center">
-            <div className="w-16 h-px bg-zeus-highlight-gold/30" />
-            <h2 className="font-souvenir font-bold text-2xl md:text-3xl uppercase tracking-wide text-white">
-              What Will You Build?
-            </h2>
-            <div className="w-16 h-px bg-zeus-highlight-gold/30" />
-          </div>
+          <SectionHeader
+            icon={CowboyIcon}
+            title="What Will You Build?"
+            size="lg"
+            className="mb-6"
+          />
 
           {/* Description */}
           <p className="font-grotesk text-zeus-text-secondary max-w-lg mx-auto leading-relaxed mb-8">
@@ -143,6 +123,7 @@ export function FAQSection({ className, onLaunchAgent }: FAQSectionProps) {
             <Button
               variant="outline"
               size="lg"
+              onClick={() => window.open('#', '_blank')}
               icon={<Code className="w-4 h-4" />}
               iconPosition="right"
             >
@@ -153,49 +134,39 @@ export function FAQSection({ className, onLaunchAgent }: FAQSectionProps) {
 
         {/* FAQ Card */}
         <motion.div
-          className="relative border border-dashed border-zeus-highlight-gold/30 rounded-xl p-8 pb-16 bg-zeus-surface-elevated/50 backdrop-blur-sm"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.5, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          {/* Corner Icons */}
-          <div className="absolute top-4 left-4">
-            <SquirrelIcon className="w-5 h-5 text-zeus-text-tertiary" />
-          </div>
-          <div className="absolute top-4 right-4">
-            <ComputerIcon className="w-5 h-5 text-zeus-text-tertiary" />
-          </div>
-          <div className="absolute bottom-4 left-4">
-            <CowboyIcon className="w-5 h-5 text-zeus-text-tertiary" />
-          </div>
-          <div className="absolute bottom-4 right-4">
-            <CactusIcon className="w-5 h-5 text-zeus-text-tertiary" />
-          </div>
-
-          {/* FAQ Header */}
-          <div className="text-center mb-8 mt-4">
-            <CactusIcon className="w-8 h-8 mx-auto mb-3 text-zeus-highlight-gold" />
-            <div className="flex items-center gap-4 justify-center">
-              <div className="w-12 h-px bg-zeus-highlight-gold/30" />
-              <h3 className="font-souvenir font-bold text-lg uppercase tracking-wide text-white">
-                Frequently Asked Questions
-              </h3>
-              <div className="w-12 h-px bg-zeus-highlight-gold/30" />
+          <DashedCard
+            cornerIcons={[SquirrelIcon, ComputerIcon, CowboyIcon, CactusIcon]}
+            className="p-8 pb-16"
+          >
+            {/* FAQ Header */}
+            <div className="text-center mb-8 mt-4">
+              <CactusIcon className="w-8 h-8 mx-auto mb-3 text-zeus-highlight-gold" />
+              <div className="flex items-center gap-4 justify-center">
+                <div className="w-12 h-px bg-zeus-highlight-gold/30" />
+                <h3 className="font-souvenir font-bold text-lg uppercase tracking-wide text-white">
+                  Frequently Asked Questions
+                </h3>
+                <div className="w-12 h-px bg-zeus-highlight-gold/30" />
+              </div>
             </div>
-          </div>
 
-          {/* Accordion */}
-          <Accordion.Root type="single" collapsible className="space-y-0">
-            {faqItems.map((item, index) => (
-              <AccordionItem
-                key={index}
-                value={`item-${index}`}
-                question={item.question}
-                answer={item.answer}
-              />
-            ))}
-          </Accordion.Root>
+            {/* Accordion */}
+            <Accordion.Root type="single" collapsible className="space-y-0">
+              {faqItems.map((item, index) => (
+                <AccordionItem
+                  key={index}
+                  value={`item-${index}`}
+                  question={item.question}
+                  answer={item.answer}
+                />
+              ))}
+            </Accordion.Root>
+          </DashedCard>
         </motion.div>
       </div>
     </section>
