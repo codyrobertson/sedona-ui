@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
 import {
   Dialog,
@@ -44,6 +45,7 @@ const AgentLaunchModal = ({
   onLaunch,
   onCreateAgent,
 }: AgentLaunchModalProps) => {
+  const router = useRouter()
   const [searchQuery, setSearchQuery] = React.useState("")
   const [selectedModel, setSelectedModel] = React.useState<string | null>(null)
   const [view, setView] = React.useState<ModalView>(isAuthenticated ? "form" : "signin")
@@ -93,7 +95,7 @@ const AgentLaunchModal = ({
     // Redirect after 2s
     setTimeout(() => {
       onOpenChange(false)
-      window.location.href = `/trading/${ticker.toLowerCase()}`
+      router.push(`/trading/${ticker.toLowerCase()}`)
     }, 2000)
   }
 

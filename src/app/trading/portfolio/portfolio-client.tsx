@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { useRouter } from "next/navigation"
 import {
   Header,
   PlatformStats,
@@ -49,11 +50,12 @@ const SAMPLE_SUMMARY = {
 }
 
 export default function PortfolioClient() {
+  const router = useRouter()
   const [sortBy, setSortBy] = React.useState("Highest Value")
   const [currency, setCurrency] = React.useState<"USD" | "SOL">("USD")
 
   const handleDisconnect = () => {
-    window.location.href = "/trading"
+    router.push("/trading")
   }
 
   return (

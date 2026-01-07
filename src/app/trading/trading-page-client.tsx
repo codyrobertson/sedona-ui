@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { useRouter } from "next/navigation"
 import {
   Header,
   PlatformStats,
@@ -34,6 +35,7 @@ const INFO_CARDS = [
 ]
 
 export default function TradingPageClient() {
+  const router = useRouter()
   const [showModal, setShowModal] = React.useState(false)
   const [sortBy, setSortBy] = React.useState("Highest Market Capitalization")
   const [showHero, setShowHero] = React.useState(true)
@@ -45,7 +47,7 @@ export default function TradingPageClient() {
       <Header
         onCreateCoin={() => setShowModal(true)}
         onConnect={() => {
-          window.location.href = "/trading/portfolio"
+          router.push("/trading/portfolio")
         }}
       />
 
@@ -73,7 +75,7 @@ export default function TradingPageClient() {
             onSortChange={setSortBy}
             onSearch={() => {}}
             onAgentSelect={(ticker) => {
-              window.location.href = `/trading/${ticker.toLowerCase()}`
+              router.push(`/trading/${ticker.toLowerCase()}`)
             }}
           />
         </section>
