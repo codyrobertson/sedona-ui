@@ -153,18 +153,19 @@ const TokenSwapCard = React.forwardRef<HTMLDivElement, TokenSwapCardProps>(
         <CardContent className="p-4 space-y-4">
           {/* Token Header */}
           <div className="flex items-center gap-3">
-            <div className="relative flex-shrink-0">
+            <div className="relative flex-shrink-0" style={{ width: 44, height: 44 }}>
               <TokenAvatar ticker={ticker} size="lg" />
               {/* CA copy button */}
               <button
                 onClick={handleCopy}
-                className="absolute bottom-0 right-0 translate-x-1 translate-y-1 p-1 rounded-full bg-zeus-surface-elevated border border-zeus-border-alpha hover:bg-zeus-surface-neutral transition-colors"
+                className="absolute p-0.5 rounded-full bg-zeus-surface-elevated border border-zeus-border-alpha hover:bg-zeus-surface-neutral transition-colors"
+                style={{ bottom: -6, right: -6 }}
                 title={copied ? "Copied!" : "Copy contract address"}
               >
                 {copied ? (
-                  <Icon icon="check" className="w-2.5 h-2.5 text-zeus-status-success" />
+                  <Icon icon="check" className="w-2 h-2 text-zeus-status-success" />
                 ) : (
-                  <Icon icon="copy" className="w-2.5 h-2.5 text-zeus-text-tertiary" />
+                  <Icon icon="copy" className="w-2 h-2 text-zeus-text-tertiary" />
                 )}
               </button>
             </div>
