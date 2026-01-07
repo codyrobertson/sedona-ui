@@ -3,6 +3,31 @@
  * Extracted from swap-widget.tsx for reusability and testability
  */
 
+// =============================================================================
+// TYPES
+// =============================================================================
+
+export interface Token {
+  symbol: string
+  name: string
+  imageUrl?: string
+  decimals?: number
+  balance: string
+  price: number
+  isNative?: boolean
+  minAmount?: string
+  maxAmount?: string
+}
+
+export interface SwapQuote {
+  inputAmount: string
+  outputAmount: string
+  rate: number
+  priceImpact: number
+  fee: number
+  route?: string[]
+}
+
 /**
  * Format a number with thousand separators and optional decimal truncation
  * @param value - Number or string to format
