@@ -43,7 +43,7 @@ export function LandingHero({
       variants={staggerChildren}
       initial="initial"
       animate="animate"
-      className={cn("text-center py-16 px-6", className)}
+      className={cn("text-center pt-6 pb-12 px-6", className)}
     >
       {/* Live Badge */}
       <motion.div variants={fadeUp} transition={spring} className="mb-6">

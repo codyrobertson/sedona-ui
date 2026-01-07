@@ -45,13 +45,24 @@ export function LandingPageWrapper({
   onLaunchAgent,
   className,
 }: LandingPageWrapperProps) {
+  // Track if this is initial mount - skip animations on first render
+  const [hasHydrated, setHasHydrated] = React.useState(false)
+
+  React.useEffect(() => {
+    // After first render, enable animations for subsequent toggles
+    setHasHydrated(true)
+  }, [])
+
+  // Skip initial animations on first load for instant content
+  const shouldAnimate = hasHydrated
+
   return (
     <div className={cn("relative", className)}>
       {/* Hero section - fixed height container */}
       <AnimatePresence>
         {isHeroMode && (
           <motion.div
-            initial={{ opacity: 0 }}
+            initial={shouldAnimate ? { opacity: 0 } : false}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={transition}
@@ -100,7 +111,7 @@ export function LandingPageWrapper({
         <AnimatePresence>
           {isHeroMode && (
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
+              initial={shouldAnimate ? { opacity: 0, y: -20 } : false}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={transition}
@@ -140,7 +151,7 @@ export function LandingPageWrapper({
             <AnimatePresence>
               {isHeroMode && (
                 <motion.div
-                  initial={{ opacity: 0 }}
+                  initial={shouldAnimate ? { opacity: 0 } : false}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={transition}
@@ -164,7 +175,7 @@ export function LandingPageWrapper({
               <AnimatePresence>
                 {isHeroMode && (
                   <motion.div
-                    initial={{ opacity: 0 }}
+                    initial={shouldAnimate ? { opacity: 0 } : false}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={transition}
@@ -193,7 +204,7 @@ export function LandingPageWrapper({
         <AnimatePresence>
           {isHeroMode && (
             <motion.div
-              initial={{ opacity: 0 }}
+              initial={shouldAnimate ? { opacity: 0 } : false}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={transition}
