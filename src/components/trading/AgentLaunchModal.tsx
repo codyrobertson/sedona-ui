@@ -127,11 +127,14 @@ const AgentLaunchModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[680px] bg-zeus-surface-neutral border-zeus-border-alpha p-0 gap-0 rounded-lg overflow-hidden [&>button]:hidden">
-        {/* Two Column Layout */}
-        <div className="grid grid-cols-[280px_1fr] min-h-[480px]">
-          {/* Left Column - Repo List or Token Preview */}
-          <div className="p-4 border-r border-zeus-border-alpha flex flex-col">
+      <DialogContent className="max-w-[95vw] sm:max-w-[680px] bg-zeus-surface-neutral border-zeus-border-alpha p-0 gap-0 rounded-lg overflow-hidden [&>button]:hidden max-h-[90vh] overflow-y-auto">
+        {/* Two Column Layout - stacks on mobile */}
+        <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] min-h-[400px] md:min-h-[480px]">
+          {/* Left Column - Repo List or Token Preview (hidden on mobile in form/creating view) */}
+          <div className={cn(
+            "p-3 sm:p-4 border-b md:border-b-0 md:border-r border-zeus-border-alpha flex flex-col",
+            (view === "form" || view === "creating") && "hidden md:flex"
+          )}>
             {view === "creating" ? (
               // Token Preview during creation
               <>
@@ -191,7 +194,7 @@ const AgentLaunchModal = ({
 
                 {/* Repo List */}
                 <div className={cn(
-                  "flex-1 overflow-y-auto space-y-1.5",
+                  "flex-1 overflow-y-auto space-y-1.5 max-h-[200px] md:max-h-none",
                   view === "signin" && "blur-[2px] pointer-events-none select-none"
                 )}>
                   {filteredRepos.map((repo) => {
@@ -237,7 +240,7 @@ const AgentLaunchModal = ({
           {/* Right Column */}
           <div className={cn(
             "flex flex-col",
-            view === "creating" ? "p-0" : "p-5"
+            view === "creating" ? "p-0" : "p-4 sm:p-5"
           )}>
             {view === "signin" ? (
               // Sign in with HuggingFace

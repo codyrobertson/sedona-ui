@@ -85,8 +85,8 @@ const PlatformStats = React.forwardRef<HTMLDivElement, PlatformStatsProps>(
         {...props}
       >
         {/* Left: Platform Stats */}
-        <div className="flex items-center gap-3 px-6 py-2 flex-shrink-0">
-          <span className="text-zeus-text-secondary text-caption-m">
+        <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-6 py-2 flex-shrink-0">
+          <span className="text-zeus-text-secondary text-caption-m hidden sm:block">
             Platform Stats
           </span>
 
@@ -108,21 +108,23 @@ const PlatformStats = React.forwardRef<HTMLDivElement, PlatformStatsProps>(
             variant="warning"
           />
 
-          <StatBadge
-            icon={<BarChart3 className="w-3.5 h-3.5" />}
-            label="Tokens:"
-            numericValue={tokens}
-            type="number"
-            variant="info"
-          />
+          <div className="hidden sm:block">
+            <StatBadge
+              icon={<BarChart3 className="w-3.5 h-3.5" />}
+              label="Tokens:"
+              numericValue={tokens}
+              type="number"
+              variant="info"
+            />
+          </div>
         </div>
 
-        {/* Divider */}
-        <div className="w-px h-6 bg-zeus-border-alpha flex-shrink-0" />
+        {/* Divider - hidden on mobile */}
+        <div className="w-px h-6 bg-zeus-border-alpha flex-shrink-0 hidden md:block" />
 
-        {/* Right: Recent Trades for ticker (detail page) */}
+        {/* Right: Recent Trades for ticker (detail page) - hidden on mobile */}
         {showTrades && (
-          <div className="flex items-center flex-1 overflow-hidden">
+          <div className="hidden md:flex items-center flex-1 overflow-hidden">
             <span className="text-zeus-text-secondary text-caption-m px-3 flex-shrink-0">
               {ticker ? `$${ticker} Activity` : "Recent Trades"}
             </span>
@@ -134,9 +136,9 @@ const PlatformStats = React.forwardRef<HTMLDivElement, PlatformStatsProps>(
           </div>
         )}
 
-        {/* Right: Top Pools Label + Scrolling Marquee (main page) */}
+        {/* Right: Top Pools Label + Scrolling Marquee (main page) - hidden on mobile */}
         {showPools && (
-          <div className="flex items-center flex-1 overflow-hidden">
+          <div className="hidden md:flex items-center flex-1 overflow-hidden">
             <span className="text-zeus-text-secondary text-caption-m px-3 flex-shrink-0">
               Top Pools
             </span>

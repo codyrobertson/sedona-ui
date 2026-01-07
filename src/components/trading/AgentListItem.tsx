@@ -49,18 +49,18 @@ const AgentListItem = React.forwardRef<HTMLDivElement, AgentListItemProps>(
       <div
         ref={ref}
         className={cn(
-          "grid grid-cols-[auto_1fr_100px_100px_100px] gap-4 px-4 py-4 hover:bg-zeus-surface-elevated/50 transition-colors cursor-pointer items-center",
+          "grid grid-cols-[auto_1fr_auto] sm:grid-cols-[auto_1fr_80px_80px] lg:grid-cols-[auto_1fr_100px_100px_100px] gap-2 sm:gap-4 px-3 sm:px-4 py-3 sm:py-4 hover:bg-zeus-surface-elevated/50 transition-colors cursor-pointer items-center",
           className
         )}
         onClick={onSelect}
         {...props}
       >
         {/* Rank + Avatar */}
-        <div className="flex items-center gap-3">
-          <span className="text-zeus-text-secondary text-caption-l w-4">{rank}.</span>
-          <Avatar className="w-10 h-10 border-2 border-sedona-500/30">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <span className="text-zeus-text-secondary text-caption-s sm:text-caption-l w-4">{rank}.</span>
+          <Avatar className="w-8 h-8 sm:w-10 sm:h-10 border-2 border-sedona-500/30">
             <AvatarImage src={avatarUrl} alt={name} />
-            <AvatarFallback className="bg-gradient-to-br from-sedona-500/20 to-sedona-600/30 text-sedona-500 font-semibold text-caption-l">
+            <AvatarFallback className="bg-gradient-to-br from-sedona-500/20 to-sedona-600/30 text-sedona-500 font-semibold text-caption-s sm:text-caption-l">
               {avatarFallback || name.charAt(0)}
             </AvatarFallback>
           </Avatar>
@@ -68,31 +68,41 @@ const AgentListItem = React.forwardRef<HTMLDivElement, AgentListItemProps>(
 
         {/* Token Info */}
         <div className="min-w-0">
-          <div className="flex items-center gap-2">
-            <span className="text-zeus-text-primary font-semibold hover:text-sedona-500 transition-colors">
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+            <span className="text-zeus-text-primary font-semibold hover:text-sedona-500 transition-colors text-caption-l sm:text-body-s truncate max-w-[120px] sm:max-w-none">
               {name}
             </span>
-            <Badge variant="default" className="text-[11px] px-1.5 py-0.5 h-5">
+            <Badge variant="default" className="text-[10px] sm:text-[11px] px-1 sm:px-1.5 py-0.5 h-4 sm:h-5 flex-shrink-0">
               ${ticker}
             </Badge>
           </div>
-          <p className="text-zeus-text-tertiary text-caption-m mt-0.5 truncate">
+          <p className="text-zeus-text-tertiary text-caption-s sm:text-caption-m mt-0.5 truncate hidden sm:block">
             {description}
           </p>
         </div>
 
-        {/* Change */}
-        <div className={cn("text-right font-semibold", changeColor)}>
+        {/* Change - always visible, shows MCap on mobile too */}
+        <div className="text-right sm:hidden">
+          <div className={cn("font-semibold text-caption-m", changeColor)}>
+            {changePrefix}{change24h.toFixed(2)}%
+          </div>
+          <div className="text-zeus-text-secondary text-caption-s">
+            {marketCap}
+          </div>
+        </div>
+
+        {/* Change - desktop */}
+        <div className={cn("text-right font-semibold hidden sm:block", changeColor)}>
           {changePrefix}{change24h.toFixed(2)}%
         </div>
 
-        {/* Market Cap */}
-        <div className="text-right text-zeus-text-primary font-semibold">
+        {/* Market Cap - hidden on mobile (shown in Change column) */}
+        <div className="text-right text-zeus-text-primary font-semibold hidden sm:block">
           {marketCap}
         </div>
 
-        {/* Volume */}
-        <div className={cn("text-right font-semibold flex items-center justify-end gap-1", volumeColor)}>
+        {/* Volume - hidden on mobile and tablet */}
+        <div className={cn("text-right font-semibold items-center justify-end gap-1 hidden lg:flex", volumeColor)}>
           {volume ? (
             <>
               {volume}

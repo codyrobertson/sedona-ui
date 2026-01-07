@@ -233,7 +233,7 @@ const PriceChart = React.forwardRef<HTMLDivElement, PriceChartProps>(
           </div>
 
           {/* Chart Area */}
-          <div className="h-[320px]">
+          <div className="h-[200px] sm:h-[260px] md:h-[320px]">
             {!mounted ? (
               <div className="absolute inset-0 flex items-center justify-center">
                 <span className="text-zeus-text-tertiary">Loading chart...</span>

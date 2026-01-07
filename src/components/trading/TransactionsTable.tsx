@@ -66,16 +66,16 @@ const TransactionsTable = React.forwardRef<HTMLDivElement, TransactionsTableProp
         <div className="bg-zeus-surface-default border border-zeus-border-alpha border-t-0 rounded-b-xl flex flex-col flex-1 min-h-0 overflow-hidden">
           {/* Scrollable table area */}
           <div className="flex-1 min-h-0 overflow-auto">
-            <table className="w-full min-w-[500px]">
+            <table className="w-full min-w-[380px] sm:min-w-[500px]">
               {/* Table Header */}
               <thead className="sticky top-0 bg-zeus-surface-default z-10">
-                <tr className="border-b border-zeus-border-alpha text-zeus-text-tertiary text-caption-l font-medium">
-                  <th className="text-left px-4 py-3 whitespace-nowrap">Date</th>
-                  <th className="text-left px-3 py-3">Trader</th>
-                  <th className="text-left px-3 py-3 whitespace-nowrap">TXN</th>
-                  <th className="text-right px-3 py-3 whitespace-nowrap">Price</th>
-                  <th className="text-right px-3 py-3 whitespace-nowrap">AMT/USD</th>
-                  <th className="text-right px-4 py-3 whitespace-nowrap">AMT/{ticker}</th>
+                <tr className="border-b border-zeus-border-alpha text-zeus-text-tertiary text-caption-s sm:text-caption-l font-medium">
+                  <th className="text-left px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">Date</th>
+                  <th className="text-left px-2 sm:px-3 py-2 sm:py-3 hidden sm:table-cell">Trader</th>
+                  <th className="text-left px-2 sm:px-3 py-2 sm:py-3 whitespace-nowrap">TXN</th>
+                  <th className="text-right px-2 sm:px-3 py-2 sm:py-3 whitespace-nowrap">Price</th>
+                  <th className="text-right px-2 sm:px-3 py-2 sm:py-3 whitespace-nowrap hidden md:table-cell">AMT/USD</th>
+                  <th className="text-right px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">AMT</th>
                 </tr>
               </thead>
               {/* Table Body */}
@@ -85,16 +85,16 @@ const TransactionsTable = React.forwardRef<HTMLDivElement, TransactionsTableProp
                     key={tx.id}
                     className="border-b border-zeus-border-alpha last:border-b-0 hover:bg-zeus-surface-neutral/30 transition-colors"
                   >
-                    <td className="text-zeus-text-tertiary text-caption-l font-mono px-4 py-3 whitespace-nowrap">
+                    <td className="text-zeus-text-tertiary text-caption-s sm:text-caption-l font-mono px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
                       {tx.date}
                     </td>
-                    <td className="text-zeus-text-secondary text-caption-l font-mono px-3 py-3">
-                      <span className="truncate block max-w-[180px]">{tx.trader}</span>
+                    <td className="text-zeus-text-secondary text-caption-s sm:text-caption-l font-mono px-2 sm:px-3 py-2 sm:py-3 hidden sm:table-cell">
+                      <span className="truncate block max-w-[80px] sm:max-w-[120px] md:max-w-[180px]">{tx.trader}</span>
                     </td>
-                    <td className="px-3 py-3">
+                    <td className="px-2 sm:px-3 py-2 sm:py-3">
                       <span
                         className={cn(
-                          "px-2.5 py-1 rounded text-caption-s font-semibold inline-block",
+                          "px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded text-[10px] sm:text-caption-s font-semibold inline-block",
                           tx.type === "BUY"
                             ? "bg-zeus-status-success/20 text-zeus-status-success"
                             : "bg-zeus-status-destructive/20 text-zeus-status-destructive"
@@ -104,15 +104,15 @@ const TransactionsTable = React.forwardRef<HTMLDivElement, TransactionsTableProp
                       </span>
                     </td>
                     <td className={cn(
-                      "text-right text-caption-l font-mono font-medium px-3 py-3 whitespace-nowrap",
+                      "text-right text-caption-s sm:text-caption-l font-mono font-medium px-2 sm:px-3 py-2 sm:py-3 whitespace-nowrap",
                       tx.type === "BUY" ? "text-zeus-status-success" : "text-zeus-status-destructive"
                     )}>
                       {tx.price}
                     </td>
-                    <td className="text-right text-caption-l font-mono text-zeus-text-primary px-3 py-3 whitespace-nowrap">
+                    <td className="text-right text-caption-s sm:text-caption-l font-mono text-zeus-text-primary px-2 sm:px-3 py-2 sm:py-3 whitespace-nowrap hidden md:table-cell">
                       {tx.amountUsd}
                     </td>
-                    <td className="text-right text-caption-l font-mono text-zeus-text-primary px-4 py-3 whitespace-nowrap">
+                    <td className="text-right text-caption-s sm:text-caption-l font-mono text-zeus-text-primary px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
                       {tx.amountToken}
                     </td>
                   </tr>

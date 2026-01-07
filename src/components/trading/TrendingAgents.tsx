@@ -80,12 +80,12 @@ const TrendingAgents = React.forwardRef<HTMLDivElement, TrendingAgentsProps>(
         {/* Agent Table */}
         <div className="rounded-lg border border-zeus-border-alpha overflow-hidden">
           {/* Table Header */}
-          <div className="grid grid-cols-[auto_1fr_100px_100px_100px] gap-4 px-4 py-3 bg-zeus-surface-elevated border-b border-zeus-border-alpha text-zeus-text-tertiary text-caption-s uppercase tracking-wider">
-            <div className="w-10">#</div>
+          <div className="grid grid-cols-[auto_1fr_auto] sm:grid-cols-[auto_1fr_80px_80px] lg:grid-cols-[auto_1fr_100px_100px_100px] gap-2 sm:gap-4 px-3 sm:px-4 py-2 sm:py-3 bg-zeus-surface-elevated border-b border-zeus-border-alpha text-zeus-text-tertiary text-caption-s uppercase tracking-wider">
+            <div className="w-8 sm:w-10">#</div>
             <div>Token</div>
             <div className="text-right">Change</div>
-            <div className="text-right">MCap</div>
-            <div className="text-right">Volume</div>
+            <div className="text-right hidden sm:block">MCap</div>
+            <div className="text-right hidden lg:block">Volume</div>
           </div>
 
           {/* Table Body */}

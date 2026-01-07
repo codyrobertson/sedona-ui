@@ -126,17 +126,17 @@ export default function PortfolioClient() {
         </section>
 
         {/* Portfolio Content */}
-        <section className="px-6 pt-4 pb-20" aria-label="Portfolio">
+        <section className="px-3 sm:px-6 pt-4 pb-20" aria-label="Portfolio">
           {/* Unified Header */}
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 mb-4 sm:mb-6">
             {/* Tab Navigation + Sort */}
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-3 sm:gap-6">
               {/* Tabs as text buttons */}
               <div className="flex items-center gap-1">
                 <button
                   onClick={() => setActiveTab("holdings")}
                   className={cn(
-                    "text-heading-md font-bold transition-colors",
+                    "text-body-l sm:text-heading-md font-bold transition-colors",
                     activeTab === "holdings"
                       ? "text-zeus-text-primary"
                       : "text-zeus-text-tertiary hover:text-zeus-text-secondary"
@@ -144,11 +144,11 @@ export default function PortfolioClient() {
                 >
                   Holdings
                 </button>
-                <span className="text-zeus-text-tertiary text-heading-md font-bold mx-2">/</span>
+                <span className="text-zeus-text-tertiary text-body-l sm:text-heading-md font-bold mx-1 sm:mx-2">/</span>
                 <button
                   onClick={() => setActiveTab("my-agents")}
                   className={cn(
-                    "text-heading-md font-bold transition-colors",
+                    "text-body-l sm:text-heading-md font-bold transition-colors",
                     activeTab === "my-agents"
                       ? "text-zeus-text-primary"
                       : "text-zeus-text-tertiary hover:text-zeus-text-secondary"
@@ -163,20 +163,15 @@ export default function PortfolioClient() {
                 value={activeTab === "holdings" ? sortBy : agentSortBy}
                 onValueChange={activeTab === "holdings" ? setSortBy : setAgentSortBy}
               >
-                <SelectTrigger className="h-auto w-auto gap-1 border-0 bg-transparent px-0 py-0 text-caption-l text-zeus-text-tertiary shadow-none hover:text-zeus-text-secondary focus:ring-0">
+                <SelectTrigger className="h-auto w-auto gap-1 border-0 bg-transparent px-0 py-0 text-caption-s sm:text-caption-l text-zeus-text-tertiary shadow-none hover:text-zeus-text-secondary focus:ring-0">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-zeus-surface-elevated border-zeus-border-alpha min-w-[140px]">
+                <SelectContent className="min-w-[140px]">
                   {(activeTab === "holdings" ? sortOptions : agentSortOptions).map((option) => (
                     <SelectItem
                       key={option}
                       value={option}
-                      className={cn(
-                        "text-caption-l hover:bg-zeus-surface-neutral cursor-pointer",
-                        option === (activeTab === "holdings" ? sortBy : agentSortBy)
-                          ? "text-sedona-500"
-                          : "text-zeus-text-primary"
-                      )}
+                      className="text-caption-l cursor-pointer"
                     >
                       {option}
                     </SelectItem>
@@ -185,40 +180,40 @@ export default function PortfolioClient() {
               </Select>
             </div>
 
-            {/* Stats Pills - change based on tab */}
-            <div className="flex items-center gap-3">
+            {/* Stats Pills - change based on tab, hidden on mobile */}
+            <div className="hidden sm:flex items-center gap-2 sm:gap-3">
               {activeTab === "holdings" ? (
                 <>
-                  <div className="bg-zeus-surface-elevated border border-zeus-border-alpha rounded-lg px-4 py-2">
-                    <span className="text-zeus-text-tertiary text-caption-l">Value</span>
-                    <span className="text-zeus-text-primary text-body-m font-bold ml-2">
+                  <div className="bg-zeus-surface-elevated border border-zeus-border-alpha rounded-lg px-3 sm:px-4 py-1.5 sm:py-2">
+                    <span className="text-zeus-text-tertiary text-caption-s sm:text-caption-l">Value</span>
+                    <span className="text-zeus-text-primary text-body-s sm:text-body-m font-bold ml-2">
                       {SAMPLE_SUMMARY.totalValue}
                     </span>
                   </div>
-                  <div className="bg-zeus-surface-elevated border border-zeus-border-alpha rounded-lg px-4 py-2">
-                    <span className="text-zeus-text-tertiary text-caption-l">Tokens</span>
-                    <span className="text-zeus-text-primary text-body-m font-bold ml-2">
+                  <div className="bg-zeus-surface-elevated border border-zeus-border-alpha rounded-lg px-3 sm:px-4 py-1.5 sm:py-2">
+                    <span className="text-zeus-text-tertiary text-caption-s sm:text-caption-l">Tokens</span>
+                    <span className="text-zeus-text-primary text-body-s sm:text-body-m font-bold ml-2">
                       {SAMPLE_SUMMARY.tokenCount}
                     </span>
                   </div>
                 </>
               ) : (
                 <>
-                  <div className="bg-zeus-surface-elevated border border-zeus-border-alpha rounded-lg px-4 py-2">
-                    <span className="text-zeus-text-tertiary text-caption-l">Agents</span>
-                    <span className="text-zeus-text-primary text-body-m font-bold ml-2">
+                  <div className="bg-zeus-surface-elevated border border-zeus-border-alpha rounded-lg px-3 sm:px-4 py-1.5 sm:py-2">
+                    <span className="text-zeus-text-tertiary text-caption-s sm:text-caption-l">Agents</span>
+                    <span className="text-zeus-text-primary text-body-s sm:text-body-m font-bold ml-2">
                       {agentStats.totalAgents}
                     </span>
                   </div>
-                  <div className="bg-zeus-surface-elevated border border-zeus-border-alpha rounded-lg px-4 py-2">
-                    <span className="text-zeus-text-tertiary text-caption-l">Best Score</span>
-                    <span className="text-zeus-status-success text-body-m font-bold ml-2">
+                  <div className="bg-zeus-surface-elevated border border-zeus-border-alpha rounded-lg px-3 sm:px-4 py-1.5 sm:py-2 hidden md:block">
+                    <span className="text-zeus-text-tertiary text-caption-s sm:text-caption-l">Best Score</span>
+                    <span className="text-zeus-status-success text-body-s sm:text-body-m font-bold ml-2">
                       {agentStats.bestScore.toFixed(1)}
                     </span>
                   </div>
-                  <div className="bg-zeus-surface-elevated border border-zeus-border-alpha rounded-lg px-4 py-2">
-                    <span className="text-zeus-text-tertiary text-caption-l">Earnings</span>
-                    <span className="text-zeus-highlight-gold text-body-m font-bold ml-2">
+                  <div className="bg-zeus-surface-elevated border border-zeus-border-alpha rounded-lg px-3 sm:px-4 py-1.5 sm:py-2 hidden lg:block">
+                    <span className="text-zeus-text-tertiary text-caption-s sm:text-caption-l">Earnings</span>
+                    <span className="text-zeus-highlight-gold text-body-s sm:text-body-m font-bold ml-2">
                       ${agentStats.totalEarnings.toLocaleString()}
                     </span>
                   </div>
@@ -271,52 +266,50 @@ export default function PortfolioClient() {
                   {/* Table */}
                   <div className="bg-zeus-surface-elevated border border-zeus-border-alpha border-t-0 rounded-b-xl">
                     {/* Table Header Row */}
-                    <div className="grid grid-cols-[1fr_100px_100px_80px_80px] gap-3 px-4 py-3 border-b border-zeus-border-alpha text-zeus-text-secondary text-body-s font-semibold">
+                    <div className="grid grid-cols-[1fr_auto_auto] sm:grid-cols-[1fr_80px_80px_60px_60px] md:grid-cols-[1fr_100px_100px_80px_80px] gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-3 border-b border-zeus-border-alpha text-zeus-text-secondary text-caption-s sm:text-body-s font-semibold">
                       <div>Token</div>
-                      <div className="text-right">Amount</div>
+                      <div className="text-right hidden sm:block">Amount</div>
                       <div className="text-right">Value</div>
                       <div className="text-right">24H</div>
-                      <div className="text-right">Action</div>
+                      <div className="text-right hidden sm:block">Action</div>
                     </div>
 
                     {/* Table Body */}
                     {SAMPLE_HOLDINGS.map((holding) => (
-                      <div
+                      <Link
                         key={holding.ticker}
-                        className="grid grid-cols-[1fr_100px_100px_80px_80px] gap-3 px-4 py-3 border-b border-zeus-border-alpha last:border-b-0 items-center hover:bg-zeus-surface-neutral/30 transition-colors"
+                        href={`/trading/${holding.ticker.toLowerCase()}`}
+                        className="grid grid-cols-[1fr_auto_auto] sm:grid-cols-[1fr_80px_80px_60px_60px] md:grid-cols-[1fr_100px_100px_80px_80px] gap-2 sm:gap-3 px-3 sm:px-4 py-2.5 sm:py-3 border-b border-zeus-border-alpha last:border-b-0 items-center hover:bg-zeus-surface-neutral/30 transition-colors"
                       >
-                        <div className="flex items-center gap-3">
-                          <TokenAvatar ticker={holding.ticker} size="md" />
+                        <div className="flex items-center gap-2 sm:gap-3">
+                          <TokenAvatar ticker={holding.ticker} size="sm" className="sm:w-10 sm:h-10" />
                           <div>
-                            <div className="text-zeus-text-primary text-body-s font-semibold">
+                            <div className="text-zeus-text-primary text-caption-l sm:text-body-s font-semibold">
                               {holding.ticker}
                             </div>
-                            <div className="text-zeus-text-tertiary text-caption-s">
+                            <div className="text-zeus-text-tertiary text-caption-s hidden sm:block">
                               {holding.name}
                             </div>
                           </div>
                         </div>
-                        <div className="text-right text-zeus-text-primary text-body-s font-mono">
+                        <div className="text-right text-zeus-text-primary text-caption-l sm:text-body-s font-mono hidden sm:block">
                           {holding.amount}
                         </div>
-                        <div className="text-right text-zeus-text-primary text-body-s font-semibold">
+                        <div className="text-right text-zeus-text-primary text-caption-l sm:text-body-s font-semibold">
                           {holding.value}
                         </div>
                         <div className={cn(
-                          "text-right text-body-s font-semibold",
+                          "text-right text-caption-l sm:text-body-s font-semibold",
                           holding.change24h >= 0 ? "text-zeus-status-success" : "text-zeus-status-destructive"
                         )}>
                           {holding.change24h >= 0 ? "+" : ""}{holding.change24h.toFixed(1)}%
                         </div>
-                        <div className="text-right">
-                          <Link
-                            href={`/trading/${holding.ticker.toLowerCase()}`}
-                            className="inline-flex px-3 py-1.5 rounded-md bg-zeus-surface-neutral border border-zeus-border-alpha text-zeus-text-primary text-caption-s font-medium hover:bg-zeus-surface-default transition-colors"
-                          >
+                        <div className="text-right hidden sm:block">
+                          <span className="inline-flex px-2 sm:px-3 py-1 sm:py-1.5 rounded-md bg-zeus-surface-neutral border border-zeus-border-alpha text-zeus-text-primary text-caption-s font-medium hover:bg-zeus-surface-default transition-colors">
                             Trade
-                          </Link>
+                          </span>
                         </div>
-                      </div>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -346,13 +339,13 @@ export default function PortfolioClient() {
                   {/* Table */}
                   <div className="bg-zeus-surface-elevated border border-zeus-border-alpha border-t-0 rounded-b-xl">
                     {/* Table Header Row */}
-                    <div className="grid grid-cols-[minmax(200px,1fr)_80px_120px_80px_120px_140px] gap-6 px-5 py-3 border-b border-zeus-border-alpha text-zeus-text-secondary text-caption-l font-medium">
+                    <div className="grid grid-cols-[1fr_60px_60px] sm:grid-cols-[1fr_60px_80px_60px_80px] lg:grid-cols-[minmax(200px,1fr)_80px_120px_80px_120px_140px] gap-2 sm:gap-4 lg:gap-6 px-3 sm:px-4 lg:px-5 py-2 sm:py-3 border-b border-zeus-border-alpha text-zeus-text-secondary text-caption-s sm:text-caption-l font-medium">
                       <div>Agent</div>
                       <div className="text-right">Score</div>
-                      <div className="text-right">Market Cap</div>
+                      <div className="text-right hidden sm:block">MCap</div>
                       <div className="text-right">24H</div>
-                      <div className="text-center">Status</div>
-                      <div className="text-right">Action</div>
+                      <div className="text-center hidden sm:block">Status</div>
+                      <div className="text-right hidden lg:block">Action</div>
                     </div>
 
                     {/* Table Body */}
@@ -363,23 +356,24 @@ export default function PortfolioClient() {
                       return (
                         <div
                           key={agent.id}
-                          className="grid grid-cols-[minmax(200px,1fr)_80px_120px_80px_120px_140px] gap-6 px-5 py-4 border-b border-zeus-border-alpha last:border-b-0 items-center hover:bg-zeus-surface-neutral/30 transition-colors"
+                          onClick={() => handleViewAgentDetails(agent)}
+                          className="grid grid-cols-[1fr_60px_60px] sm:grid-cols-[1fr_60px_80px_60px_80px] lg:grid-cols-[minmax(200px,1fr)_80px_120px_80px_120px_140px] gap-2 sm:gap-4 lg:gap-6 px-3 sm:px-4 lg:px-5 py-3 sm:py-4 border-b border-zeus-border-alpha last:border-b-0 items-center hover:bg-zeus-surface-neutral/30 transition-colors cursor-pointer"
                         >
                           {/* Agent Info */}
-                          <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-2 sm:gap-3">
                             {agent.imageUrl ? (
                               <img
                                 src={agent.imageUrl}
                                 alt={agent.name}
-                                className="w-10 h-10 rounded-lg bg-zeus-surface-default shrink-0"
+                                className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-zeus-surface-default shrink-0"
                               />
                             ) : (
-                              <div className="w-10 h-10 rounded-lg bg-zeus-surface-default flex items-center justify-center shrink-0">
-                                <Bot className="w-5 h-5 text-zeus-text-tertiary" />
+                              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-zeus-surface-default flex items-center justify-center shrink-0">
+                                <Bot className="w-4 h-4 sm:w-5 sm:h-5 text-zeus-text-tertiary" />
                               </div>
                             )}
                             <div className="min-w-0">
-                              <div className="text-zeus-text-primary text-body-s font-semibold truncate">
+                              <div className="text-zeus-text-primary text-caption-l sm:text-body-s font-semibold truncate">
                                 {agent.name}
                               </div>
                               <div className="text-zeus-text-tertiary text-caption-s">
@@ -390,19 +384,19 @@ export default function PortfolioClient() {
 
                           {/* Score */}
                           <div className="text-right">
-                            <span className="text-zeus-status-success text-body-s font-bold tabular-nums">
+                            <span className="text-zeus-status-success text-caption-l sm:text-body-s font-bold tabular-nums">
                               {agent.analytics.bestScore.toFixed(1)}
                             </span>
                           </div>
 
-                          {/* Market Cap */}
-                          <div className="text-right text-zeus-text-primary text-body-s font-medium tabular-nums">
+                          {/* Market Cap - hidden on mobile */}
+                          <div className="text-right text-zeus-text-primary text-caption-l sm:text-body-s font-medium tabular-nums hidden sm:block">
                             {agent.token?.marketCap || "—"}
                           </div>
 
                           {/* 24H Change */}
                           <div className={cn(
-                            "text-right text-body-s font-medium tabular-nums",
+                            "text-right text-caption-l sm:text-body-s font-medium tabular-nums",
                             agent.token
                               ? agent.token.priceChange24h >= 0
                                 ? "text-zeus-status-success"
@@ -415,37 +409,43 @@ export default function PortfolioClient() {
                             }
                           </div>
 
-                          {/* Status */}
-                          <div className="flex justify-center">
+                          {/* Status - hidden on mobile */}
+                          <div className="justify-center hidden sm:flex">
                             {isEvaluating ? (
-                              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-zeus-accent-orange/10 text-zeus-accent-orange text-caption-s font-medium">
-                                <span className="w-1.5 h-1.5 rounded-full bg-zeus-accent-orange animate-pulse" />
-                                Evaluating
+                              <span className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full bg-zeus-accent-orange/10 text-zeus-accent-orange text-[10px] sm:text-caption-s font-medium">
+                                <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-zeus-accent-orange animate-pulse" />
+                                Eval
                               </span>
                             ) : hasCompetition ? (
-                              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-sedona-500/10 text-sedona-400 text-caption-s font-medium">
-                                <Trophy className="w-3 h-3" />
-                                Competing
+                              <span className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full bg-sedona-500/10 text-sedona-400 text-[10px] sm:text-caption-s font-medium">
+                                <Trophy className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+                                Live
                               </span>
                             ) : (
-                              <span className="text-zeus-text-tertiary text-caption-s">
+                              <span className="text-zeus-text-tertiary text-[10px] sm:text-caption-s">
                                 Active
                               </span>
                             )}
                           </div>
 
-                          {/* Actions */}
-                          <div className="flex items-center justify-end gap-2">
+                          {/* Actions - hidden on mobile and tablet */}
+                          <div className="items-center justify-end gap-2 hidden lg:flex">
                             {agent.token && (
                               <button
-                                onClick={() => handleTradeAgent(agent)}
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  handleTradeAgent(agent)
+                                }}
                                 className="px-3 py-1.5 rounded-md bg-sedona-500 text-white text-caption-s font-medium hover:bg-sedona-600 transition-colors"
                               >
                                 Trade
                               </button>
                             )}
                             <button
-                              onClick={() => handleViewAgentDetails(agent)}
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                handleViewAgentDetails(agent)
+                              }}
                               className="px-3 py-1.5 rounded-md bg-zeus-surface-neutral border border-zeus-border-alpha text-zeus-text-primary text-caption-s font-medium hover:bg-zeus-surface-default transition-colors"
                             >
                               Details
