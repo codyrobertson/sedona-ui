@@ -6,3 +6,9 @@ export type { LandingPageWrapperProps } from "./LandingPageWrapper"
 
 export { LandingHero } from "./LandingHero"
 export type { LandingHeroProps } from "./LandingHero"
+
+export { LandingNav } from "./LandingNav"
+export type { LandingNavProps } from "./LandingNav"
+
+export { FeaturesSection } from "./FeaturesSection"
+export type { FeaturesSectionProps } from "./FeaturesSection"

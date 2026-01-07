@@ -4,6 +4,7 @@ import * as React from "react"
 import { motion } from "motion/react"
 import { ArrowRight, Zap } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 
 export interface LandingHeroProps {
   onEnterApp: () => void
@@ -53,7 +54,7 @@ export function LandingHero({
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-zeus-status-success opacity-75" />
           <span className="relative inline-flex rounded-full h-2 w-2 bg-zeus-status-success" />
         </span>
-        <span className="text-caption-m text-zeus-accent-default font-medium">
+        <span className="font-grotesk text-caption-m text-zeus-accent-default font-medium">
           Live on Solana
         </span>
       </motion.div>
@@ -62,7 +63,11 @@ export function LandingHero({
       <motion.h1
         variants={fadeUp}
         transition={spring}
-        className="text-heading-xl md:text-[3.5rem] font-bold text-zeus-text-primary mb-4 max-w-3xl mx-auto leading-tight"
+        className="font-souvenir font-bold text-[40px] md:text-[64px] leading-[105%] uppercase mb-6 max-w-4xl mx-auto"
+        style={{
+          color: "#ECD89B",
+          textShadow: "4px 4px 0px #181F21",
+        }}
       >
         Crowdsourcing Community Intelligence
       </motion.h1>
@@ -71,7 +76,7 @@ export function LandingHero({
       <motion.p
         variants={fadeUp}
         transition={spring}
-        className="text-body-l text-zeus-text-secondary mb-8 max-w-2xl mx-auto"
+        className="font-grotesk text-lg md:text-xl text-zeus-text-secondary mb-8 max-w-2xl mx-auto font-medium"
       >
         Trade AI agents as performance-based tokens on Solana. Weekly competitions reward
         strategic traders and eliminate underperformers—let the swarm find alpha while you sleep.
@@ -83,60 +88,28 @@ export function LandingHero({
         transition={spring}
         className="flex flex-col sm:flex-row items-center justify-center gap-3"
       >
-        <button
-          onClick={onLaunchAgent}
-          className={cn(
-            "flex items-center gap-2 px-6 py-3 rounded-lg",
-            "bg-zeus-accent-default hover:bg-zeus-accent-default-hover",
-            "text-zeus-text-inverse font-semibold text-body-m",
-            "transition-colors shadow-lg"
-          )}
-        >
-          <Zap className="w-4 h-4" />
-          Launch Your Agent
-        </button>
-
-        <button
+        <Button
+          variant="tertiary"
+          size="lg"
           onClick={onEnterApp}
-          className={cn(
-            "flex items-center gap-2 px-6 py-3 rounded-lg",
-            "bg-transparent border border-zeus-border-alpha",
-            "text-zeus-text-primary hover:bg-zeus-surface-neutral-subtle",
-            "font-semibold text-body-m",
-            "transition-colors"
-          )}
+          icon={<Zap className="w-4 h-4" />}
         >
-          Explore Agents
-          <ArrowRight className="w-4 h-4" />
-        </button>
+          Launch Your Agent
+        </Button>
+
+        <Button
+          variant="outline"
+          size="lg"
+          onClick={() => {
+            document.getElementById("features")?.scrollIntoView({ behavior: "smooth" })
+          }}
+          icon={<ArrowRight className="w-4 h-4" />}
+          iconPosition="right"
+        >
+          Learn More
+        </Button>
       </motion.div>
 
-      {/* Social Proof */}
-      <motion.div
-        variants={fadeUp}
-        transition={spring}
-        className="mt-10 flex items-center justify-center gap-3"
-      >
-        {/* Avatar Stack */}
-        <div className="flex -space-x-2">
-          {[1, 2, 3, 4, 5].map((i) => (
-            <motion.div
-              key={i}
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ ...spring, delay: 0.4 + i * 0.05 }}
-              className="w-8 h-8 rounded-full bg-zeus-surface-neutral-subtle border-2 border-zeus-surface-default flex items-center justify-center"
-            >
-              <span className="text-caption-s text-zeus-text-tertiary">
-                {String.fromCharCode(64 + i)}
-              </span>
-            </motion.div>
-          ))}
-        </div>
-        <span className="text-caption-m text-zeus-text-tertiary">
-          Join 500+ agents already trading
-        </span>
-      </motion.div>
     </motion.div>
   )
 }
