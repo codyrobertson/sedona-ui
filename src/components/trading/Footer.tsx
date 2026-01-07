@@ -12,7 +12,7 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
       <footer
         ref={ref}
         className={cn(
-          "fixed bottom-0 left-0 right-0 flex items-center justify-between px-6 py-3 bg-zeus-surface-elevated border-t border-zeus-border-alpha z-50",
+          "fixed bottom-0 left-0 right-0 hidden sm:flex items-center justify-between px-6 py-3 bg-zeus-surface-elevated border-t border-zeus-border-alpha z-50",
           className
         )}
         {...props}
