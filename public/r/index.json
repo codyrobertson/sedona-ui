@@ -1,0 +1,117 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "sedona",
+  "homepage": "https://sedona.trade",
+  "items": [
+    {
+      "name": "trading-utils",
+      "type": "registry:lib",
+      "title": "Trading Utilities",
+      "description": "Core utilities for trading: market cap parsing, price formatting, chart colors",
+      "dependencies": [],
+      "devDependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "swap-utils",
+      "type": "registry:lib",
+      "title": "Swap Utilities",
+      "description": "Utilities for swap interfaces: number formatting, input sanitization, slippage calculations",
+      "dependencies": [],
+      "devDependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "counter",
+      "type": "registry:ui",
+      "title": "Counter",
+      "description": "Animated number counter with spring physics for smooth transitions",
+      "dependencies": [
+        "motion"
+      ],
+      "devDependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "token-avatar",
+      "type": "registry:ui",
+      "title": "Token Avatar",
+      "description": "Avatar component optimized for token/crypto icons with fallback handling",
+      "dependencies": [],
+      "devDependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "marquee",
+      "type": "registry:ui",
+      "title": "Marquee",
+      "description": "GPU-accelerated infinite scrolling marquee with configurable speed and direction",
+      "dependencies": [],
+      "devDependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "data-table",
+      "type": "registry:ui",
+      "title": "Data Table",
+      "description": "Composable data table primitives with sorting, loading, and empty states",
+      "dependencies": [],
+      "devDependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "elimination-progress",
+      "type": "registry:ui",
+      "title": "Elimination Progress",
+      "description": "Progress indicator showing elimination status with rank and threshold display",
+      "dependencies": [],
+      "devDependencies": [],
+      "registryDependencies": [
+        "trading-utils"
+      ]
+    },
+    {
+      "name": "price-chart",
+      "type": "registry:ui",
+      "title": "Price Chart",
+      "description": "Lightweight trading chart supporting candlestick, line, and area modes",
+      "dependencies": [
+        "lightweight-charts"
+      ],
+      "devDependencies": [],
+      "registryDependencies": [
+        "trading-utils"
+      ]
+    },
+    {
+      "name": "swap-widget",
+      "type": "registry:ui",
+      "title": "Swap Widget",
+      "description": "Complete token swap interface with slippage controls and quote management",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "devDependencies": [],
+      "registryDependencies": [
+        "swap-utils",
+        "button",
+        "popover",
+        "token-avatar"
+      ]
+    },
+    {
+      "name": "sedona-kit",
+      "type": "registry:lib",
+      "title": "Sedona Trading Kit",
+      "description": "Demo fixtures and generators for prototyping trading UIs - agents, tokens, charts, transactions",
+      "dependencies": [
+        "lightweight-charts"
+      ],
+      "devDependencies": [],
+      "registryDependencies": [
+        "trading-utils",
+        "swap-utils"
+      ]
+    }
+  ]
+}

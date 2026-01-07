@@ -1,0 +1,145 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "sedona",
+  "homepage": "https://sedona.trade",
+  "items": [
+    {
+      "name": "trading-utils",
+      "type": "registry:lib",
+      "title": "Trading Utilities",
+      "description": "Core utilities for trading: market cap parsing, price formatting, chart colors",
+      "files": [
+        {
+          "path": "registry/new-york/trading-utils.ts",
+          "type": "registry:lib",
+          "target": "lib/trading-utils.ts"
+        }
+      ]
+    },
+    {
+      "name": "swap-utils",
+      "type": "registry:lib",
+      "title": "Swap Utilities",
+      "description": "Utilities for swap interfaces: number formatting, input sanitization, slippage calculations",
+      "files": [
+        {
+          "path": "registry/new-york/swap-utils.ts",
+          "type": "registry:lib",
+          "target": "lib/swap-utils.ts"
+        }
+      ]
+    },
+    {
+      "name": "counter",
+      "type": "registry:ui",
+      "title": "Counter",
+      "description": "Animated number counter with spring physics for smooth transitions",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "registry/new-york/counter.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/counter.tsx"
+        }
+      ]
+    },
+    {
+      "name": "token-avatar",
+      "type": "registry:ui",
+      "title": "Token Avatar",
+      "description": "Avatar component optimized for token/crypto icons with fallback handling",
+      "files": [
+        {
+          "path": "registry/new-york/token-avatar.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/token-avatar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "marquee",
+      "type": "registry:ui",
+      "title": "Marquee",
+      "description": "GPU-accelerated infinite scrolling marquee with configurable speed and direction",
+      "files": [
+        {
+          "path": "registry/new-york/marquee.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/marquee.tsx"
+        }
+      ]
+    },
+    {
+      "name": "data-table",
+      "type": "registry:ui",
+      "title": "Data Table",
+      "description": "Composable data table primitives with sorting, loading, and empty states",
+      "files": [
+        {
+          "path": "registry/new-york/data-table.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/data-table.tsx"
+        }
+      ]
+    },
+    {
+      "name": "elimination-progress",
+      "type": "registry:ui",
+      "title": "Elimination Progress",
+      "description": "Progress indicator showing elimination status with rank and threshold display",
+      "registryDependencies": ["trading-utils"],
+      "files": [
+        {
+          "path": "registry/new-york/elimination-progress.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/elimination-progress.tsx"
+        }
+      ]
+    },
+    {
+      "name": "price-chart",
+      "type": "registry:ui",
+      "title": "Price Chart",
+      "description": "Lightweight trading chart supporting candlestick, line, and area modes",
+      "dependencies": ["lightweight-charts"],
+      "registryDependencies": ["trading-utils"],
+      "files": [
+        {
+          "path": "registry/new-york/price-chart.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/price-chart.tsx"
+        }
+      ]
+    },
+    {
+      "name": "swap-widget",
+      "type": "registry:ui",
+      "title": "Swap Widget",
+      "description": "Complete token swap interface with slippage controls and quote management",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["swap-utils", "button", "popover", "token-avatar"],
+      "files": [
+        {
+          "path": "registry/new-york/swap-widget.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/swap-widget.tsx"
+        }
+      ]
+    },
+    {
+      "name": "sedona-kit",
+      "type": "registry:lib",
+      "title": "Sedona Trading Kit",
+      "description": "Demo fixtures and generators for prototyping trading UIs - agents, tokens, charts, transactions",
+      "dependencies": ["lightweight-charts"],
+      "registryDependencies": ["trading-utils", "swap-utils"],
+      "files": [
+        {
+          "path": "registry/new-york/sedona-kit.ts",
+          "type": "registry:lib",
+          "target": "lib/sedona-kit.ts"
+        }
+      ]
+    }
+  ]
+}
