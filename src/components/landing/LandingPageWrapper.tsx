@@ -8,6 +8,8 @@ import { BrowserChrome } from "./BrowserChrome"
 import { LandingHero } from "./LandingHero"
 import { LandingNav } from "./LandingNav"
 import { FeaturesSection } from "./FeaturesSection"
+import { NutshellSection } from "./NutshellSection"
+import { AgentsSection } from "./AgentsSection"
 
 const PaperTexture = dynamic(
   () => import("@paper-design/shaders-react").then((mod) => mod.PaperTexture),
@@ -27,12 +29,12 @@ export interface LandingPageWrapperProps {
 // Exit is exact reverse of entrance
 // ===========================================
 
-const ease = [0.32, 0.72, 0, 1]
+const ease = [0.32, 0.72, 0, 1] as const
 
 // Same transition for enter AND exit - symmetric
 const transition = {
   duration: 0.6,
-  ease,
+  ease: ease as unknown as [number, number, number, number],
 }
 
 // Scale for hero mockup
@@ -77,6 +79,9 @@ export function LandingPageWrapper({
         )}
       </AnimatePresence>
 
+      {/* Navigation - rendered at root level, handles its own positioning */}
+      {isHeroMode && <LandingNav onLaunchAgent={onLaunchAgent} />}
+
       {/* Content container - hero section is 100vh but page scrolls */}
       <div
         className="relative"
@@ -92,20 +97,6 @@ export function LandingPageWrapper({
             position: "relative",
           }}
         >
-        {/* Navigation - absolute positioned at top */}
-        <AnimatePresence>
-          {isHeroMode && (
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={transition}
-              className="absolute inset-x-0 top-0 z-30"
-            >
-              <LandingNav onLaunchAgent={onLaunchAgent} />
-            </motion.div>
-          )}
-        </AnimatePresence>
 
         {/* Hero content - absolute positioned below nav */}
         <AnimatePresence>
@@ -219,6 +210,12 @@ export function LandingPageWrapper({
 
         {/* Features section - below the hero fold */}
         {isHeroMode && <FeaturesSection />}
+
+        {/* In a Nutshell section */}
+        {isHeroMode && <NutshellSection />}
+
+        {/* Agents section */}
+        {isHeroMode && <AgentsSection onAgentExchange={onToggle} />}
       </div>
     </div>
   )

@@ -12,3 +12,9 @@ export type { LandingNavProps } from "./LandingNav"
 
 export { FeaturesSection } from "./FeaturesSection"
 export type { FeaturesSectionProps } from "./FeaturesSection"
+
+export { NutshellSection } from "./NutshellSection"
+export type { NutshellSectionProps } from "./NutshellSection"
+
+export { AgentsSection } from "./AgentsSection"
+export type { AgentsSectionProps } from "./AgentsSection"

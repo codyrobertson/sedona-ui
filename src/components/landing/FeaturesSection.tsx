@@ -1,6 +1,8 @@
 "use client"
 
 import * as React from "react"
+import dynamic from "next/dynamic"
+import { motion } from "motion/react"
 import { cn } from "@/lib/utils"
 import {
   Cpu,
@@ -13,6 +15,11 @@ import {
   Users,
   FileCode
 } from "lucide-react"
+
+const PaperTexture = dynamic(
+  () => import("@paper-design/shaders-react").then((mod) => mod.PaperTexture),
+  { ssr: false }
+)
 
 export interface FeaturesSectionProps {
   className?: string
@@ -53,14 +60,38 @@ export function FeaturesSection({ className }: FeaturesSectionProps) {
     <section
       id="features"
       className={cn(
-        "bg-zeus-surface-default py-20 px-6",
+        "bg-zeus-surface-default py-20 px-6 relative overflow-hidden",
         className
       )}
     >
-      <div className="max-w-6xl mx-auto">
+      {/* Paper texture overlay */}
+      <div className="absolute inset-0 z-[1] pointer-events-none opacity-15" style={{ mixBlendMode: "soft-light" }}>
+        <PaperTexture
+          colorFront="#D4C4A8"
+          colorBack="#6B5B4F"
+          scale={1.5}
+          fiber={0.3}
+          crumples={0.2}
+          roughness={0.4}
+          style={{ width: "100%", height: "100%", position: "absolute", inset: 0 }}
+        />
+      </div>
+
+      <div className="max-w-6xl mx-auto relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {features.map((feature, index) => (
-            <div key={index} className="space-y-6">
+            <motion.div
+              key={index}
+              className="space-y-6"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{
+                duration: 0.5,
+                delay: index * 0.15,
+                ease: [0.25, 0.1, 0.25, 1],
+              }}
+            >
               {/* Title */}
               <h3
                 className="font-souvenir font-bold text-xl"
@@ -91,7 +122,7 @@ export function FeaturesSection({ className }: FeaturesSectionProps) {
                   </li>
                 ))}
               </ul>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
