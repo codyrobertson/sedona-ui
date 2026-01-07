@@ -3,7 +3,7 @@
 import * as React from "react"
 import dynamic from "next/dynamic"
 import { cn } from "@/lib/utils"
-import { ExternalLink, X, ArrowRight } from "lucide-react"
+import { Icon } from "@/components/ui/icon"
 
 const FaultyTerminal = dynamic(() => import("@/components/ui/faulty-terminal"), {
   ssr: false,
@@ -26,10 +26,11 @@ export interface AboutSedonaProps extends React.HTMLAttributes<HTMLDivElement> {
   topPools?: TopPool[]
   infoCards?: InfoCard[]
   onDismiss?: () => void
+  onExplore?: () => void
 }
 
 const AboutSedona = React.forwardRef<HTMLDivElement, AboutSedonaProps>(
-  ({ className, topPools = [], infoCards = [], onDismiss, ...props }, ref) => {
+  ({ className, topPools = [], infoCards = [], onDismiss, onExplore, ...props }, ref) => {
     return (
       <div
         ref={ref}
@@ -83,15 +84,20 @@ const AboutSedona = React.forwardRef<HTMLDivElement, AboutSedonaProps>(
                 className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-zeus-border-alpha bg-zeus-surface-neutral hover:bg-zeus-surface-elevated text-zeus-text-primary text-caption-m font-medium transition-colors"
               >
                 View Docs
-                <ExternalLink className="w-3.5 h-3.5" />
+                <Icon icon="arrow-up-right-from-square" className="w-3.5 h-3.5" />
               </a>
-              <a
-                href="/"
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-sedona-500 hover:bg-sedona-600 text-white text-caption-m font-medium transition-colors"
+              <button
+                onClick={onExplore}
+                className="group relative inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-sedona-500 hover:bg-sedona-600 text-white text-caption-m font-medium transition-colors overflow-hidden"
               >
-                Explore Sedona
-                <ArrowRight className="w-3.5 h-3.5" />
-              </a>
+                {/* Shimmer overlay */}
+                <span
+                  className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                  aria-hidden="true"
+                />
+                <span className="relative">Explore Sedona</span>
+                <Icon icon="square-up-right" className="relative w-3.5 h-3.5" />
+              </button>
             </div>
           </div>
 
@@ -102,7 +108,7 @@ const AboutSedona = React.forwardRef<HTMLDivElement, AboutSedonaProps>(
               className="absolute top-4 right-4 p-1.5 text-zeus-text-tertiary hover:text-zeus-text-secondary hover:bg-zeus-surface-neutral rounded-md transition-colors"
               aria-label="Dismiss"
             >
-              <X className="w-4 h-4" />
+              <Icon icon="xmark" className="w-4 h-4" />
             </button>
           )}
         </div>

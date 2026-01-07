@@ -142,6 +142,7 @@ export default function TradingPageClient({ initialHeroMode = false }: TradingPa
           <section aria-label="About Sedona">
             <AboutSedona
               onDismiss={() => setShowHero(false)}
+              onExplore={() => setIsHeroMode(true)}
             />
           </section>
         )}
