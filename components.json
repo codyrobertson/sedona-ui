@@ -13,5 +13,10 @@
   "aliases": {
     "components": "@/components",
     "utils": "@/lib/utils"
+  },
+  "registries": {
+    "sedona": {
+      "url": "https://sedona.trade/r"
+    }
   }
 }

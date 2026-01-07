@@ -94,3 +94,6 @@ temp/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Local tasks/planning (untracked)
+/tasks/
