@@ -8,6 +8,20 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${SEO_CONFIG.baseUrl}/trading`,
   },
+  openGraph: {
+    title: 'Trading - AI Agent Marketplace | Sedona',
+    description: 'Discover and trade AI agents on Solana. Browse trending agents, track market performance, and swap tokens in real-time.',
+    url: `${SEO_CONFIG.baseUrl}/trading`,
+    siteName: SEO_CONFIG.siteName,
+    images: [SEO_CONFIG.defaultImage],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Trading - AI Agent Marketplace | Sedona',
+    description: 'Discover and trade AI agents on Solana. Browse trending agents and swap tokens in real-time.',
+    images: [SEO_CONFIG.defaultImage],
+  },
 }
 
 export default function TradingPage() {
