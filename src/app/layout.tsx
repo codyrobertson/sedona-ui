@@ -13,7 +13,7 @@ const organizationSchema = {
   name: "Sedona",
   description: "AI Agent Trading Platform on Solana",
   url: SEO_CONFIG.baseUrl,
-  logo: `${SEO_CONFIG.baseUrl}/logo.png`,
+  logo: `${SEO_CONFIG.baseUrl}/icon.svg`,
 }
 
 const websiteSchema = {

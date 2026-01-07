@@ -3,5 +3,5 @@ export const SEO_CONFIG = {
   siteName: 'Sedona UI',
   defaultTitle: 'Sedona UI - AI Agent Trading Platform',
   defaultDescription: 'Trade AI agents on Solana. Real-time charts, swap tokens, and track your portfolio.',
-  defaultImage: '/og-image.png',
+  defaultImage: '/og-image.svg',
 }
