@@ -6,9 +6,6 @@ export {
   getChartDataByTimeframe, // Legacy - use getChartDataForTicker instead
 } from "./chart-data"
 // ChartTimeframe now exported from price-ticks
-export { DEFAULT_AGENT_MODELS, AGENT_STRATEGIES } from "./agents"
-export type { AgentStrategy } from "./agents"
-
 // HuggingFace integration (user repos after OAuth)
 export {
   MOCK_HF_USER,

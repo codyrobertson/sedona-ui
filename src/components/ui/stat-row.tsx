@@ -9,6 +9,8 @@ export interface StatRowProps {
   value: string | number
   /** Optional color class for the value */
   valueColor?: string
+  /** Optional additional class names for the value */
+  valueClassName?: string
   /** Optional icon to display before the label */
   labelIcon?: React.ReactNode
   /** Optional percentage change to display */
@@ -29,6 +31,7 @@ export function StatRow({
   label,
   value,
   valueColor = "text-zeus-text-primary",
+  valueClassName,
   labelIcon,
   change,
   bordered = true,
@@ -58,7 +61,8 @@ export function StatRow({
           className={cn(
             "font-medium tabular-nums",
             size === "sm" ? "text-caption-l" : "text-body-s",
-            valueColor
+            valueColor,
+            valueClassName
           )}
         >
           {typeof value === "number" ? value.toLocaleString() : value}
