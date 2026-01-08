@@ -41,6 +41,7 @@
     "build": "next build",
     "registry:sync": "bun run scripts/sync-registry.ts",
     "registry:build": "bun run scripts/sync-registry.ts && bun run scripts/build-registry.ts",
+    "registry:qa": "bun run scripts/qa-registry.ts",
     "build:registry": "bun run scripts/sync-registry.ts && bun run scripts/build-registry.ts",
     "start": "next start",
     "lint": "next lint",
