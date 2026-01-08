@@ -46,6 +46,7 @@ interface DigitProps {
   digitClassName?: string
 }
 
+// Static character component (no hooks needed)
 function StaticChar({ char, height, digitClassName }: { char: string; height: number; digitClassName?: string }) {
   return (
     <span
@@ -57,6 +58,7 @@ function StaticChar({ char, height, digitClassName }: { char: string; height: nu
   )
 }
 
+// Animated digit component (uses hooks)
 function AnimatedDigit({ place, value, height, digitClassName }: { place: number; value: number; height: number; digitClassName?: string }) {
   const valueRoundedToPlace = Math.floor(value / place)
   const animatedValue = useSpring(valueRoundedToPlace, {
@@ -87,9 +89,12 @@ function AnimatedDigit({ place, value, height, digitClassName }: { place: number
 }
 
 function Digit({ place, value, height, digitClassName }: DigitProps) {
+  // Decimal or special character - render static component
   if (place === ".") {
     return <StaticChar char="." height={height} digitClassName={digitClassName} />
   }
+
+  // Number - render animated component
   return <AnimatedDigit place={place} value={value} height={height} digitClassName={digitClassName} />
 }
 
@@ -128,6 +133,7 @@ const Counter = React.forwardRef<HTMLSpanElement, CounterProps>(
     },
     ref
   ) => {
+    // Auto-detect places if not provided
     const computedPlaces = React.useMemo(() => {
       if (places) return places
       const valueStr = value.toString()
@@ -208,6 +214,7 @@ const Counter = React.forwardRef<HTMLSpanElement, CounterProps>(
 
 Counter.displayName = "Counter"
 
+// Specialized variants for common use cases
 export interface TimeCounterProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'> {
   seconds: number
   fontSize?: number

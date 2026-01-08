@@ -4,6 +4,42 @@
   "homepage": "https://sedona.trade",
   "items": [
     {
+      "name": "fontawesome",
+      "type": "registry:lib",
+      "title": "Font Awesome Setup",
+      "description": "Font Awesome configuration with Sharp Solid, Free, and custom kit icons",
+      "dependencies": [
+        "@fortawesome/fontawesome-svg-core",
+        "@fortawesome/react-fontawesome",
+        "@fortawesome/sharp-solid-svg-icons",
+        "@fortawesome/free-solid-svg-icons",
+        "@fortawesome/free-regular-svg-icons",
+        "@fortawesome/free-brands-svg-icons",
+        "@awesome.me/kit-1655babbde"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/fontawesome.ts",
+          "type": "registry:lib",
+          "target": "lib/fontawesome.ts"
+        }
+      ]
+    },
+    {
+      "name": "icon",
+      "type": "registry:ui",
+      "title": "Icon",
+      "description": "Font Awesome icon wrapper with configurable default prefix",
+      "registryDependencies": ["fontawesome"],
+      "files": [
+        {
+          "path": "registry/new-york/icon.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/icon.tsx"
+        }
+      ]
+    },
+    {
       "name": "trading-utils",
       "type": "registry:lib",
       "title": "Trading Utilities",
@@ -116,8 +152,7 @@
       "type": "registry:ui",
       "title": "Swap Widget",
       "description": "Complete token swap interface with slippage controls and quote management",
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["swap-utils", "button", "popover", "token-avatar"],
+      "registryDependencies": ["swap-utils", "button", "popover", "token-avatar", "icon"],
       "files": [
         {
           "path": "registry/new-york/swap-widget.tsx",

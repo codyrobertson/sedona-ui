@@ -1,18 +1,38 @@
 /**
  * Swap Widget Utilities
- * Input handling and formatting for swap interfaces
- *
- * @package @sedona/swap-utils
+ * Extracted from swap-widget.tsx for reusability and testability
  */
 
 // =============================================================================
-// NUMBER FORMATTING
+// TYPES
 // =============================================================================
 
+export interface Token {
+  symbol: string
+  name: string
+  imageUrl?: string
+  decimals?: number
+  balance: string
+  price: number
+  isNative?: boolean
+  minAmount?: string
+  maxAmount?: string
+}
+
+export interface SwapQuote {
+  inputAmount: string
+  outputAmount: string
+  rate: number
+  priceImpact: number
+  fee: number
+  route?: string[]
+}
+
 /**
- * Format a number with thousand separators and decimal truncation
- * @example formatNumber(1234567.89) // "1,234,567.89"
- * @example formatNumber("0.000001234", 6) // "0.000001"
+ * Format a number with thousand separators and optional decimal truncation
+ * @param value - Number or string to format
+ * @param maxDecimals - Maximum decimal places (default: 6)
+ * @returns Formatted string
  */
 export function formatNumber(value: string | number, maxDecimals = 6): string {
   if (value === "" || value === undefined) return ""
@@ -31,8 +51,8 @@ export function formatNumber(value: string | number, maxDecimals = 6): string {
 
 /**
  * Format a number as USD currency
- * @example formatUSD(1234.56) // "$1.23K"
- * @example formatUSD(0.005) // "<$0.01"
+ * @param value - Number to format
+ * @returns Formatted USD string
  */
 export function formatUSD(value: number): string {
   if (isNaN(value)) return "$0"
@@ -43,10 +63,6 @@ export function formatUSD(value: number): string {
   return `$${value.toFixed(2)}`
 }
 
-// =============================================================================
-// INPUT SANITIZATION
-// =============================================================================
-
 /**
  * Sanitize user input for numeric fields
  * - Removes non-numeric characters (except decimal point)
@@ -54,9 +70,9 @@ export function formatUSD(value: number): string {
  * - Enforces max decimal places
  * - Strips leading zeros
  *
- * @example sanitizeNumericInput("12.345.67") // "12.34567"
- * @example sanitizeNumericInput("00123") // "123"
- * @example sanitizeNumericInput("abc12.34xyz") // "12.34"
+ * @param value - Raw input string
+ * @param maxDecimals - Maximum decimal places allowed (default: 9)
+ * @returns Sanitized numeric string
  */
 export function sanitizeNumericInput(value: string, maxDecimals = 9): string {
   let sanitized = value.replace(/[^0-9.]/g, "")
@@ -67,6 +83,7 @@ export function sanitizeNumericInput(value: string, maxDecimals = 9): string {
   }
   if (sanitized.length > 1 && sanitized[0] === "0" && sanitized[1] !== ".") {
     sanitized = sanitized.replace(/^0+/, "") || "0"
+    // Prepend 0 if result starts with decimal
     if (sanitized[0] === ".") {
       sanitized = "0" + sanitized
     }
@@ -75,68 +92,57 @@ export function sanitizeNumericInput(value: string, maxDecimals = 9): string {
 }
 
 /**
- * Parse a balance string that may contain formatting
- * @example parseBalance("1,234.56") // 1234.56
+ * Parse a balance string that may contain formatting (commas, spaces)
+ * @param balance - Formatted balance string
+ * @returns Numeric value
  */
 export function parseBalance(balance: string): number {
   const cleaned = balance.replace(/[,\s]/g, "")
   return parseFloat(cleaned) || 0
 }
 
-// =============================================================================
-// SLIPPAGE CALCULATIONS
-// =============================================================================
-
 /**
  * Calculate slippage multiplier from slippage string
- * @example getSlippageMultiplier("1.0") // 0.99
- * @example getSlippageMultiplier("Auto") // 0.995
+ * @param slippage - Slippage value ("Auto" or percentage like "1.0")
+ * @returns Multiplier (e.g., 0.99 for 1% slippage)
  */
 export function getSlippageMultiplier(slippage: string): number {
   if (slippage === "Auto") return 0.995 // Default 0.5% for auto
   const pct = parseFloat(slippage)
   if (isNaN(pct)) return 0.995
-  return 1 - pct / 100
+  return 1 - (pct / 100)
 }
 
 /**
  * Calculate minimum received amount after slippage
- * @example calculateMinReceived(100, "1.0") // "99.000000"
+ * @param amount - Expected receive amount
+ * @param slippage - Slippage setting
+ * @returns Minimum amount after slippage
  */
-export function calculateMinReceived(
-  amount: string | number,
-  slippage: string
-): string {
+export function calculateMinReceived(amount: string | number, slippage: string): string {
   const amountNum = typeof amount === "string" ? parseFloat(amount) : amount
   if (isNaN(amountNum)) return "0"
   const multiplier = getSlippageMultiplier(slippage)
   return (amountNum * multiplier).toFixed(6)
 }
 
-// =============================================================================
-// VALIDATION
-// =============================================================================
-
-export interface ValidationResult {
-  valid: boolean
-  error?: string
-}
-
-export interface ValidationOptions {
-  isNative?: boolean
-  gasReserve?: number
-  minAmount?: number
-  maxAmount?: number
-}
-
 /**
  * Validate trade amount against constraints
+ * @param amount - Amount to validate
+ * @param balance - Available balance
+ * @param options - Validation options
+ * @returns Validation result with error message if invalid
  */
 export function validateTradeAmount(
   amount: number,
   balance: number,
-  options: ValidationOptions = {}
-): ValidationResult {
+  options: {
+    isNative?: boolean
+    gasReserve?: number
+    minAmount?: number
+    maxAmount?: number
+  } = {}
+): { valid: boolean; error?: string } {
   const { isNative = false, gasReserve = 0.01, minAmount, maxAmount } = options
 
   if (amount <= 0) {
@@ -162,50 +168,23 @@ export function validateTradeAmount(
   return { valid: true }
 }
 
-// =============================================================================
-// PRICE IMPACT
-// =============================================================================
-
 /**
- * Get Tailwind color class for price impact
+ * Calculate price impact color based on percentage
+ * @param impact - Price impact percentage
+ * @returns Tailwind color class
  */
 export function getPriceImpactColor(impact: number): string {
-  if (impact < 1) return "text-green-500"
-  if (impact < 5) return "text-yellow-500"
-  return "text-red-500"
+  if (impact < 1) return "text-zeus-status-success"
+  if (impact < 5) return "text-zeus-status-warning"
+  return "text-zeus-status-destructive"
 }
 
 /**
  * Format price impact for display
- * @example formatPriceImpact(0.005) // "<0.01%"
- * @example formatPriceImpact(2.5) // "2.50%"
+ * @param impact - Price impact percentage
+ * @returns Formatted string
  */
 export function formatPriceImpact(impact: number): string {
   if (impact < 0.01) return "<0.01%"
   return `${impact.toFixed(2)}%`
-}
-
-// =============================================================================
-// TYPES
-// =============================================================================
-
-export interface Token {
-  symbol: string
-  name: string
-  imageUrl?: string
-  decimals?: number
-  balance: string
-  price: number
-  isNative?: boolean
-  minAmount?: string
-  maxAmount?: string
-}
-
-export interface SwapQuote {
-  inputAmount: string
-  outputAmount: string
-  rate: number
-  priceImpact: number
-  fee: number
-  route?: string[]
 }

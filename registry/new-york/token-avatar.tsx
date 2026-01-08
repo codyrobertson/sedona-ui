@@ -18,15 +18,15 @@ export interface TokenAvatarProps extends React.HTMLAttributes<HTMLDivElement> {
 const sizeVariants: Record<TokenAvatarSize, { container: string; text: string }> = {
   sm: {
     container: "w-6 h-6",
-    text: "text-xs",
+    text: "text-caption-s",
   },
   md: {
     container: "w-8 h-8",
-    text: "text-sm",
+    text: "text-caption-l",
   },
   lg: {
     container: "w-11 h-11",
-    text: "text-base",
+    text: "text-heading-xs",
   },
 }
 
@@ -40,7 +40,7 @@ const TokenAvatar = React.forwardRef<HTMLDivElement, TokenAvatarProps>(
       <div
         ref={ref}
         className={cn(
-          "relative rounded-full bg-muted border border-border flex items-center justify-center flex-shrink-0 overflow-hidden",
+          "relative rounded-full bg-zeus-surface-neutral border border-zeus-border-alpha flex items-center justify-center flex-shrink-0 overflow-hidden",
           variant.container,
           className
         )}
@@ -58,7 +58,7 @@ const TokenAvatar = React.forwardRef<HTMLDivElement, TokenAvatarProps>(
         ) : (
           <span
             className={cn(
-              "font-bold text-muted-foreground",
+              "font-bold text-zeus-text-secondary",
               variant.text
             )}
           >

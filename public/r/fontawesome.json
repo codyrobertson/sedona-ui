@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "fontawesome",
+  "type": "registry:lib",
+  "title": "Font Awesome Setup",
+  "description": "Font Awesome configuration with Sharp Solid, Free, and custom kit icons",
+  "dependencies": [
+    "@fortawesome/fontawesome-svg-core",
+    "@fortawesome/react-fontawesome",
+    "@fortawesome/sharp-solid-svg-icons",
+    "@fortawesome/free-solid-svg-icons",
+    "@fortawesome/free-regular-svg-icons",
+    "@fortawesome/free-brands-svg-icons",
+    "@awesome.me/kit-1655babbde"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "lib/fontawesome.ts",
+      "type": "registry:lib",
+      "content": "/**\n * Font Awesome Configuration\n *\n * This file sets up Font Awesome with the icons we need.\n *\n * Available prefixes:\n * - fass: Sharp Solid\n * - fas: Free Solid\n * - far: Free Regular\n * - fab: Free Brands\n * - faes: Kit Etch Solid (use for landing/branding)\n * - faufsb: Kit Utility Fill Semibold\n * - fawsb: Kit Whiteboard Semibold\n *\n * USAGE:\n * - For common UI icons: <Icon icon=\"check\" /> (uses DEFAULT_ICON_PREFIX)\n * - For kit icons: <Icon icon={[\"faes\", \"check\"]} />\n * - For brands: <Icon icon={[\"fab\", \"discord\"]} />\n */\n\nimport { library, config, type IconPrefix } from \"@fortawesome/fontawesome-svg-core\"\nimport \"@fortawesome/fontawesome-svg-core/styles.css\"\n\n// Prevent Font Awesome from adding its CSS since we're doing it manually\nconfig.autoAddCss = false\n\n/**\n * DEFAULT ICON PREFIX\n * Change this to switch all icons to a different style.\n * Options: \"fass\" (Sharp Solid), \"fas\" (Free Solid), \"faes\" (Etch), etc.\n */\nexport const DEFAULT_ICON_PREFIX: IconPrefix = \"fass\"\n\n// Import Sharp Solid (primary)\nimport { fass } from \"@fortawesome/sharp-solid-svg-icons\"\n// Import free icons as fallback\nimport { fas } from \"@fortawesome/free-solid-svg-icons\"\nimport { far } from \"@fortawesome/free-regular-svg-icons\"\nimport { fab } from \"@fortawesome/free-brands-svg-icons\"\n\n// Import kit icons\nimport { faes, faufsb, fawsb } from \"@awesome.me/kit-1655babbde/icons\"\n\n// Register all icon packs with the library\nlibrary.add(fass, fas, far, fab, faes, faufsb, fawsb)\n\nexport { library, config }\n"
+    }
+  ]
+}

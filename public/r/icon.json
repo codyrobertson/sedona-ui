@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "icon",
+  "type": "registry:ui",
+  "title": "Icon",
+  "description": "Font Awesome icon wrapper with configurable default prefix",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [
+    "fontawesome"
+  ],
+  "files": [
+    {
+      "path": "components/ui/icon.tsx",
+      "type": "registry:ui",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { FontAwesomeIcon, FontAwesomeIconProps } from \"@fortawesome/react-fontawesome\"\nimport { IconProp, SizeProp } from \"@fortawesome/fontawesome-svg-core\"\nimport { cn } from \"@/lib/utils\"\nimport { DEFAULT_ICON_PREFIX } from \"@/lib/fontawesome\"\n\nexport interface IconProps extends Omit<FontAwesomeIconProps, \"icon\"> {\n  /** The icon to display (e.g., \"shopping-cart\", [\"fass\", \"shopping-cart\"]) */\n  icon: IconProp | string\n  /** Size of the icon */\n  size?: SizeProp\n  /** Additional class names */\n  className?: string\n  /** Apply spin animation */\n  spin?: boolean\n  /** Apply pulse animation */\n  pulse?: boolean\n  /** Fixed width (useful for alignment) */\n  fixedWidth?: boolean\n}\n\n/**\n * Normalize icon prop to use DEFAULT_ICON_PREFIX when only icon name is provided\n */\nfunction normalizeIcon(icon: IconProp | string): IconProp {\n  // If it's a string, use the configured default prefix\n  if (typeof icon === \"string\") {\n    return [DEFAULT_ICON_PREFIX, icon] as IconProp\n  }\n  // Otherwise return as-is (already has prefix or is IconDefinition)\n  return icon as IconProp\n}\n\n/**\n * Icon component wrapping Font Awesome\n *\n * @example\n * // Using string shorthand (defaults to faes - Etch Solid)\n * <Icon icon=\"shopping-cart\" />\n *\n * @example\n * // Using prefix for different styles\n * <Icon icon={[\"far\", \"heart\"]} />  // Regular\n * <Icon icon={[\"fab\", \"github\"]} /> // Brands\n * <Icon icon={[\"fas\", \"check\"]} />  // Free Solid\n *\n * @example\n * // With size and color\n * <Icon icon=\"check\" size=\"lg\" className=\"text-green-500\" />\n */\nconst Icon = React.forwardRef<SVGSVGElement, IconProps>(\n  ({ icon, size, className, spin, pulse, fixedWidth, ...props }, ref) => {\n    const normalizedIcon = normalizeIcon(icon)\n\n    return (\n      <FontAwesomeIcon\n        ref={ref}\n        icon={normalizedIcon}\n        size={size}\n        spin={spin}\n        pulse={pulse}\n        fixedWidth={fixedWidth}\n        className={cn(className)}\n        {...props}\n      />\n    )\n  }\n)\n\nIcon.displayName = \"Icon\"\n\nexport { Icon }\n"
+    }
+  ]
+}
