@@ -1,8 +1,15 @@
 {
-  "name": "feature-orchestrator",
-  "description": "Orchestrates complete feature development lifecycle using specialized agents for discovery, architecture, implementation, review, and retrospective",
+  "name": "sedona-dev",
+  "description": "Sedona development toolkit with QA orchestration and feature development",
   "author": {
     "name": "Cody",
     "email": "cody@example.com"
-  }
+  },
+  "hooks": [
+    {
+      "event": "UserPromptSubmit",
+      "matchPrompt": "(?i)(qa|quality|review|audit|check|analyze)\\s+(on|for|the)?\\s*['\"]?([\\w\\-\\.]+)['\"]?",
+      "handler": "hooks/qa-trigger.md"
+    }
+  ]
 }

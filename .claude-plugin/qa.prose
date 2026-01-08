@@ -1,0 +1,191 @@
+---
+name: qa
+description: Comprehensive QA orchestration for any target
+version: 1.0.0
+---
+
+# QA Orchestration Program
+# Triggers comprehensive quality assurance with parallel agent analysis
+
+PROGRAM qa(target: string)
+
+  ## Phase 1: Context Discovery
+  EMIT "Analyzing target: ${target}"
+
+  PARALLEL {
+    discovery_agent <- SPAWN Explore WITH {
+      prompt: "Find all files related to '${target}' in this codebase.
+               Identify: source files, tests, configs, dependencies.
+               Return a structured list of paths and their purposes."
+      thoroughness: "very thorough"
+    }
+
+    git_context <- SPAWN Bash WITH {
+      command: "git log --oneline -5 --all -- '*${target}*' 2>/dev/null || echo 'No git history'"
+    }
+  }
+
+  AWAIT ALL { discovery_agent, git_context }
+
+  files <- discovery_agent.result
+  history <- git_context.result
+
+  ## Phase 2: Quality Gates (Parallel)
+  EMIT "Running quality gates..."
+
+  PARALLEL {
+    typecheck <- SPAWN Bash WITH {
+      command: "npm run type-check 2>&1 | head -50"
+      description: "TypeScript validation"
+    }
+
+    lint <- SPAWN Bash WITH {
+      command: "npm run lint 2>&1 | grep -E '(error|warning|Error)' | head -20"
+      description: "ESLint check"
+    }
+
+    build <- SPAWN Bash WITH {
+      command: "npm run build 2>&1 | tail -20"
+      description: "Production build"
+    }
+  }
+
+  AWAIT ALL { typecheck, lint, build }
+
+  IF typecheck.result CONTAINS "error" THEN
+    EMIT "TypeScript errors found - blocking issue"
+    quality_status <- "FAIL"
+  ELSE IF lint.result CONTAINS "error" THEN
+    EMIT "Lint errors found"
+    quality_status <- "WARN"
+  ELSE
+    quality_status <- "PASS"
+  END
+
+  ## Phase 3: Deep Analysis (Parallel Agents)
+  EMIT "Launching analysis agents..."
+
+  PARALLEL {
+    security_review <- SPAWN brutal-code-critic WITH {
+      prompt: "Security-focused review of ${target}.
+               Check for:
+               - Input validation gaps
+               - Injection vulnerabilities
+               - Path traversal risks
+               - Hardcoded secrets
+               - Unsafe patterns (eval, innerHTML)
+               Focus on files: ${files}
+               Be concise - list issues with severity and fix."
+    }
+
+    production_check <- SPAWN production-code-validator WITH {
+      prompt: "Validate ${target} for production readiness.
+               Check:
+               - Error handling completeness
+               - Edge cases covered
+               - Performance concerns
+               - Type safety
+               - API contract correctness
+               Files to check: ${files}
+               Return pass/fail with specific issues."
+    }
+
+    architecture_review <- SPAWN data-architecture-specialist WITH {
+      prompt: "Review data flow and architecture for ${target}.
+               Analyze:
+               - Data model correctness
+               - Type definitions
+               - API boundaries
+               - Dependency graph health
+               Files: ${files}"
+    }
+  }
+
+  AWAIT ALL { security_review, production_check, architecture_review }
+
+  ## Phase 4: Test Analysis
+  EMIT "Checking test coverage..."
+
+  test_check <- SPAWN Bash WITH {
+    command: "find . -name '*.test.ts' -o -name '*.test.tsx' | xargs grep -l '${target}' 2>/dev/null | head -10 || echo 'No tests found'"
+  }
+
+  AWAIT test_check
+
+  IF test_check.result CONTAINS "No tests found" THEN
+    test_status <- "MISSING"
+    EMIT "Warning: No tests found for ${target}"
+  ELSE
+    test_run <- SPAWN Bash WITH {
+      command: "npm test -- --testPathPattern='${target}' 2>&1 | tail -30 || echo 'Test run completed'"
+    }
+    AWAIT test_run
+
+    IF test_run.result CONTAINS "FAIL" THEN
+      test_status <- "FAILING"
+    ELSE
+      test_status <- "PASSING"
+    END
+  END
+
+  ## Phase 5: Compile Report
+  EMIT "Compiling QA report..."
+
+  report <- {
+    target: target,
+    files_analyzed: files,
+    git_history: history,
+    quality_gates: {
+      typescript: typecheck.result,
+      lint: lint.result,
+      build: build.result,
+      status: quality_status
+    },
+    security: security_review.result,
+    production_readiness: production_check.result,
+    architecture: architecture_review.result,
+    tests: {
+      status: test_status,
+      details: test_check.result
+    }
+  }
+
+  ## Phase 6: Summary & Recommendations
+  summary_agent <- SPAWN general-purpose WITH {
+    prompt: "Create a concise QA summary for ${target}.
+
+             Data:
+             ${JSON.stringify(report, null, 2)}
+
+             Format as:
+             ## QA Report: ${target}
+
+             ### Status: [PASS/WARN/FAIL]
+
+             ### Quality Gates
+             - TypeScript: [status]
+             - Lint: [status]
+             - Build: [status]
+
+             ### Critical Issues
+             [List any blocking issues]
+
+             ### Warnings
+             [List non-blocking concerns]
+
+             ### Recommendations
+             [Prioritized action items]
+
+             ### Test Coverage
+             [Status and gaps]
+
+             Be direct and actionable."
+  }
+
+  AWAIT summary_agent
+
+  EMIT summary_agent.result
+
+  RETURN report
+
+END PROGRAM
