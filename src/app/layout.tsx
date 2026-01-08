@@ -5,7 +5,8 @@ import "@/lib/fontawesome" // Initialize Font Awesome library
 import { Footer } from "@/components/trading/Footer"
 import { JsonLd } from "@/components/seo"
 import { SEO_CONFIG } from "@/lib/seo-config"
-import { AgentLaunchProvider, ProfileProvider, GPUDeployProvider } from "@/contexts"
+import { Suspense } from "react"
+import { AgentLaunchProvider, ProfileProvider, GPUDeployProvider, AnalyticsProvider } from "@/contexts"
 import { DeployModelModal, InstanceDetailsModal } from "@/components/trading"
 import { TooltipProvider } from "@/components/ui/tooltip"
 
@@ -111,18 +112,22 @@ export default function RootLayout({
         <JsonLd data={softwareAppSchema} />
       </head>
       <body className={GeistSans.className}>
-        <TooltipProvider delayDuration={300}>
-          <AgentLaunchProvider>
-            <ProfileProvider>
-              <GPUDeployProvider>
-                {children}
-                <Footer />
-                <DeployModelModal />
-                <InstanceDetailsModal />
-              </GPUDeployProvider>
-            </ProfileProvider>
-          </AgentLaunchProvider>
-        </TooltipProvider>
+        <Suspense fallback={null}>
+          <AnalyticsProvider>
+            <TooltipProvider delayDuration={300}>
+              <AgentLaunchProvider>
+                <ProfileProvider>
+                  <GPUDeployProvider>
+                    {children}
+                    <Footer />
+                    <DeployModelModal />
+                    <InstanceDetailsModal />
+                  </GPUDeployProvider>
+                </ProfileProvider>
+              </AgentLaunchProvider>
+            </TooltipProvider>
+          </AnalyticsProvider>
+        </Suspense>
       </body>
     </html>
   )
