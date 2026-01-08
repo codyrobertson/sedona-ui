@@ -100,3 +100,4 @@ temp/
 
 # NPM auth tokens (contains secrets)
 .npmrc.claude-plugin/
+tasks/
