@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import {
   Header,
   PlatformStats,
+  GPUInstancesSection,
 } from "@/components/trading"
 import { Button } from "@/components/ui/button"
 import { Icon } from "@/components/ui/icon"
@@ -205,6 +206,9 @@ export default function ProfileClient() {
             </div>
           ) : (
             <div className="space-y-4">
+              {/* GPU Instances Section */}
+              <GPUInstancesSection />
+
               {/* Basic Info */}
               <div className="rounded-xl overflow-hidden">
                 <div className="px-4 py-2.5 bg-zeus-surface-elevated border border-zeus-border-alpha border-b-0 rounded-t-xl">

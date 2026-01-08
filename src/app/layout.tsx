@@ -5,7 +5,8 @@ import "@/lib/fontawesome" // Initialize Font Awesome library
 import { Footer } from "@/components/trading/Footer"
 import { JsonLd } from "@/components/seo"
 import { SEO_CONFIG } from "@/lib/seo-config"
-import { AgentLaunchProvider, ProfileProvider } from "@/contexts"
+import { AgentLaunchProvider, ProfileProvider, GPUDeployProvider } from "@/contexts"
+import { DeployModelModal, InstanceDetailsModal } from "@/components/trading"
 
 const organizationSchema = {
   "@context": "https://schema.org",
@@ -111,8 +112,12 @@ export default function RootLayout({
       <body className={GeistSans.className}>
         <AgentLaunchProvider>
           <ProfileProvider>
-            {children}
-            <Footer />
+            <GPUDeployProvider>
+              {children}
+              <Footer />
+              <DeployModelModal />
+              <InstanceDetailsModal />
+            </GPUDeployProvider>
           </ProfileProvider>
         </AgentLaunchProvider>
       </body>
