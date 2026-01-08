@@ -166,7 +166,7 @@ export function InstanceDetailsModal() {
 
   return (
     <Dialog open={isDetailsModalOpen} onOpenChange={(open) => !open && closeInstanceDetails()}>
-      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="fixed inset-0 translate-x-0 translate-y-0 max-h-screen overflow-y-auto bg-zeus-surface-default sm:inset-auto sm:left-[50%] sm:top-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%] sm:max-w-[600px] sm:max-h-[90vh] sm:bg-zeus-surface-neutral">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <span>{selectedInstance.modelName}</span>

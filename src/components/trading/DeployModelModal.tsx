@@ -421,7 +421,7 @@ export function DeployModelModal() {
 
   return (
     <Dialog open={isDeployModalOpen} onOpenChange={(open) => !open && closeDeployModal()}>
-      <DialogContent className="sm:max-w-[480px]">
+      <DialogContent className="fixed inset-0 translate-x-0 translate-y-0 max-h-screen overflow-y-auto bg-zeus-surface-default sm:inset-auto sm:left-[50%] sm:top-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%] sm:max-w-[480px] sm:max-h-[85vh] sm:bg-zeus-surface-neutral">
         <DialogHeader>
           <DialogTitle>{getTitle()}</DialogTitle>
           {localStep === "info" && (
