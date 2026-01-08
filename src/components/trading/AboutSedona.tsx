@@ -9,28 +9,13 @@ const FaultyTerminal = dynamic(() => import("@/components/ui/faulty-terminal"), 
   ssr: false,
 })
 
-export interface TopPool {
-  rank: number
-  ticker: string
-  marketCap: string
-  change24h: number
-}
-
-export interface InfoCard {
-  title: string
-  value: string
-  change?: number
-}
-
 export interface AboutSedonaProps extends React.HTMLAttributes<HTMLDivElement> {
-  topPools?: TopPool[]
-  infoCards?: InfoCard[]
   onDismiss?: () => void
   onExplore?: () => void
 }
 
 const AboutSedona = React.forwardRef<HTMLDivElement, AboutSedonaProps>(
-  ({ className, topPools = [], infoCards = [], onDismiss, onExplore, ...props }, ref) => {
+  ({ className, onDismiss, onExplore, ...props }, ref) => {
     return (
       <div
         ref={ref}
@@ -87,6 +72,7 @@ const AboutSedona = React.forwardRef<HTMLDivElement, AboutSedonaProps>(
                 <Icon icon="arrow-up-right-from-square" className="w-3.5 h-3.5" />
               </a>
               <button
+                type="button"
                 onClick={onExplore}
                 className="group relative inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-sedona-500 hover:bg-sedona-600 text-white text-caption-m font-medium transition-colors overflow-hidden"
               >
@@ -95,8 +81,8 @@ const AboutSedona = React.forwardRef<HTMLDivElement, AboutSedonaProps>(
                   className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent"
                   aria-hidden="true"
                 />
-                <span className="relative">Explore Sedona</span>
-                <Icon icon="square-up-right" className="relative w-3.5 h-3.5" />
+                <span className="relative">View Landing</span>
+                <Icon icon="arrow-up-right" className="relative w-3.5 h-3.5" />
               </button>
             </div>
           </div>
@@ -104,6 +90,7 @@ const AboutSedona = React.forwardRef<HTMLDivElement, AboutSedonaProps>(
           {/* Dismiss Button */}
           {onDismiss && (
             <button
+              type="button"
               onClick={onDismiss}
               className="absolute top-4 right-4 p-1.5 text-zeus-text-tertiary hover:text-zeus-text-secondary hover:bg-zeus-surface-neutral rounded-md transition-colors"
               aria-label="Dismiss"

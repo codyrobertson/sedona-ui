@@ -6,12 +6,26 @@ import { cn } from "@/lib/utils"
 import {
   Dialog,
   DialogContent,
+  DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog"
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden"
 import { Button } from "@/components/ui/button"
-import { GridScan } from "@/components/ui/grid-scan"
+import { PixelBlast } from "@/components/ui/pixel-blast"
 import { Icon } from "@/components/ui/icon"
 import { SedonaLogo } from "@/components/sedona/sedona-logo"
 import { getHFRepos, formatHFDate, type HFRepo, type HFCommit } from "@/fixtures"
+import {
+  validateAgentForm,
+  validateImageFile,
+  sanitizeTicker,
+  sanitizeAgentName,
+  getAgentFieldError,
+  MAX_DESCRIPTION_LENGTH,
+  MAX_IMAGE_SIZE,
+  ALLOWED_IMAGE_TYPES,
+  type AgentValidationError,
+} from "@/lib/agent-validation"
 
 export interface CreateAgentData {
   name: string
@@ -51,6 +65,10 @@ const AgentLaunchModal = ({
   const [agentName, setAgentName] = React.useState("")
   const [ticker, setTicker] = React.useState("")
   const [description, setDescription] = React.useState("")
+  const [agentImage, setAgentImage] = React.useState<string | null>(null)
+  const [imageFile, setImageFile] = React.useState<File | null>(null)
+  const [validationErrors, setValidationErrors] = React.useState<AgentValidationError[]>([])
+  const imageInputRef = React.useRef<HTMLInputElement>(null)
 
   // Get user's HF repos
   const repos = React.useMemo(() => getHFRepos(), [])
@@ -66,12 +84,52 @@ const AgentLaunchModal = ({
       setAgentName("")
       setTicker("")
       setDescription("")
+      setAgentImage(null)
+      setImageFile(null)
+      setValidationErrors([])
       setSelectedRepo(null)
       setSelectedCommit(null)
       setSearchQuery("")
       setView(isAuthenticated ? "select-repo" : "signin")
     }
   }, [open, isAuthenticated])
+
+  // Handle image upload with validation
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      // Validate file
+      const imageError = validateImageFile(file)
+      if (imageError) {
+        setValidationErrors(prev => {
+          const filtered = prev.filter(err => err.field !== 'image')
+          return [...filtered, { field: 'image' as const, message: imageError }]
+        })
+        // Clear the input
+        e.target.value = ''
+        return
+      }
+
+      // Clear any existing image error
+      setValidationErrors(prev => prev.filter(err => err.field !== 'image'))
+      setImageFile(file)
+
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setAgentImage(reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  // Clear field error when user edits
+  const clearFieldError = (field: AgentValidationError['field']) => {
+    setValidationErrors(prev => prev.filter(err => err.field !== field))
+  }
+
+  // Get error for a specific field
+  const fieldError = (field: AgentValidationError['field']) =>
+    getAgentFieldError(validationErrors, field)
 
   // Filter repos by search
   const filteredRepos = repos.filter((repo) =>
@@ -104,13 +162,26 @@ const AgentLaunchModal = ({
   }
 
   const handleCreate = () => {
-    if (!agentName || !ticker || !selectedRepo || !selectedCommit) return
+    if (!selectedRepo || !selectedCommit) return
 
-    setView("creating")
-    onCreateAgent?.({
+    // Validate form
+    const validation = validateAgentForm({
       name: agentName,
       ticker,
       description,
+      imageFile,
+    })
+
+    if (!validation.valid) {
+      setValidationErrors(validation.errors)
+      return
+    }
+
+    setView("creating")
+    onCreateAgent?.({
+      name: agentName.trim(),
+      ticker: ticker.trim().toUpperCase(),
+      description: description.trim(),
       huggingFaceRepo: selectedRepo.fullName,
       commitHash: selectedCommit.hash,
     })
@@ -123,13 +194,20 @@ const AgentLaunchModal = ({
   }
 
   const isRepoSelected = selectedRepo && selectedCommit
-  const isFormValid = agentName.trim() && ticker.trim() && selectedRepo && selectedCommit
+  // Basic check for button state (full validation on submit)
+  const isFormValid = agentName.trim().length >= 2 && ticker.trim().length >= 2 && selectedRepo && selectedCommit
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[95vw] sm:max-w-[680px] bg-zeus-surface-neutral border-zeus-border-alpha p-0 gap-0 rounded-lg overflow-hidden [&>button]:hidden max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-[95vw] sm:max-w-[680px] bg-zeus-surface-neutral border-zeus-border-alpha p-0 gap-0 rounded-lg overflow-hidden [&>button]:hidden max-h-[90vh] overflow-y-auto" aria-describedby={undefined}>
+        <VisuallyHidden.Root>
+          <DialogTitle>Launch AI Agent</DialogTitle>
+          <DialogDescription>
+            Connect your HuggingFace account and select a model to launch as an AI agent on Sedona.
+          </DialogDescription>
+        </VisuallyHidden.Root>
         {/* Two Column Layout - stacks on mobile */}
-        <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] min-h-[400px] md:min-h-[480px]">
+        <div className="grid grid-cols-1 md:grid-cols-[260px_1fr] min-h-[400px] md:min-h-[480px]">
           {/* Left Column - Repo List or Token Preview (hidden on mobile in form/creating view) */}
           <div className={cn(
             "p-3 sm:p-4 border-b md:border-b-0 md:border-r border-zeus-border-alpha flex flex-col",
@@ -205,27 +283,27 @@ const AgentLaunchModal = ({
                         onClick={() => handleRepoSelect(repo)}
                         disabled={view === "signin"}
                         className={cn(
-                          "w-full flex flex-col gap-1 px-3 py-2.5 rounded text-left transition-all border",
+                          "w-full flex flex-col gap-0.5 px-2.5 py-2 rounded text-left transition-all border",
                           isSelected
                             ? "bg-sedona-500/10 border-sedona-500/40"
                             : "border-zeus-border-alpha hover:bg-zeus-surface-neutral-subtle"
                         )}
                       >
-                        <div className="flex items-center gap-2">
-                          <span className="text-zeus-text-primary text-body-s font-medium truncate flex-1">
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-zeus-text-primary text-caption-l font-medium truncate flex-1">
                             {repo.name}
                           </span>
                           {repo.isPrivate && (
-                            <Icon icon="lock" className="w-3 h-3 text-zeus-text-tertiary shrink-0" />
+                            <Icon icon="lock" className="w-2.5 h-2.5 text-zeus-text-tertiary shrink-0" />
                           )}
                           {isSelected && (
-                            <Icon icon="check" className="w-4 h-4 text-sedona-500 shrink-0" />
+                            <Icon icon="check" className="w-3.5 h-3.5 text-sedona-500 shrink-0" />
                           )}
                         </div>
-                        <span className="text-zeus-text-tertiary text-caption-s truncate">
+                        <span className="text-zeus-text-tertiary text-caption-s line-clamp-2">
                           {repo.description}
                         </span>
-                        <div className="flex items-center gap-3 text-caption-s text-zeus-text-quaternary">
+                        <div className="flex items-center gap-2 text-[10px] text-zeus-text-quaternary mt-0.5">
                           <span>{repo.downloads.toLocaleString()} downloads</span>
                           <span>Updated {formatHFDate(repo.lastModified)}</span>
                         </div>
@@ -289,16 +367,16 @@ const AgentLaunchModal = ({
                 {selectedRepo ? (
                   <>
                     {/* Selected repo info */}
-                    <div className="bg-zeus-surface-elevated border border-zeus-border-alpha rounded-lg p-4 mb-4">
-                      <div className="flex items-start gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-sedona-500/15 flex items-center justify-center text-sedona-500 font-semibold shrink-0">
+                    <div className="bg-zeus-surface-elevated border border-zeus-border-alpha rounded-lg p-3 mb-3">
+                      <div className="flex items-start gap-2.5">
+                        <div className="w-9 h-9 rounded-lg bg-sedona-500/15 flex items-center justify-center text-sedona-500 font-semibold text-caption-l shrink-0">
                           {selectedRepo.name.charAt(0).toUpperCase()}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h4 className="text-zeus-text-primary text-body-s font-semibold truncate">
+                          <h4 className="text-zeus-text-primary text-caption-l font-semibold truncate">
                             {selectedRepo.fullName}
                           </h4>
-                          <p className="text-zeus-text-secondary text-caption-s truncate">
+                          <p className="text-zeus-text-secondary text-caption-s line-clamp-2">
                             {selectedRepo.description}
                           </p>
                         </div>
@@ -306,10 +384,10 @@ const AgentLaunchModal = ({
                     </div>
 
                     {/* Commit selection */}
-                    <label className="block text-zeus-text-secondary text-caption-s mb-2">
+                    <label className="block text-zeus-text-secondary text-caption-s mb-1.5">
                       Choose a commit
                     </label>
-                    <div className="flex-1 overflow-y-auto space-y-1.5 mb-4">
+                    <div className="flex-1 overflow-y-auto space-y-1 mb-3">
                       {selectedRepo.commits.map((commit, idx) => {
                         const isSelected = selectedCommit?.hash === commit.hash
                         return (
@@ -317,29 +395,29 @@ const AgentLaunchModal = ({
                             key={commit.hash}
                             onClick={() => setSelectedCommit(commit)}
                             className={cn(
-                              "w-full flex items-center gap-3 px-3 py-2.5 rounded text-left transition-all border",
+                              "w-full flex items-center gap-2 px-2.5 py-2 rounded text-left transition-all border",
                               isSelected
                                 ? "bg-sedona-500/10 border-sedona-500/40"
                                 : "border-zeus-border-alpha hover:bg-zeus-surface-neutral-subtle"
                             )}
                           >
                             <div className="flex-1 min-w-0">
-                              <div className="flex items-center gap-2">
-                                <span className="text-zeus-text-primary font-mono text-caption-l">
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-zeus-text-primary font-mono text-caption-s">
                                   {commit.hashShort}
                                 </span>
                                 {idx === 0 && (
-                                  <span className="text-[10px] text-sedona-500 font-medium px-1.5 py-0.5 bg-sedona-500/10 rounded">
+                                  <span className="text-[9px] text-sedona-500 font-medium px-1 py-0.5 bg-sedona-500/10 rounded">
                                     LATEST
                                   </span>
                                 )}
                               </div>
-                              <p className="text-zeus-text-secondary text-caption-s truncate mt-0.5">
+                              <p className="text-zeus-text-secondary text-caption-s truncate">
                                 {commit.message}
                               </p>
                             </div>
                             {isSelected && (
-                              <Icon icon="check" className="w-4 h-4 text-sedona-500 shrink-0" />
+                              <Icon icon="check" className="w-3.5 h-3.5 text-sedona-500 shrink-0" />
                             )}
                           </button>
                         )
@@ -397,47 +475,122 @@ const AgentLaunchModal = ({
                 </div>
 
                 {/* Form Fields */}
-                <div className="space-y-4 flex-1">
-                  <div>
-                    <label className="block text-zeus-text-secondary text-caption-s mb-1.5">
-                      Agent Name
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="My AI Agent"
-                      value={agentName}
-                      onChange={(e) => setAgentName(e.target.value)}
-                      className="w-full bg-zeus-surface-elevated border border-zeus-border-alpha rounded-lg px-3 py-2.5 text-body-s text-zeus-text-primary placeholder:text-zeus-text-tertiary focus:outline-none focus:border-sedona-500/50"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-zeus-text-secondary text-caption-s mb-1.5">
-                      Ticker Symbol
-                    </label>
-                    <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zeus-text-tertiary text-body-s">$</span>
+                <div className="space-y-3 flex-1">
+                  {/* Image Upload + Name/Ticker Row */}
+                  <div className="flex gap-3">
+                    {/* Image Upload */}
+                    <div className="flex flex-col">
                       <input
-                        type="text"
-                        placeholder="AGENT"
-                        value={ticker}
-                        onChange={(e) => setTicker(e.target.value.toUpperCase().slice(0, 6))}
-                        className="w-full bg-zeus-surface-elevated border border-zeus-border-alpha rounded-lg pl-7 pr-3 py-2.5 text-body-s text-zeus-text-primary placeholder:text-zeus-text-tertiary focus:outline-none focus:border-sedona-500/50 uppercase"
+                        ref={imageInputRef}
+                        type="file"
+                        accept={ALLOWED_IMAGE_TYPES.join(',')}
+                        onChange={handleImageUpload}
+                        className="hidden"
                       />
+                      <button
+                        type="button"
+                        onClick={() => imageInputRef.current?.click()}
+                        className={cn(
+                          "w-16 h-16 rounded-lg bg-zeus-surface-elevated border border-dashed transition-colors flex items-center justify-center overflow-hidden",
+                          fieldError('image')
+                            ? "border-zeus-status-error"
+                            : "border-zeus-border-alpha hover:border-sedona-500/50"
+                        )}
+                      >
+                        {agentImage ? (
+                          <img src={agentImage} alt="Agent" className="w-full h-full object-cover" />
+                        ) : (
+                          <Icon icon="image" className="w-5 h-5 text-zeus-text-tertiary" />
+                        )}
+                      </button>
+                      {fieldError('image') && (
+                        <p className="mt-1 text-[10px] text-zeus-status-error max-w-[64px]">
+                          {fieldError('image')}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Name + Ticker */}
+                    <div className="flex-1 space-y-2">
+                      <div>
+                        <input
+                          type="text"
+                          placeholder="Agent Name"
+                          value={agentName}
+                          onChange={(e) => {
+                            setAgentName(sanitizeAgentName(e.target.value))
+                            clearFieldError('name')
+                          }}
+                          className={cn(
+                            "w-full bg-zeus-surface-elevated border rounded-lg px-3 py-2 text-body-s text-zeus-text-primary placeholder:text-zeus-text-tertiary focus:outline-none",
+                            fieldError('name')
+                              ? "border-zeus-status-error focus:border-zeus-status-error"
+                              : "border-zeus-border-alpha focus:border-sedona-500/50"
+                          )}
+                        />
+                        {fieldError('name') && (
+                          <p className="mt-1 text-caption-s text-zeus-status-error">{fieldError('name')}</p>
+                        )}
+                      </div>
+                      <div>
+                        <div className="relative">
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zeus-text-tertiary text-body-s">$</span>
+                          <input
+                            type="text"
+                            placeholder="TICKER"
+                            value={ticker}
+                            onChange={(e) => {
+                              setTicker(sanitizeTicker(e.target.value))
+                              clearFieldError('ticker')
+                            }}
+                            className={cn(
+                              "w-full bg-zeus-surface-elevated border rounded-lg pl-7 pr-3 py-2 text-body-s text-zeus-text-primary placeholder:text-zeus-text-tertiary focus:outline-none uppercase",
+                              fieldError('ticker')
+                                ? "border-zeus-status-error focus:border-zeus-status-error"
+                                : "border-zeus-border-alpha focus:border-sedona-500/50"
+                            )}
+                          />
+                        </div>
+                        {fieldError('ticker') && (
+                          <p className="mt-1 text-caption-s text-zeus-status-error">{fieldError('ticker')}</p>
+                        )}
+                      </div>
                     </div>
                   </div>
 
+                  {/* Description */}
                   <div>
-                    <label className="block text-zeus-text-secondary text-caption-s mb-1.5">
-                      Description
-                    </label>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="block text-zeus-text-secondary text-caption-s">
+                        Description
+                      </label>
+                      <span className={cn(
+                        "text-caption-s",
+                        description.length > MAX_DESCRIPTION_LENGTH
+                          ? "text-zeus-status-error"
+                          : "text-zeus-text-tertiary"
+                      )}>
+                        {description.length}/{MAX_DESCRIPTION_LENGTH}
+                      </span>
+                    </div>
                     <textarea
                       placeholder="Describe what your agent does..."
                       value={description}
-                      onChange={(e) => setDescription(e.target.value)}
+                      onChange={(e) => {
+                        setDescription(e.target.value.slice(0, MAX_DESCRIPTION_LENGTH + 50)) // Allow slight overflow for UX
+                        clearFieldError('description')
+                      }}
                       rows={3}
-                      className="w-full bg-zeus-surface-elevated border border-zeus-border-alpha rounded-lg px-3 py-2.5 text-body-s text-zeus-text-primary placeholder:text-zeus-text-tertiary focus:outline-none focus:border-sedona-500/50 resize-none"
+                      className={cn(
+                        "w-full bg-zeus-surface-elevated border rounded-lg px-3 py-2 text-body-s text-zeus-text-primary placeholder:text-zeus-text-tertiary focus:outline-none resize-none",
+                        fieldError('description')
+                          ? "border-zeus-status-error focus:border-zeus-status-error"
+                          : "border-zeus-border-alpha focus:border-sedona-500/50"
+                      )}
                     />
+                    {fieldError('description') && (
+                      <p className="mt-1 text-caption-s text-zeus-status-error">{fieldError('description')}</p>
+                    )}
                   </div>
                 </div>
 
@@ -453,18 +606,29 @@ const AgentLaunchModal = ({
               </>
             ) : (
               // Creating State with Animation
-              <div className="flex-1 bg-zeus-surface-default relative">
-                <GridScan color="#f97316" />
+              <div className="flex-1 bg-zeus-surface-default relative overflow-hidden">
+                {/* PixelBlast background in brand colors */}
+                <PixelBlast
+                  variant="square"
+                  pixelSize={8}
+                  color="#f97316"
+                  patternScale={3}
+                  patternDensity={1.2}
+                  speed={0.4}
+                  edgeFade={0.15}
+                  enableRipples
+                  transparent
+                />
 
-                {/* Content overlay */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none">
-                  <h3 className="text-zeus-text-secondary text-caption-s uppercase tracking-wide mb-8">
+                {/* Content centered */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
+                  <h3 className="text-zeus-text-secondary text-caption-s uppercase tracking-wide mb-4">
                     Launching Agent
                   </h3>
 
                   <div className="flex items-center gap-2 mb-3">
-                    <Icon icon="spinner-third" spin className="w-5 h-5 text-sedona-500" />
-                    <span className="text-zeus-text-primary text-body-m font-medium">
+                    <Icon icon="spinner-third" spin className="w-4 h-4 text-sedona-500" />
+                    <span className="text-zeus-text-primary text-body-s font-medium">
                       Starting evaluation...
                     </span>
                   </div>

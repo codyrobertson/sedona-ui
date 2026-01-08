@@ -27,3 +27,32 @@ export type {
   TransactionStatus,
   WalletTransaction,
 } from "./wallet"
+
+// Profile types
+export type {
+  SocialPlatform,
+  SocialLinks,
+  CommunicationPreferences,
+  UserProfile,
+  UserProfileUpdate,
+  ProfileFormData,
+  ProfileValidationError,
+  ProfileValidationResult,
+  ProfileState,
+} from "./profile"
+export { DEFAULT_COMMUNICATION_PREFERENCES } from "./profile"
+
+// GPU Instance types
+export type {
+  GPUInstanceStatus,
+  PaymentMethod,
+  GPUTier,
+  GPUPricing,
+  GPUInstance,
+  DeploymentRequest,
+  CodeSnippet,
+  ConnectionInfo,
+  DeployModalStep,
+  GPUDeployState,
+  GPUDeployContextValue,
+} from "./gpu-instance"

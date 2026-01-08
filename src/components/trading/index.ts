@@ -11,7 +11,7 @@ export { TrendingAgents } from "./TrendingAgents"
 export type { TrendingAgentsProps } from "./TrendingAgents"
 
 export { AboutSedona } from "./AboutSedona"
-export type { AboutSedonaProps, TopPool, InfoCard } from "./AboutSedona"
+export type { AboutSedonaProps } from "./AboutSedona"
 
 export { AgentLaunchModal } from "./AgentLaunchModal"
 export type { AgentLaunchModalProps, CreateAgentData } from "./AgentLaunchModal"
@@ -50,3 +50,10 @@ export type { TransactionsTableProps, Transaction } from "./TransactionsTable"
 
 export { TokenSwapCard } from "./TokenSwapCard"
 export type { TokenSwapCardProps } from "./TokenSwapCard"
+
+export { DeployModelModal } from "./DeployModelModal"
+export { InstanceDetailsModal } from "./InstanceDetailsModal"
+export { GPUInstanceCard } from "./GPUInstanceCard"
+export type { GPUInstanceCardProps } from "./GPUInstanceCard"
+export { GPUInstancesSection } from "./GPUInstancesSection"
+export type { GPUInstancesSectionProps } from "./GPUInstancesSection"

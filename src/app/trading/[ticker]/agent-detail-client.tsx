@@ -16,7 +16,7 @@ import {
   RECENT_TRADES,
   type ChartTimeframe,
 } from "@/fixtures"
-import { useAgentLaunch } from "@/contexts"
+import { useAgentLaunch, useGPUDeploy } from "@/contexts"
 
 interface AgentDetailClientProps {
   ticker: string
@@ -24,8 +24,17 @@ interface AgentDetailClientProps {
 
 export default function AgentDetailClient({ ticker }: AgentDetailClientProps) {
   const { openCreateAgent } = useAgentLaunch()
+  const { openDeployModal } = useGPUDeploy()
   const [timeframe, setTimeframe] = React.useState<ChartTimeframe>("1d")
   const agent = getAgentOrDefault(ticker?.toLowerCase() || "test")
+
+  const handleDeploy = () => {
+    openDeployModal({
+      id: agent.pool || agent.ticker,
+      name: agent.name,
+      ticker: agent.ticker,
+    })
+  }
 
   // Convert RECENT_TRADES to the format expected by PlatformStats
   const recentTrades = RECENT_TRADES.map((trade) => ({
@@ -60,6 +69,7 @@ export default function AgentDetailClient({ ticker }: AgentDetailClientProps) {
     receiveBalance: "0",
     tradingStatus: "active" as const,
     onSwap: async () => {},
+    onDeploy: handleDeploy,
   }
 
   return (

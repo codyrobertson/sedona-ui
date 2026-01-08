@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Icon } from "@/components/ui/icon"
 import { Header, PlatformStats } from "@/components/trading"
-import { useAgentLaunch } from "@/contexts"
+import { useAgentLaunch, useGPUDeploy } from "@/contexts"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
@@ -112,9 +112,10 @@ interface AgentStatsCardProps {
   agent: MyAgent
   onTrade?: () => void
   onAddWeights?: () => void
+  onDeploy?: () => void
 }
 
-function AgentStatsCard({ agent, onTrade, onAddWeights }: AgentStatsCardProps) {
+function AgentStatsCard({ agent, onTrade, onAddWeights, onDeploy }: AgentStatsCardProps) {
   const hasToken = !!agent.token
 
   return (
@@ -214,6 +215,12 @@ function AgentStatsCard({ agent, onTrade, onAddWeights }: AgentStatsCardProps) {
         {hasToken && onTrade && (
           <Button variant="default" size="lg" onClick={onTrade} className="w-full">
             Trade ${agent.ticker}
+          </Button>
+        )}
+        {onDeploy && (
+          <Button variant="secondary" size="lg" onClick={onDeploy} className="w-full">
+            <Icon icon="server" className="w-4 h-4 mr-2" />
+            Deploy Model
           </Button>
         )}
         {onAddWeights && (
@@ -426,6 +433,7 @@ interface AgentDetailClientProps {
 export default function AgentDetailClient({ agentId }: AgentDetailClientProps) {
   const router = useRouter()
   const { openCreateAgent } = useAgentLaunch()
+  const { openDeployModal } = useGPUDeploy()
   const agent = getMockAgent(agentId)
 
   // Version sheet state
@@ -436,6 +444,15 @@ export default function AgentDetailClient({ agentId }: AgentDetailClientProps) {
   const handleBack = () => router.push("/trading/portfolio")
   const handleTrade = () => agent?.ticker && router.push(`/trading/${agent.ticker}`)
   const handleAddWeights = () => console.log("Add weights")
+  const handleDeploy = () => {
+    if (agent) {
+      openDeployModal({
+        id: agent.id,
+        name: agent.name,
+        ticker: agent.ticker,
+      })
+    }
+  }
   const handleVersionClick = (version: AgentVersion) => {
     setSelectedVersion(version)
     setSheetOpen(true)
@@ -560,12 +577,12 @@ export default function AgentDetailClient({ agentId }: AgentDetailClientProps) {
 
           {/* Right Column - Stats Card */}
           <aside className="hidden lg:flex lg:flex-col w-[380px] flex-shrink-0" aria-label="Agent Stats">
-            <AgentStatsCard agent={agent} onTrade={handleTrade} onAddWeights={handleAddWeights} />
+            <AgentStatsCard agent={agent} onTrade={handleTrade} onAddWeights={handleAddWeights} onDeploy={handleDeploy} />
           </aside>
 
           {/* Mobile Stats Card */}
           <div className="lg:hidden">
-            <AgentStatsCard agent={agent} onTrade={handleTrade} onAddWeights={handleAddWeights} />
+            <AgentStatsCard agent={agent} onTrade={handleTrade} onAddWeights={handleAddWeights} onDeploy={handleDeploy} />
           </div>
         </div>
       </main>

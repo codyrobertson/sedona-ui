@@ -11,6 +11,7 @@ export interface HeaderProps extends React.HTMLAttributes<HTMLElement> {
   onCreateCoin?: () => void
   onConnect?: () => void
   onDisconnect?: () => void
+  onProfile?: () => void
   isAuthenticated?: boolean
   walletAddress?: string
   fullWalletAddress?: string
@@ -24,6 +25,7 @@ const Header = React.forwardRef<HTMLElement, HeaderProps>(
     onCreateCoin,
     onConnect,
     onDisconnect,
+    onProfile,
     isAuthenticated = false,
     walletAddress = "J181...U7Wi",
     fullWalletAddress = "J181xK2Df6672c6d19a2d56fc9d941e86da4f8c2a9b7e3U7Wi",
@@ -35,24 +37,21 @@ const Header = React.forwardRef<HTMLElement, HeaderProps>(
       <header
         ref={ref}
         className={cn(
-          "flex items-center justify-between px-6 py-2.5 bg-zeus-surface-elevated border-b border-zeus-border-alpha",
+          "flex items-center justify-between px-3 sm:px-6 py-2 sm:py-2.5 bg-zeus-surface-elevated border-b border-zeus-border-alpha",
           className
         )}
         {...props}
       >
-        <div className="flex items-center gap-3">
-          <Link href="/trading" className="hover:opacity-80 transition-opacity">
+        <div className="flex items-center">
+          <Link href="/trading" className="hover:opacity-80 transition-opacity" aria-label="Sedona home">
             <SedonaLogo variant="logo" size="sm" className="text-white" />
           </Link>
-          <span className="text-zeus-text-secondary text-caption-s hidden sm:block">
-            Discover the Pareto Frontier of Agents
-          </span>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <Link
             href="/docs"
-            className="text-zeus-text-primary underline hover:text-zeus-text-secondary transition-colors text-caption-s font-medium px-2"
+            className="text-zeus-text-primary underline hover:text-zeus-text-secondary transition-colors text-caption-s font-medium px-2 py-2"
           >
             Docs
           </Link>
@@ -73,6 +72,7 @@ const Header = React.forwardRef<HTMLElement, HeaderProps>(
                 balance={balance}
                 balanceUsd={balanceUsd}
                 onDisconnect={onDisconnect}
+                onProfile={onProfile}
               />
             </>
           ) : (

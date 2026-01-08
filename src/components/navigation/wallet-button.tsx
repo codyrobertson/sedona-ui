@@ -25,6 +25,8 @@ export interface WalletButtonProps {
   onConnect?: () => void
   /** Disconnect callback */
   onDisconnect?: () => void
+  /** Profile callback */
+  onProfile?: () => void
   /** Custom class name */
   className?: string
   /** Size variant */
@@ -57,6 +59,7 @@ const WalletButton = React.forwardRef<HTMLButtonElement, WalletButtonProps>(
       balance = 0,
       onConnect,
       onDisconnect,
+      onProfile,
       className,
       size = "md",
       showFullAddress = false,
@@ -176,6 +179,17 @@ const WalletButton = React.forwardRef<HTMLButtonElement, WalletButtonProps>(
               {displayAddress}
             </p>
           </div>
+          <DropdownMenuSeparator className="bg-zeus-border-alpha" />
+
+          {/* Profile */}
+          <DropdownMenuItem
+            onClick={onProfile}
+            className="cursor-pointer text-zeus-text-secondary hover:text-zeus-text-primary hover:bg-zeus-surface-neutral"
+          >
+            <Icon icon="user" className="w-4 h-4 mr-2" />
+            My Profile
+          </DropdownMenuItem>
+
           <DropdownMenuSeparator className="bg-zeus-border-alpha" />
 
           {/* Actions */}

@@ -121,6 +121,9 @@ export default function TradingPageClient({ initialHeroMode = false }: TradingPa
           onConnect={() => {
             router.push("/trading/portfolio")
           }}
+          onProfile={() => {
+            router.push("/trading/profile")
+          }}
         />
       )}
 

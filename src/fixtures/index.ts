@@ -110,3 +110,33 @@ export {
   getMockAgent,
   getMockAgentVersions,
 } from "./my-agents"
+
+// =============================================================================
+// USER PROFILES
+// =============================================================================
+export {
+  MOCK_PROFILES,
+  MOCK_USER_PROFILE,
+  getProfileByWallet,
+  hasProfileForWallet,
+  getDefaultProfile,
+  profileToFormData,
+  formDataToProfile,
+} from "./profile"
+
+// =============================================================================
+// GPU INSTANCES
+// =============================================================================
+export {
+  GPU_PRICING,
+  DEFAULT_GPU_TIER,
+  MOCK_GPU_INSTANCES,
+  generateCodeSnippets,
+  generateInstanceId,
+  generateApiKey,
+  calculateCost,
+  formatDuration,
+  formatTimeRemaining,
+  getStatusColor,
+  getStatusLabel,
+} from "./gpu-instances"
