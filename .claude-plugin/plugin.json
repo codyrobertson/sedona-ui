@@ -1,0 +1,8 @@
+{
+  "name": "feature-orchestrator",
+  "description": "Orchestrates complete feature development lifecycle using specialized agents for discovery, architecture, implementation, review, and retrospective",
+  "author": {
+    "name": "Cody",
+    "email": "cody@example.com"
+  }
+}

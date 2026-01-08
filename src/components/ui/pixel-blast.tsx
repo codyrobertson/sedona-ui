@@ -275,6 +275,9 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
       cancelAnimationFrame(state.raf!);
       state.material?.dispose();
       state.composer?.dispose();
+      // Explicitly release WebGL context to prevent "context was lost" errors
+      const gl = state.renderer.getContext();
+      gl.getExtension('WEBGL_lose_context')?.loseContext();
       state.renderer.dispose();
       state.renderer.domElement.remove();
     }
@@ -419,6 +422,9 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
       cancelAnimationFrame(state.raf!);
       material.dispose();
       composer?.dispose();
+      // Explicitly release WebGL context to prevent "context was lost" errors
+      const gl = renderer.getContext();
+      gl.getExtension('WEBGL_lose_context')?.loseContext();
       renderer.dispose();
       renderer.domElement.remove();
     };
