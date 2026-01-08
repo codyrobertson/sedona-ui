@@ -30,28 +30,19 @@ export interface PlatformStatsProps extends React.HTMLAttributes<HTMLDivElement>
   ticker?: string
 }
 
-// Stat badge component with animated counter
-interface StatBadgeProps {
+// Stat item component with animated counter
+interface StatItemProps {
   icon: React.ReactNode
   label: string
   value?: string
   numericValue?: number
   type?: "time" | "currency" | "number"
-  variant?: "info" | "warning"
 }
 
-const StatBadge = ({ icon, label, value, numericValue, type = "number", variant = "info" }: StatBadgeProps) => {
-  const variantStyles = {
-    info: "bg-zeus-surface-info border-zeus-accent-blue/30",
-    warning: "bg-zeus-surface-warning border-zeus-accent-orange/30",
-  }
-
+const StatItem = ({ icon, label, value, numericValue, type = "number" }: StatItemProps) => {
   return (
-    <div className={cn(
-      "flex items-center gap-2 px-3 py-1.5 rounded-lg border",
-      variantStyles[variant]
-    )}>
-      <span className="text-zeus-text-tertiary">{icon}</span>
+    <div className="flex items-center gap-1.5">
+      {icon}
       <span className="text-zeus-text-secondary text-caption-m">{label}</span>
       <span className="text-zeus-text-primary text-caption-m font-semibold">
         {numericValue !== undefined ? (
@@ -85,38 +76,33 @@ const PlatformStats = React.forwardRef<HTMLDivElement, PlatformStatsProps>(
         {...props}
       >
         {/* Left: Platform Stats */}
-        <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-6 py-2 flex-shrink-0">
-          <span className="text-zeus-text-secondary text-caption-m hidden sm:block">
+        <div className="flex items-center justify-around sm:justify-start gap-2 sm:gap-4 px-3 sm:px-6 py-2 flex-shrink-0 flex-1 md:flex-none">
+          <h2 className="text-zeus-text-secondary text-caption-m hidden sm:block">
             Platform Stats
-          </span>
+          </h2>
 
-          <StatBadge
-            icon={<Icon icon="clock" className="w-3.5 h-3.5" />}
+          <StatItem
+            icon={<Icon icon="clock" className="w-3.5 h-3.5 text-zeus-accent-blue" />}
             label="Ends In:"
             value={endsIn}
             numericValue={endsInSeconds}
             type="time"
-            variant="info"
           />
 
-          <StatBadge
-            icon={<Icon icon="trophy" className="w-3.5 h-3.5" />}
+          <StatItem
+            icon={<Icon icon="trophy" className="w-3.5 h-3.5 text-zeus-accent-orange" />}
             label="Jackpot:"
             value={jackpot}
             numericValue={jackpotValue}
             type="currency"
-            variant="warning"
           />
 
-          <div className="hidden sm:block">
-            <StatBadge
-              icon={<Icon icon="chart-simple" className="w-3.5 h-3.5" />}
-              label="Tokens:"
-              numericValue={tokens}
-              type="number"
-              variant="info"
-            />
-          </div>
+          <StatItem
+            icon={<Icon icon="chart-simple" className="w-3.5 h-3.5 text-zeus-accent-purple" />}
+            label="Tokens:"
+            numericValue={tokens}
+            type="number"
+          />
         </div>
 
         {/* Divider - hidden on mobile */}
