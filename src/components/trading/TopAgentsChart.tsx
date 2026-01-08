@@ -179,39 +179,12 @@ const TopAgentsChart = React.forwardRef<HTMLDivElement, TopAgentsChartProps>(
         {...props}
       >
         {/* Header */}
-        <div className="px-4 pt-4 pb-3 border-b border-zeus-border-alpha">
-          {/* Title */}
-          <h2 className="text-heading-lg font-bold text-zeus-text-primary mb-2">
-            Trending Agents
-          </h2>
-          {/* Sorting + Timeframe Row */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="text-zeus-text-secondary text-caption-l">Sorting by</span>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button className="flex items-center gap-1 text-zeus-text-primary text-caption-l font-medium hover:text-sedona-500 transition-colors focus:outline-none">
-                    {sortBy}
-                    <Icon icon="chevron-down" className="w-4 h-4" />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="min-w-[250px]">
-                  <DropdownMenuRadioGroup
-                    value={sortBy}
-                    onValueChange={(value) => onSortChange?.(value)}
-                  >
-                    {sortOptions.map((option) => (
-                      <DropdownMenuRadioItem
-                        key={option}
-                        value={option}
-                      >
-                        {option}
-                      </DropdownMenuRadioItem>
-                    ))}
-                  </DropdownMenuRadioGroup>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
+        <div className="px-3 sm:px-4 pt-3 sm:pt-4 pb-2 sm:pb-3 border-b border-zeus-border-alpha">
+          {/* Title + Timeframe Row */}
+          <div className="flex items-center justify-between mb-1.5 sm:mb-2">
+            <h2 className="text-body-l sm:text-heading-lg font-bold text-zeus-text-primary">
+              Trending Agents
+            </h2>
             <ToggleGroup
               type="single"
               value={timeframe}
@@ -224,7 +197,7 @@ const TopAgentsChart = React.forwardRef<HTMLDivElement, TopAgentsChartProps>(
                 value="7d"
                 size="sm"
                 className={cn(
-                  "h-7 px-2.5 text-caption-s font-medium rounded-md",
+                  "h-6 sm:h-7 px-2 sm:px-2.5 text-caption-s font-medium rounded-md",
                   timeframe === "7d"
                     ? "bg-sedona-500 text-white"
                     : "bg-zeus-surface-elevated text-zeus-text-tertiary hover:text-zeus-text-secondary"
@@ -236,7 +209,7 @@ const TopAgentsChart = React.forwardRef<HTMLDivElement, TopAgentsChartProps>(
                 value="30d"
                 size="sm"
                 className={cn(
-                  "h-7 px-2.5 text-caption-s font-medium rounded-md",
+                  "h-6 sm:h-7 px-2 sm:px-2.5 text-caption-s font-medium rounded-md",
                   timeframe === "30d"
                     ? "bg-sedona-500 text-white"
                     : "bg-zeus-surface-elevated text-zeus-text-tertiary hover:text-zeus-text-secondary"
@@ -245,6 +218,36 @@ const TopAgentsChart = React.forwardRef<HTMLDivElement, TopAgentsChartProps>(
                 30D
               </ToggleGroupItem>
             </ToggleGroup>
+          </div>
+          {/* Sorting Row */}
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <span className="text-zeus-text-secondary text-caption-s sm:text-caption-l">Sort:</span>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className="flex items-center gap-1 text-zeus-text-primary text-caption-s sm:text-caption-l font-medium hover:text-sedona-500 transition-colors focus:outline-none"
+                  aria-label={`Sort by ${sortBy}`}
+                >
+                  <span className="truncate max-w-[180px] sm:max-w-none">{sortBy}</span>
+                  <Icon icon="chevron-down" className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="min-w-[250px]">
+                <DropdownMenuRadioGroup
+                  value={sortBy}
+                  onValueChange={(value) => onSortChange?.(value)}
+                >
+                  {sortOptions.map((option) => (
+                    <DropdownMenuRadioItem
+                      key={option}
+                      value={option}
+                    >
+                      {option}
+                    </DropdownMenuRadioItem>
+                  ))}
+                </DropdownMenuRadioGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
 
