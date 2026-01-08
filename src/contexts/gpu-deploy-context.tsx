@@ -249,7 +249,7 @@ export function GPUDeployProvider({ children }: { children: React.ReactNode }) {
             ...prev,
             instances: prev.instances.filter((inst) => inst.id !== instanceId),
           }))
-        }, 2000)
+        }, TERMINATED_CLEANUP_DELAY_MS)
 
         return true
       } catch (error) {
