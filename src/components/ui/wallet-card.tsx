@@ -28,6 +28,8 @@ export interface WalletCardProps extends Omit<React.HTMLAttributes<HTMLDivElemen
   balanceUsd: string
   /** Callback when disconnect is clicked */
   onDisconnect?: () => void
+  /** Callback when profile is clicked */
+  onProfile?: () => void
   /** Callback when address is copied */
   onCopy?: (address: string) => void
 }
@@ -40,17 +42,25 @@ const WalletCard = React.forwardRef<HTMLDivElement, WalletCardProps>(
     balance,
     balanceUsd,
     onDisconnect,
+    onProfile,
     onCopy,
     ...props
   }, ref) => {
     const { copy, copied } = useClipboard()
     const [dropdownOpen, setDropdownOpen] = React.useState(false)
 
-    const handleCopyAddress = async (e: React.MouseEvent) => {
+    const handleCopyAddress = async (e: React.MouseEvent | React.KeyboardEvent) => {
       e.stopPropagation()
       const success = await copy(fullAddress)
       if (success) {
         onCopy?.(fullAddress)
+      }
+    }
+
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault()
+        handleCopyAddress(e)
       }
     }
 
@@ -68,8 +78,12 @@ const WalletCard = React.forwardRef<HTMLDivElement, WalletCardProps>(
           <Tooltip>
             <TooltipTrigger asChild>
               <div
-                className="flex items-center gap-2 px-3 py-2 border-r border-zeus-border-alpha cursor-pointer hover:bg-zeus-surface-elevated transition-colors"
+                role="button"
+                tabIndex={0}
+                className="flex items-center gap-2 px-2.5 py-1.5 border-r border-zeus-border-alpha cursor-pointer hover:bg-zeus-surface-elevated transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sedona-500 focus-visible:ring-inset"
                 onClick={handleCopyAddress}
+                onKeyDown={handleKeyDown}
+                aria-label={`Copy wallet address ${address}`}
               >
                 <div className="w-2 h-2 rounded-full bg-zeus-accent-purple" />
                 <span className="text-zeus-text-primary text-caption-l font-medium">
@@ -91,10 +105,10 @@ const WalletCard = React.forwardRef<HTMLDivElement, WalletCardProps>(
             </TooltipContent>
           </Tooltip>
 
-          {/* Balance Section - Hover for USD */}
+          {/* Balance Section - Hover for USD (hidden on mobile) */}
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="px-3 py-2 border-r border-zeus-border-alpha">
+              <div className="hidden sm:block px-2.5 py-1.5 border-r border-zeus-border-alpha">
                 <span className="text-zeus-status-success text-caption-l font-medium">
                   {balance}
                 </span>
@@ -114,7 +128,8 @@ const WalletCard = React.forwardRef<HTMLDivElement, WalletCardProps>(
           <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
             <DropdownMenuTrigger asChild>
               <button
-                className="px-2 py-2 hover:bg-zeus-surface-elevated transition-colors"
+                className="px-1.5 py-1.5 hover:bg-zeus-surface-elevated transition-colors"
+                aria-label="Open wallet menu"
               >
                 <Icon icon="chevron-down" className={cn(
                   "w-4 h-4 text-zeus-text-tertiary transition-transform",
@@ -126,6 +141,18 @@ const WalletCard = React.forwardRef<HTMLDivElement, WalletCardProps>(
               align="end"
               className="min-w-[140px]"
             >
+              {/* Balance - shown on mobile only */}
+              <div className="sm:hidden px-2 py-1.5 border-b border-zeus-border-alpha mb-1">
+                <div className="text-zeus-text-tertiary text-caption-s">Balance</div>
+                <div className="text-zeus-status-success text-caption-l font-medium">{balance}</div>
+              </div>
+              <DropdownMenuItem
+                onClick={() => onProfile?.()}
+                className="cursor-pointer"
+              >
+                <Icon icon="user" className="w-4 h-4 mr-2" />
+                My Profile
+              </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => onDisconnect?.()}
                 className="text-zeus-status-destructive cursor-pointer"
