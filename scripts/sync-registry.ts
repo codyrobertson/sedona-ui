@@ -28,7 +28,8 @@ const DRY_RUN = args.includes("--dry-run")
 // Components that have registry-specific versions
 // These should NOT be synced from src/ - edit registry/new-york/ directly
 const EXCLUDE_FROM_SYNC: string[] = [
-  // Currently none - all components sync from src/
+  "marquee",     // src/ has folder with variants (TokenMarquee, TradeMarquee), registry has simplified generic version
+  "data-table",  // src/ has folder with specialized tables, registry has generic primitives
 ]
 
 interface RegistryFile {
