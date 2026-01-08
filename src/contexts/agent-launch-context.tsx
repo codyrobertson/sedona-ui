@@ -97,13 +97,20 @@ interface AgentLaunchProviderProps {
 
 export function AgentLaunchProvider({ children }: AgentLaunchProviderProps) {
   const [isOpen, setIsOpen] = React.useState(false)
-  const [authState, setAuthState] = React.useState<HFAuthState>(loadAuthState)
+  // Initialize with empty state to prevent hydration mismatch - localStorage is client-only
+  const [authState, setAuthState] = React.useState<HFAuthState>({
+    accessToken: null,
+    username: null,
+    expiresAt: null,
+  })
+  const [mounted, setMounted] = React.useState(false)
 
-  const isHFAuthenticated = Boolean(authState.accessToken)
+  const isHFAuthenticated = mounted && Boolean(authState.accessToken)
 
-  // Load persisted auth state on mount
+  // Load persisted auth state on mount (client-side only)
   React.useEffect(() => {
     setAuthState(loadAuthState())
+    setMounted(true)
   }, [])
 
   // Listen for OAuth callback messages from popup
