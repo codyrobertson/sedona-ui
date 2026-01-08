@@ -11,7 +11,7 @@ export { TrendingAgents } from "./TrendingAgents"
 export type { TrendingAgentsProps } from "./TrendingAgents"
 
 export { AboutSedona } from "./AboutSedona"
-export type { AboutSedonaProps, TopPool, InfoCard } from "./AboutSedona"
+export type { AboutSedonaProps } from "./AboutSedona"
 
 export { AgentLaunchModal } from "./AgentLaunchModal"
 export type { AgentLaunchModalProps, CreateAgentData } from "./AgentLaunchModal"
