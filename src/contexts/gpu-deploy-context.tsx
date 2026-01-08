@@ -15,6 +15,54 @@ import {
   GPU_PRICING,
 } from "@/fixtures/gpu-instances"
 
+// ============================================================================
+// CONSTANTS
+// ============================================================================
+
+const STORAGE_KEY = "sedona_gpu_instances"
+const DEPLOYMENT_SIMULATION_MS = 3000
+const TERMINATION_SIMULATION_MS = 1500
+const TERMINATED_CLEANUP_DELAY_MS = 2000
+
+// ============================================================================
+// STORAGE HELPERS
+// ============================================================================
+
+function loadInstancesFromStorage(): GPUInstance[] {
+  if (typeof window === "undefined") return []
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY)
+    if (!stored) return []
+    const parsed = JSON.parse(stored) as GPUInstance[]
+    // Filter out terminated/expired instances
+    return parsed.filter((inst) => {
+      if (inst.status === "terminated") return false
+      // Remove expired instances
+      if (new Date(inst.expiresAt) < new Date()) return false
+      return true
+    })
+  } catch {
+    return []
+  }
+}
+
+function saveInstancesToStorage(instances: GPUInstance[]): void {
+  if (typeof window === "undefined") return
+  try {
+    // Only save active instances
+    const activeInstances = instances.filter(
+      (inst) => inst.status !== "terminated"
+    )
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(activeInstances))
+  } catch {
+    // Silently fail on storage errors
+  }
+}
+
+// ============================================================================
+// CONTEXT
+// ============================================================================
+
 const GPUDeployContext = React.createContext<GPUDeployContextValue | null>(null)
 
 const initialState: GPUDeployState = {
@@ -30,10 +78,31 @@ const initialState: GPUDeployState = {
 }
 
 export function GPUDeployProvider({ children }: { children: React.ReactNode }) {
-  const [state, setState] = React.useState<GPUDeployState>({
-    ...initialState,
-    instances: MOCK_GPU_INSTANCES, // Start with mock data
-  })
+  const [state, setState] = React.useState<GPUDeployState>(initialState)
+  const [isHydrated, setIsHydrated] = React.useState(false)
+
+  // Load from localStorage on mount (hydration-safe)
+  React.useEffect(() => {
+    const storedInstances = loadInstancesFromStorage()
+    // Merge mock data with stored instances for dev (avoid duplicates by ID)
+    const storedIds = new Set(storedInstances.map((i) => i.id))
+    const mergedInstances = [
+      ...storedInstances,
+      ...MOCK_GPU_INSTANCES.filter((m) => !storedIds.has(m.id)),
+    ]
+    setState((prev) => ({
+      ...prev,
+      instances: mergedInstances,
+    }))
+    setIsHydrated(true)
+  }, [])
+
+  // Persist instances to localStorage whenever they change
+  React.useEffect(() => {
+    if (isHydrated) {
+      saveInstancesToStorage(state.instances)
+    }
+  }, [state.instances, isHydrated])
 
   // ============================================================================
   // DEPLOY MODAL ACTIONS
@@ -85,7 +154,7 @@ export function GPUDeployProvider({ children }: { children: React.ReactNode }) {
 
       try {
         // Simulate API call delay
-        await new Promise((resolve) => setTimeout(resolve, 3000))
+        await new Promise((resolve) => setTimeout(resolve, DEPLOYMENT_SIMULATION_MS))
 
         const now = new Date()
         const expiresAt = new Date(
@@ -162,7 +231,7 @@ export function GPUDeployProvider({ children }: { children: React.ReactNode }) {
 
       try {
         // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 1500))
+        await new Promise((resolve) => setTimeout(resolve, TERMINATION_SIMULATION_MS))
 
         setState((prev) => ({
           ...prev,

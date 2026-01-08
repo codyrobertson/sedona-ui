@@ -54,23 +54,27 @@ function InfoStep({ modelName, onContinue }: InfoStepProps) {
       {/* GPU Tier Selection */}
       <div className="space-y-3">
         <label className="text-zeus-text-primary text-body-s font-medium">
-          Select GPU Tier
+          GPU Tier
         </label>
         <div className="grid gap-2">
           {(Object.keys(GPU_PRICING) as GPUTier[]).map((tier) => {
             const tierPricing = GPU_PRICING[tier]
             const isSelected = selectedTier === tier
+            const isDisabled = tier !== "h200"
 
             return (
               <button
                 key={tier}
                 type="button"
-                onClick={() => setSelectedTier(tier)}
+                onClick={() => !isDisabled && setSelectedTier(tier)}
+                disabled={isDisabled}
                 className={cn(
                   "flex items-center justify-between p-3 rounded-lg border text-left transition-colors",
-                  isSelected
-                    ? "border-sedona-500 bg-sedona-500/10"
-                    : "border-zeus-border-alpha bg-zeus-surface-neutral hover:bg-zeus-surface-elevated"
+                  isDisabled
+                    ? "border-zeus-border-alpha/50 bg-zeus-surface-neutral/50 opacity-50 cursor-not-allowed"
+                    : isSelected
+                      ? "border-sedona-500 bg-sedona-500/10"
+                      : "border-zeus-border-alpha bg-zeus-surface-neutral hover:bg-zeus-surface-elevated"
                 )}
               >
                 <div className="space-y-0.5">
@@ -80,7 +84,12 @@ function InfoStep({ modelName, onContinue }: InfoStepProps) {
                     </span>
                     {tier === "h200" && (
                       <span className="px-1.5 py-0.5 text-[10px] font-medium bg-sedona-500/20 text-sedona-500 rounded">
-                        RECOMMENDED
+                        AVAILABLE
+                      </span>
+                    )}
+                    {isDisabled && (
+                      <span className="px-1.5 py-0.5 text-[10px] font-medium bg-zeus-surface-neutral text-zeus-text-tertiary rounded">
+                        COMING SOON
                       </span>
                     )}
                   </div>

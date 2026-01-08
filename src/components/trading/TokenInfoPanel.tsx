@@ -7,7 +7,6 @@ import { Card, CardContent } from "@/components/ui/card"
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { useClipboard } from "@/hooks/useClipboard"
@@ -158,28 +157,34 @@ const TokenInfoPanel = React.forwardRef<HTMLDivElement, TokenInfoPanelProps>(
           <div className="space-y-1.5">
             <span className="text-zeus-text-tertiary text-caption-s">Token Address</span>
             <div className="flex items-center gap-2">
-              <span className="text-zeus-text-secondary text-caption-l font-mono">
-                {truncateAddress(tokenAddress)}
-              </span>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button
-                      onClick={() => copy(tokenAddress)}
-                      className="p-1 rounded hover:bg-zeus-surface-elevated transition-colors"
-                    >
-                      {copied ? (
-                        <Icon icon="check" className="w-3.5 h-3.5 text-zeus-status-success" />
-                      ) : (
-                        <Icon icon="copy" className="w-3.5 h-3.5 text-zeus-text-tertiary" />
-                      )}
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{copied ? "Copied!" : "Copy address"}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="text-zeus-text-secondary text-caption-l font-mono cursor-help">
+                    {truncateAddress(tokenAddress)}
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="font-mono text-[10px]">{tokenAddress}</p>
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={() => copy(tokenAddress)}
+                    className="p-1 rounded hover:bg-zeus-surface-elevated transition-colors"
+                    aria-label={copied ? "Copied" : "Copy address"}
+                  >
+                    {copied ? (
+                      <Icon icon="check" className="w-3.5 h-3.5 text-zeus-status-success" />
+                    ) : (
+                      <Icon icon="copy" className="w-3.5 h-3.5 text-zeus-text-tertiary" />
+                    )}
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{copied ? "Copied!" : "Copy address"}</p>
+                </TooltipContent>
+              </Tooltip>
             </div>
           </div>
 
@@ -244,46 +249,95 @@ const TokenInfoPanel = React.forwardRef<HTMLDivElement, TokenInfoPanelProps>(
 
           {/* Stats Grid: MCAP | VOL | TVL */}
           <div className="grid grid-cols-3 gap-1.5">
-            <div className="py-2 px-2 rounded-lg bg-zeus-surface-elevated border border-zeus-border-alpha text-center">
-              <div className="text-zeus-text-quaternary text-[10px] uppercase tracking-wide">MCAP</div>
-              <div className="text-zeus-text-primary text-caption-l font-semibold">{marketCap}</div>
-            </div>
-            <div className="py-2 px-2 rounded-lg bg-zeus-surface-elevated border border-zeus-border-alpha text-center">
-              <div className="text-zeus-text-quaternary text-[10px] uppercase tracking-wide">VOL</div>
-              <div className="text-zeus-text-primary text-caption-l font-semibold">{volume24h}</div>
-            </div>
-            <div className="py-2 px-2 rounded-lg bg-zeus-surface-elevated border border-zeus-border-alpha text-center">
-              <div className="text-zeus-text-quaternary text-[10px] uppercase tracking-wide">TVL</div>
-              <div className="text-zeus-text-primary text-caption-l font-semibold">{tvl}</div>
-            </div>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="py-2 px-2 rounded-lg bg-zeus-surface-elevated border border-zeus-border-alpha text-center cursor-help">
+                  <div className="text-zeus-text-quaternary text-[10px] uppercase tracking-wide">MCAP</div>
+                  <div className="text-zeus-text-primary text-caption-l font-semibold">{marketCap}</div>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Market Capitalization</p>
+              </TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="py-2 px-2 rounded-lg bg-zeus-surface-elevated border border-zeus-border-alpha text-center cursor-help">
+                  <div className="text-zeus-text-quaternary text-[10px] uppercase tracking-wide">VOL</div>
+                  <div className="text-zeus-text-primary text-caption-l font-semibold">{volume24h}</div>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>24-Hour Trading Volume</p>
+              </TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="py-2 px-2 rounded-lg bg-zeus-surface-elevated border border-zeus-border-alpha text-center cursor-help">
+                  <div className="text-zeus-text-quaternary text-[10px] uppercase tracking-wide">TVL</div>
+                  <div className="text-zeus-text-primary text-caption-l font-semibold">{tvl}</div>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Total Value Locked</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
 
           {/* Price Changes Grid: 1H | 24H | 7D | 30D */}
           <div className="grid grid-cols-4 gap-1.5">
-            <div className="py-2 px-1 rounded-lg bg-zeus-surface-elevated border border-zeus-border-alpha text-center">
-              <div className="text-zeus-text-quaternary text-[10px] uppercase tracking-wide">1H</div>
-              <div className={cn("text-caption-s font-semibold", getChangeColor(change1h))}>
-                {formatChange(change1h)}
-              </div>
-            </div>
-            <div className="py-2 px-1 rounded-lg bg-zeus-surface-elevated border border-zeus-border-alpha text-center">
-              <div className="text-zeus-text-quaternary text-[10px] uppercase tracking-wide">24H</div>
-              <div className={cn("text-caption-s font-semibold", getChangeColor(change24h))}>
-                {formatChange(change24h)}
-              </div>
-            </div>
-            <div className="py-2 px-1 rounded-lg bg-zeus-surface-elevated border border-zeus-border-alpha text-center">
-              <div className="text-zeus-text-quaternary text-[10px] uppercase tracking-wide">7D</div>
-              <div className={cn("text-caption-s font-semibold", getChangeColor(change7d))}>
-                {formatChange(change7d)}
-              </div>
-            </div>
-            <div className="py-2 px-1 rounded-lg bg-zeus-surface-elevated border border-zeus-border-alpha text-center">
-              <div className="text-zeus-text-quaternary text-[10px] uppercase tracking-wide">30D</div>
-              <div className={cn("text-caption-s font-semibold", getChangeColor(change30d))}>
-                {formatChange(change30d)}
-              </div>
-            </div>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="py-2 px-1 rounded-lg bg-zeus-surface-elevated border border-zeus-border-alpha text-center cursor-help">
+                  <div className="text-zeus-text-quaternary text-[10px] uppercase tracking-wide">1H</div>
+                  <div className={cn("text-caption-s font-semibold", getChangeColor(change1h))}>
+                    {formatChange(change1h)}
+                  </div>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Price change in the last hour</p>
+              </TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="py-2 px-1 rounded-lg bg-zeus-surface-elevated border border-zeus-border-alpha text-center cursor-help">
+                  <div className="text-zeus-text-quaternary text-[10px] uppercase tracking-wide">24H</div>
+                  <div className={cn("text-caption-s font-semibold", getChangeColor(change24h))}>
+                    {formatChange(change24h)}
+                  </div>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Price change in the last 24 hours</p>
+              </TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="py-2 px-1 rounded-lg bg-zeus-surface-elevated border border-zeus-border-alpha text-center cursor-help">
+                  <div className="text-zeus-text-quaternary text-[10px] uppercase tracking-wide">7D</div>
+                  <div className={cn("text-caption-s font-semibold", getChangeColor(change7d))}>
+                    {formatChange(change7d)}
+                  </div>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Price change in the last 7 days</p>
+              </TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="py-2 px-1 rounded-lg bg-zeus-surface-elevated border border-zeus-border-alpha text-center cursor-help">
+                  <div className="text-zeus-text-quaternary text-[10px] uppercase tracking-wide">30D</div>
+                  <div className={cn("text-caption-s font-semibold", getChangeColor(change30d))}>
+                    {formatChange(change30d)}
+                  </div>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Price change in the last 30 days</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
         </CardContent>
       </Card>

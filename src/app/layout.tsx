@@ -7,6 +7,7 @@ import { JsonLd } from "@/components/seo"
 import { SEO_CONFIG } from "@/lib/seo-config"
 import { AgentLaunchProvider, ProfileProvider, GPUDeployProvider } from "@/contexts"
 import { DeployModelModal, InstanceDetailsModal } from "@/components/trading"
+import { TooltipProvider } from "@/components/ui/tooltip"
 
 const organizationSchema = {
   "@context": "https://schema.org",
@@ -110,16 +111,18 @@ export default function RootLayout({
         <JsonLd data={softwareAppSchema} />
       </head>
       <body className={GeistSans.className}>
-        <AgentLaunchProvider>
-          <ProfileProvider>
-            <GPUDeployProvider>
-              {children}
-              <Footer />
-              <DeployModelModal />
-              <InstanceDetailsModal />
-            </GPUDeployProvider>
-          </ProfileProvider>
-        </AgentLaunchProvider>
+        <TooltipProvider delayDuration={300}>
+          <AgentLaunchProvider>
+            <ProfileProvider>
+              <GPUDeployProvider>
+                {children}
+                <Footer />
+                <DeployModelModal />
+                <InstanceDetailsModal />
+              </GPUDeployProvider>
+            </ProfileProvider>
+          </AgentLaunchProvider>
+        </TooltipProvider>
       </body>
     </html>
   )

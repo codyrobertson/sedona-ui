@@ -5,6 +5,11 @@ import { cn } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Icon } from "@/components/ui/icon"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 export interface AgentListItemProps extends React.HTMLAttributes<HTMLDivElement> {
   rank: number
@@ -69,9 +74,16 @@ const AgentListItem = React.forwardRef<HTMLDivElement, AgentListItemProps>(
         {/* Token Info */}
         <div className="min-w-0">
           <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-            <span className="text-zeus-text-primary font-semibold hover:text-sedona-500 transition-colors text-caption-l sm:text-body-s truncate max-w-[120px] sm:max-w-none">
-              {name}
-            </span>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="text-zeus-text-primary font-semibold hover:text-sedona-500 transition-colors text-caption-l sm:text-body-s truncate max-w-[120px] sm:max-w-none">
+                  {name}
+                </span>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{name}</p>
+              </TooltipContent>
+            </Tooltip>
             <Badge variant="default" className="text-[10px] sm:text-[11px] px-1 sm:px-1.5 py-0.5 h-4 sm:h-5 flex-shrink-0">
               ${ticker}
             </Badge>
@@ -105,12 +117,21 @@ const AgentListItem = React.forwardRef<HTMLDivElement, AgentListItemProps>(
         <div className={cn("text-right font-semibold items-center justify-end gap-1 hidden lg:flex", volumeColor)}>
           {volume ? (
             <>
-              {volume}
-              {isVolumePositive ? (
-                <Icon icon="arrow-trend-up" className="w-3 h-3" />
-              ) : (
-                <Icon icon="arrow-trend-down" className="w-3 h-3" />
-              )}
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="flex items-center gap-1">
+                    {volume}
+                    {isVolumePositive ? (
+                      <Icon icon="arrow-trend-up" className="w-3 h-3" aria-hidden="true" />
+                    ) : (
+                      <Icon icon="arrow-trend-down" className="w-3 h-3" aria-hidden="true" />
+                    )}
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>24h volume {isVolumePositive ? "up" : "down"} {Math.abs(volumeChange).toFixed(1)}%</p>
+                </TooltipContent>
+              </Tooltip>
             </>
           ) : (
             <span className="text-zeus-text-quaternary">---</span>
