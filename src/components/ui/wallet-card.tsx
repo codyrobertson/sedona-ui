@@ -69,7 +69,7 @@ const WalletCard = React.forwardRef<HTMLDivElement, WalletCardProps>(
         <div
           ref={ref}
           className={cn(
-            "flex items-center bg-zeus-surface-neutral border border-zeus-border-alpha rounded-lg",
+            "flex items-center h-8 bg-zeus-surface-neutral border border-zeus-border-alpha rounded-lg",
             className
           )}
           {...props}
