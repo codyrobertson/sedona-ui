@@ -99,5 +99,10 @@ temp/
 /tasks/
 
 # NPM auth tokens (contains secrets)
-.npmrc.claude-plugin/
+.npmrc
+
+# Claude plugin (local development)
+.claude-plugin/
+
+# Local tasks/planning
 tasks/

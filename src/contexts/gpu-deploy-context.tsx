@@ -161,15 +161,18 @@ export function GPUDeployProvider({ children }: { children: React.ReactNode }) {
           now.getTime() + request.durationHours * 60 * 60 * 1000
         )
 
+        // Generate instance ID once to ensure consistency between id and baseUrl
+        const instanceId = generateInstanceId()
+
         const newInstance: GPUInstance = {
-          id: generateInstanceId(),
+          id: instanceId,
           modelId: request.modelId,
           modelName: request.modelName,
           modelTicker: request.modelTicker,
           status: "running",
           startedAt: now.toISOString(),
           expiresAt: expiresAt.toISOString(),
-          baseUrl: `https://inference.sedona.fun/v1/${generateInstanceId()}`,
+          baseUrl: `https://inference.sedona.fun/v1/${instanceId}`,
           apiKey: generateApiKey(),
           totalSpend: 0,
           paymentMethod: request.paymentMethod,

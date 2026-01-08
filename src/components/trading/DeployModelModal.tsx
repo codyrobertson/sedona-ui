@@ -25,11 +25,12 @@ import type { GPUTier, PaymentMethod, DeployModalStep } from "@/types/gpu-instan
 
 interface InfoStepProps {
   modelName: string
+  selectedTier: GPUTier
+  onTierChange: (tier: GPUTier) => void
   onContinue: () => void
 }
 
-function InfoStep({ modelName, onContinue }: InfoStepProps) {
-  const [selectedTier, setSelectedTier] = React.useState<GPUTier>(DEFAULT_GPU_TIER)
+function InfoStep({ modelName, selectedTier, onTierChange, onContinue }: InfoStepProps) {
   const pricing = GPU_PRICING[selectedTier]
 
   return (
@@ -66,7 +67,7 @@ function InfoStep({ modelName, onContinue }: InfoStepProps) {
               <button
                 key={tier}
                 type="button"
-                onClick={() => !isDisabled && setSelectedTier(tier)}
+                onClick={() => !isDisabled && onTierChange(tier)}
                 disabled={isDisabled}
                 className={cn(
                   "flex items-center justify-between p-3 rounded-lg border text-left transition-colors",
@@ -146,13 +147,14 @@ interface PaymentStepProps {
   modelName: string
   modelId: string
   modelTicker?: string
+  selectedTier: GPUTier
   onBack: () => void
   onDeploy: (paymentMethod: PaymentMethod) => void
 }
 
-function PaymentStep({ modelName, modelId, modelTicker, onBack, onDeploy }: PaymentStepProps) {
+function PaymentStep({ modelName, modelId, modelTicker, selectedTier, onBack, onDeploy }: PaymentStepProps) {
   const [selectedPayment, setSelectedPayment] = React.useState<PaymentMethod>("solana")
-  const pricing = GPU_PRICING[DEFAULT_GPU_TIER]
+  const pricing = GPU_PRICING[selectedTier]
 
   return (
     <div className="space-y-6">
@@ -238,7 +240,7 @@ function PaymentStep({ modelName, modelId, modelTicker, onBack, onDeploy }: Paym
           </div>
           <div className="flex justify-between text-caption-l">
             <span className="text-zeus-text-tertiary">GPU</span>
-            <span className="text-zeus-text-primary">{GPU_PRICING[DEFAULT_GPU_TIER].name}</span>
+            <span className="text-zeus-text-primary">{GPU_PRICING[selectedTier].name}</span>
           </div>
           <div className="flex justify-between text-caption-l">
             <span className="text-zeus-text-tertiary">Duration</span>
@@ -367,11 +369,19 @@ export function DeployModelModal() {
   } = useGPUDeploy()
 
   const [localStep, setLocalStep] = React.useState<DeployModalStep>("info")
+  const [selectedTier, setSelectedTier] = React.useState<GPUTier>(DEFAULT_GPU_TIER)
 
   // Sync local step with context
   React.useEffect(() => {
     setLocalStep(deployModalStep)
   }, [deployModalStep])
+
+  // Reset tier when modal closes
+  React.useEffect(() => {
+    if (!isDeployModalOpen) {
+      setSelectedTier(DEFAULT_GPU_TIER)
+    }
+  }, [isDeployModalOpen])
 
   const handleContinueToPayment = () => {
     setLocalStep("payment")
@@ -388,7 +398,7 @@ export function DeployModelModal() {
       modelId: selectedModel.id,
       modelName: selectedModel.name,
       modelTicker: selectedModel.ticker,
-      tier: DEFAULT_GPU_TIER,
+      tier: selectedTier,
       paymentMethod,
       durationHours: 24,
     })
@@ -439,6 +449,8 @@ export function DeployModelModal() {
           {localStep === "info" && selectedModel && (
             <InfoStep
               modelName={selectedModel.name}
+              selectedTier={selectedTier}
+              onTierChange={setSelectedTier}
               onContinue={handleContinueToPayment}
             />
           )}
@@ -448,6 +460,7 @@ export function DeployModelModal() {
               modelName={selectedModel.name}
               modelId={selectedModel.id}
               modelTicker={selectedModel.ticker}
+              selectedTier={selectedTier}
               onBack={handleBackToInfo}
               onDeploy={handleDeploy}
             />
