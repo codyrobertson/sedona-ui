@@ -5,25 +5,19 @@ import { SEO_CONFIG } from '@/lib/seo-config'
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date()
 
-  // Static pages (only indexable pages)
+  // Static pages (only indexable, non-redirect pages)
   const staticPages: MetadataRoute.Sitemap = [
-    {
-      url: SEO_CONFIG.baseUrl,
-      lastModified,
-      changeFrequency: 'daily',
-      priority: 1.0,
-    },
     {
       url: `${SEO_CONFIG.baseUrl}/trading`,
       lastModified,
       changeFrequency: 'hourly',
-      priority: 0.9,
+      priority: 1.0, // Main entry point
     },
     {
       url: `${SEO_CONFIG.baseUrl}/trading/portfolio`,
       lastModified,
       changeFrequency: 'daily',
-      priority: 0.8,
+      priority: 0.7,
     },
   ]
 
