@@ -42,6 +42,8 @@ export interface NavBarProps extends React.HTMLAttributes<HTMLElement> {
   onConnect?: () => void
   /** Disconnect callback */
   onDisconnect?: () => void
+  /** Profile callback */
+  onProfile?: () => void
   /** Mobile menu toggle callback */
   onMobileMenuToggle?: () => void
   /** Hide create button */
@@ -69,6 +71,7 @@ const NavBar = React.forwardRef<HTMLElement, NavBarProps>(
       onCreateAgent,
       onConnect,
       onDisconnect,
+      onProfile,
       onMobileMenuToggle,
       hideCreateButton = false,
       logo,
@@ -145,6 +148,7 @@ const NavBar = React.forwardRef<HTMLElement, NavBarProps>(
             balance={balance}
             onConnect={onConnect}
             onDisconnect={onDisconnect}
+            onProfile={onProfile}
             size="xs"
           />
 
