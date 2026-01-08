@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { TokenAvatar } from "@/components/ui/token-avatar"
 import { StatsGrid } from "@/components/ui/stats-grid"
 import { Icon } from "@/components/ui/icon"
+import { Button } from "@/components/ui/button"
 import { useClipboard } from "@/hooks/useClipboard"
 import { EliminationProgress } from "@/components/ui/elimination-progress"
 import { ModelHash, type ModelVersion } from "@/components/ui/model-hash"
@@ -72,6 +73,8 @@ export interface TokenSwapCardProps extends React.HTMLAttributes<HTMLDivElement>
     payAmount: string
     slippage: string
   }) => Promise<SwapQuote | null>
+  /** Callback when deploy model is clicked */
+  onDeploy?: () => void
 }
 
 const TokenSwapCard = React.forwardRef<HTMLDivElement, TokenSwapCardProps>(
@@ -107,6 +110,7 @@ const TokenSwapCard = React.forwardRef<HTMLDivElement, TokenSwapCardProps>(
       tradingStatusMessage,
       onSwap,
       onQuoteRequest,
+      onDeploy,
       ...props
     },
     ref
@@ -208,6 +212,19 @@ const TokenSwapCard = React.forwardRef<HTMLDivElement, TokenSwapCardProps>(
           {/* Description */}
           {description && (
             <p className="text-zeus-text-secondary text-caption-l leading-relaxed">{description}</p>
+          )}
+
+          {/* Deploy Model Button */}
+          {onDeploy && (
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={onDeploy}
+              className="w-full"
+            >
+              <Icon icon="server" className="w-3.5 h-3.5 mr-1.5" />
+              Deploy Model
+            </Button>
           )}
 
           {/* Stats Grid - 3 cols top, 4 cols bottom */}

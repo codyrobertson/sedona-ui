@@ -41,3 +41,18 @@ export type {
   ProfileState,
 } from "./profile"
 export { DEFAULT_COMMUNICATION_PREFERENCES } from "./profile"
+
+// GPU Instance types
+export type {
+  GPUInstanceStatus,
+  PaymentMethod,
+  GPUTier,
+  GPUPricing,
+  GPUInstance,
+  DeploymentRequest,
+  CodeSnippet,
+  ConnectionInfo,
+  DeployModalStep,
+  GPUDeployState,
+  GPUDeployContextValue,
+} from "./gpu-instance"

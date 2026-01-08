@@ -123,3 +123,20 @@ export {
   profileToFormData,
   formDataToProfile,
 } from "./profile"
+
+// =============================================================================
+// GPU INSTANCES
+// =============================================================================
+export {
+  GPU_PRICING,
+  DEFAULT_GPU_TIER,
+  MOCK_GPU_INSTANCES,
+  generateCodeSnippets,
+  generateInstanceId,
+  generateApiKey,
+  calculateCost,
+  formatDuration,
+  formatTimeRemaining,
+  getStatusColor,
+  getStatusLabel,
+} from "./gpu-instances"

@@ -50,3 +50,10 @@ export type { TransactionsTableProps, Transaction } from "./TransactionsTable"
 
 export { TokenSwapCard } from "./TokenSwapCard"
 export type { TokenSwapCardProps } from "./TokenSwapCard"
+
+export { DeployModelModal } from "./DeployModelModal"
+export { InstanceDetailsModal } from "./InstanceDetailsModal"
+export { GPUInstanceCard } from "./GPUInstanceCard"
+export type { GPUInstanceCardProps } from "./GPUInstanceCard"
+export { GPUInstancesSection } from "./GPUInstancesSection"
+export type { GPUInstancesSectionProps } from "./GPUInstancesSection"
