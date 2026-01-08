@@ -110,3 +110,16 @@ export {
   getMockAgent,
   getMockAgentVersions,
 } from "./my-agents"
+
+// =============================================================================
+// USER PROFILES
+// =============================================================================
+export {
+  MOCK_PROFILES,
+  MOCK_USER_PROFILE,
+  getProfileByWallet,
+  hasProfileForWallet,
+  getDefaultProfile,
+  profileToFormData,
+  formDataToProfile,
+} from "./profile"

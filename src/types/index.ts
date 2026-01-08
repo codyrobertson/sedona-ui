@@ -27,3 +27,17 @@ export type {
   TransactionStatus,
   WalletTransaction,
 } from "./wallet"
+
+// Profile types
+export type {
+  SocialPlatform,
+  SocialLinks,
+  CommunicationPreferences,
+  UserProfile,
+  UserProfileUpdate,
+  ProfileFormData,
+  ProfileValidationError,
+  ProfileValidationResult,
+  ProfileState,
+} from "./profile"
+export { DEFAULT_COMMUNICATION_PREFERENCES } from "./profile"
