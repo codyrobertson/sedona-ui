@@ -6,6 +6,11 @@ import { Icon } from "@/components/ui/icon"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import type { EvaluationScore, AttestationProof, ScoreCategory } from "@/types/evaluation"
 
 // ============================================================================
@@ -61,16 +66,30 @@ function ScoreCategoryBar({ category, animate = true, delay = 0 }: ScoreCategory
           <span className="text-caption-l text-zeus-text-secondary">
             {category.name}
           </span>
-          <span className="text-caption-m text-zeus-text-tertiary">
-            ({(category.weight * 100).toFixed(0)}% weight)
-          </span>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className="text-caption-m text-zeus-text-tertiary cursor-help">
+                ({(category.weight * 100).toFixed(0)}% weight)
+              </span>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>This category contributes {(category.weight * 100).toFixed(0)}% to the overall score</p>
+            </TooltipContent>
+          </Tooltip>
         </div>
-        <span className={cn(
-          "text-body-s font-semibold tabular-nums",
-          getScoreColor(category.score)
-        )}>
-          {category.score.toFixed(1)}
-        </span>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span className={cn(
+              "text-body-s font-semibold tabular-nums cursor-help",
+              getScoreColor(category.score)
+            )}>
+              {category.score.toFixed(1)}
+            </span>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{getScoreLabel(category.score)}</p>
+          </TooltipContent>
+        </Tooltip>
       </div>
       <div className="h-2 bg-zeus-surface-default rounded-full overflow-hidden">
         <motion.div
@@ -151,16 +170,30 @@ function OverallScoreDisplay({ score, rank, percentile, animate = true }: Overal
       {/* Rank and percentile */}
       <div className="flex items-center justify-center gap-4 mt-4">
         {rank && (
-          <div className="flex items-center gap-1.5 text-zeus-highlight-gold">
-            <Icon icon="trophy" className="w-4 h-4" />
-            <span className="text-body-s font-semibold">Rank #{rank}</span>
-          </div>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex items-center gap-1.5 text-zeus-highlight-gold cursor-help">
+                <Icon icon="trophy" className="w-4 h-4" aria-hidden="true" />
+                <span className="text-body-s font-semibold">Rank #{rank}</span>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>This agent ranks #{rank} among all evaluated agents</p>
+            </TooltipContent>
+          </Tooltip>
         )}
         {percentile && (
-          <div className="flex items-center gap-1.5 text-zeus-text-secondary">
-            <Icon icon="arrow-trend-up" className="w-4 h-4" />
-            <span className="text-caption-l">Top {100 - percentile}%</span>
-          </div>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex items-center gap-1.5 text-zeus-text-secondary cursor-help">
+                <Icon icon="arrow-trend-up" className="w-4 h-4" aria-hidden="true" />
+                <span className="text-caption-l">Top {100 - percentile}%</span>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Performs better than {percentile}% of all agents</p>
+            </TooltipContent>
+          </Tooltip>
         )}
       </div>
     </div>

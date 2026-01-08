@@ -166,8 +166,8 @@ export function InstanceDetailsModal() {
 
   return (
     <Dialog open={isDetailsModalOpen} onOpenChange={(open) => !open && closeInstanceDetails()}>
-      <DialogContent className="fixed inset-0 translate-x-0 translate-y-0 max-h-screen overflow-y-auto bg-zeus-surface-default sm:inset-auto sm:left-[50%] sm:top-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%] sm:max-w-[600px] sm:max-h-[90vh] sm:bg-zeus-surface-neutral">
-        <DialogHeader>
+      <DialogContent className="fixed inset-0 translate-x-0 translate-y-0 h-full flex flex-col bg-zeus-surface-default sm:inset-auto sm:left-[50%] sm:top-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%] sm:max-w-[600px] sm:max-h-[90vh] sm:h-auto sm:bg-zeus-surface-neutral sm:overflow-y-auto">
+        <DialogHeader className="flex-shrink-0">
           <DialogTitle className="flex items-center gap-2">
             <span>{selectedInstance.modelName}</span>
             {selectedInstance.modelTicker && (
@@ -181,7 +181,7 @@ export function InstanceDetailsModal() {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="mt-4 space-y-6">
+        <div className="mt-4 space-y-4 sm:space-y-6 flex-1 overflow-y-auto pb-4">
           {/* Status Card */}
           <div className="p-4 bg-zeus-surface-elevated rounded-lg border border-zeus-border-alpha">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">

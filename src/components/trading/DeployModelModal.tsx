@@ -421,8 +421,8 @@ export function DeployModelModal() {
 
   return (
     <Dialog open={isDeployModalOpen} onOpenChange={(open) => !open && closeDeployModal()}>
-      <DialogContent className="fixed inset-0 translate-x-0 translate-y-0 max-h-screen overflow-y-auto bg-zeus-surface-default sm:inset-auto sm:left-[50%] sm:top-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%] sm:max-w-[480px] sm:max-h-[85vh] sm:bg-zeus-surface-neutral">
-        <DialogHeader>
+      <DialogContent className="fixed inset-0 translate-x-0 translate-y-0 h-full flex flex-col bg-zeus-surface-default sm:inset-auto sm:left-[50%] sm:top-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%] sm:max-w-[480px] sm:max-h-[85vh] sm:h-auto sm:bg-zeus-surface-neutral sm:overflow-y-auto">
+        <DialogHeader className="flex-shrink-0">
           <DialogTitle>{getTitle()}</DialogTitle>
           {localStep === "info" && (
             <DialogDescription>
@@ -431,7 +431,11 @@ export function DeployModelModal() {
           )}
         </DialogHeader>
 
-        <div className="mt-4">
+        <div className={cn(
+          "mt-4 flex-1 overflow-y-auto",
+          // Center deploying/success states vertically on mobile
+          (localStep === "deploying" || localStep === "success") && "flex items-center justify-center"
+        )}>
           {localStep === "info" && selectedModel && (
             <InfoStep
               modelName={selectedModel.name}

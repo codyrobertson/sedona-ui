@@ -5,6 +5,11 @@ import { cn } from "@/lib/utils"
 import { Icon } from "@/components/ui/icon"
 import { Counter, TimeCounter, CurrencyCounter } from "@/components/ui/counter"
 import { TokenMarquee, TradeMarquee, type TokenMarqueeData, type TradeMarqueeData } from "@/components/ui/marquee"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 export interface TopPoolItem {
   ticker: string
@@ -37,11 +42,12 @@ interface StatItemProps {
   value?: string
   numericValue?: number
   type?: "time" | "currency" | "number"
+  tooltip?: string
 }
 
-const StatItem = ({ icon, label, value, numericValue, type = "number" }: StatItemProps) => {
-  return (
-    <div className="flex items-center gap-1.5">
+const StatItem = ({ icon, label, value, numericValue, type = "number", tooltip }: StatItemProps) => {
+  const content = (
+    <div className={cn("flex items-center gap-1.5", tooltip && "cursor-help")}>
       {icon}
       <span className="text-zeus-text-secondary text-caption-m">{label}</span>
       <span className="text-zeus-text-primary text-caption-m font-semibold">
@@ -58,6 +64,19 @@ const StatItem = ({ icon, label, value, numericValue, type = "number" }: StatIte
         )}
       </span>
     </div>
+  )
+
+  if (!tooltip) return content
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        {content}
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>{tooltip}</p>
+      </TooltipContent>
+    </Tooltip>
   )
 }
 
@@ -87,6 +106,7 @@ const PlatformStats = React.forwardRef<HTMLDivElement, PlatformStatsProps>(
             value={endsIn}
             numericValue={endsInSeconds}
             type="time"
+            tooltip="Time remaining until the current competition round ends"
           />
 
           <StatItem
@@ -95,6 +115,7 @@ const PlatformStats = React.forwardRef<HTMLDivElement, PlatformStatsProps>(
             value={jackpot}
             numericValue={jackpotValue}
             type="currency"
+            tooltip="Prize pool for top-performing agents this round"
           />
 
           <StatItem
@@ -102,6 +123,7 @@ const PlatformStats = React.forwardRef<HTMLDivElement, PlatformStatsProps>(
             label="Tokens:"
             numericValue={tokens}
             type="number"
+            tooltip="Total number of AI agent tokens currently trading"
           />
         </div>
 

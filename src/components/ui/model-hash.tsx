@@ -12,6 +12,11 @@ import {
 } from "@/components/ui/sheet"
 import { Badge } from "@/components/ui/badge"
 import { Icon } from "@/components/ui/icon"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { useClipboard } from "@/hooks/useClipboard"
 
 // ============================================================================
@@ -203,20 +208,34 @@ const ModelVersionItem = ({ version, onCopy, onSelect }: ModelVersionItemProps) 
 
       {/* Hash row */}
       <div className="flex items-center gap-2 mb-3">
-        <code className="text-xs text-zeus-text-secondary font-mono bg-zeus-surface-default/80 px-2 py-1 rounded-md">
-          {truncatedHash}
-        </code>
-        <button
-          onClick={handleCopy}
-          className="p-1.5 rounded-md hover:bg-zeus-surface-default transition-colors opacity-0 group-hover:opacity-100"
-          title="Copy hash"
-        >
-          {copied ? (
-            <Icon icon="check" className="w-3.5 h-3.5 text-zeus-status-success" />
-          ) : (
-            <Icon icon="copy" className="w-3.5 h-3.5 text-zeus-text-tertiary" />
-          )}
-        </button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <code className="text-xs text-zeus-text-secondary font-mono bg-zeus-surface-default/80 px-2 py-1 rounded-md cursor-help">
+              {truncatedHash}
+            </code>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p className="font-mono text-[10px]">{version.hash}</p>
+          </TooltipContent>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              onClick={handleCopy}
+              className="p-1.5 rounded-md hover:bg-zeus-surface-default transition-colors opacity-0 group-hover:opacity-100"
+              aria-label={copied ? "Copied" : "Copy hash"}
+            >
+              {copied ? (
+                <Icon icon="check" className="w-3.5 h-3.5 text-zeus-status-success" />
+              ) : (
+                <Icon icon="copy" className="w-3.5 h-3.5 text-zeus-text-tertiary" />
+              )}
+            </button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{copied ? "Copied!" : "Copy full hash"}</p>
+          </TooltipContent>
+        </Tooltip>
       </div>
 
       {/* Benchmarks */}
