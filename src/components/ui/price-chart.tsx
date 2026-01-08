@@ -146,18 +146,14 @@ const PriceChart = React.forwardRef<HTMLDivElement, PriceChartProps>(
           wickDownColor: colors.down,
         })
         seriesRef.current = series
-        if (data.length > 0) {
-          series.setData(data)
-        }
+        // Data is set by the data update effect below
       } else if (chartType === "line") {
         const series = chart.addSeries(LineSeries, {
           color: colors.up,
           lineWidth: 2,
         })
         seriesRef.current = series
-        if (lineData && lineData.length > 0) {
-          series.setData(lineData)
-        }
+        // Data is set by the data update effect below
       } else if (chartType === "area") {
         const series = chart.addSeries(AreaSeries, {
           topColor: `${colors.up}40`,
@@ -166,12 +162,8 @@ const PriceChart = React.forwardRef<HTMLDivElement, PriceChartProps>(
           lineWidth: 2,
         })
         seriesRef.current = series
-        if (lineData && lineData.length > 0) {
-          series.setData(lineData)
-        }
+        // Data is set by the data update effect below
       }
-
-      chart.timeScale().fitContent()
 
       // Resize handler
       const handleResize = () => {

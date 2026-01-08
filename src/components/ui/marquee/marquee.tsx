@@ -48,9 +48,20 @@ const Marquee = React.forwardRef<HTMLDivElement, MarqueeProps>(
     const scrollerRef = React.useRef<HTMLDivElement>(null)
     const [contentWidth, setContentWidth] = React.useState(0)
     const [isHovered, setIsHovered] = React.useState(false)
+    const [prefersReducedMotion, setPrefersReducedMotion] = React.useState(false)
     const animationRef = React.useRef<number>(0)
     const positionRef = React.useRef(0)
     const lastTimeRef = React.useRef(0)
+
+    // Respect prefers-reduced-motion
+    React.useEffect(() => {
+      const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
+      setPrefersReducedMotion(mediaQuery.matches)
+
+      const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches)
+      mediaQuery.addEventListener("change", handler)
+      return () => mediaQuery.removeEventListener("change", handler)
+    }, [])
 
     // Measure content width of a single set
     React.useEffect(() => {
@@ -78,7 +89,7 @@ const Marquee = React.forwardRef<HTMLDivElement, MarqueeProps>(
 
     // Animation loop using requestAnimationFrame
     React.useEffect(() => {
-      if (!contentWidth || paused || (pauseOnHover && isHovered)) {
+      if (!contentWidth || paused || prefersReducedMotion || (pauseOnHover && isHovered)) {
         lastTimeRef.current = 0
         return
       }
@@ -131,7 +142,7 @@ const Marquee = React.forwardRef<HTMLDivElement, MarqueeProps>(
           cancelAnimationFrame(animationRef.current)
         }
       }
-    }, [contentWidth, speed, direction, paused, pauseOnHover, isHovered])
+    }, [contentWidth, speed, direction, paused, pauseOnHover, isHovered, prefersReducedMotion])
 
     return (
       <div
@@ -253,9 +264,20 @@ const VerticalMarquee = React.forwardRef<HTMLDivElement, VerticalMarqueeProps>(
     const scrollerRef = React.useRef<HTMLDivElement>(null)
     const [contentHeight, setContentHeight] = React.useState(0)
     const [isHovered, setIsHovered] = React.useState(false)
+    const [prefersReducedMotion, setPrefersReducedMotion] = React.useState(false)
     const animationRef = React.useRef<number>(0)
     const positionRef = React.useRef(0)
     const lastTimeRef = React.useRef(0)
+
+    // Respect prefers-reduced-motion
+    React.useEffect(() => {
+      const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
+      setPrefersReducedMotion(mediaQuery.matches)
+
+      const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches)
+      mediaQuery.addEventListener("change", handler)
+      return () => mediaQuery.removeEventListener("change", handler)
+    }, [])
 
     // Measure content height
     React.useEffect(() => {
@@ -279,7 +301,7 @@ const VerticalMarquee = React.forwardRef<HTMLDivElement, VerticalMarqueeProps>(
 
     // Animation loop
     React.useEffect(() => {
-      if (!contentHeight || paused || (pauseOnHover && isHovered)) {
+      if (!contentHeight || paused || prefersReducedMotion || (pauseOnHover && isHovered)) {
         lastTimeRef.current = 0
         return
       }
@@ -317,7 +339,7 @@ const VerticalMarquee = React.forwardRef<HTMLDivElement, VerticalMarqueeProps>(
           cancelAnimationFrame(animationRef.current)
         }
       }
-    }, [contentHeight, speed, direction, paused, pauseOnHover, isHovered])
+    }, [contentHeight, speed, direction, paused, pauseOnHover, isHovered, prefersReducedMotion])
 
     return (
       <div

@@ -41,6 +41,9 @@ function calculateStatus(
   marketCap: string,
   threshold: string
 ): EliminationStatus {
+  // Guard against division by zero
+  if (totalAgents <= 0) return "safe"
+
   const rankPercentile = rank / totalAgents
   const mcapValue = parseMarketCap(marketCap)
   const thresholdValue = parseMarketCap(threshold)
@@ -95,7 +98,10 @@ const EliminationProgress = React.forwardRef<HTMLDivElement, EliminationProgress
     const statusLabel = getStatusLabel(status)
 
     // Progress position (inverted: rank 1 = 100%, rank N = 0%)
-    const progressPercent = ((totalAgents - rank + 1) / totalAgents) * 100
+    // Guard against division by zero
+    const progressPercent = totalAgents > 0
+      ? ((totalAgents - rank + 1) / totalAgents) * 100
+      : 100
 
     // Status colors
     const statusColors = {

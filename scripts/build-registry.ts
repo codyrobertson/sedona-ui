@@ -8,9 +8,23 @@
  */
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs"
-import { join, dirname } from "path"
+import { join, dirname, resolve } from "path"
+import { fileURLToPath } from "url"
 
-const ROOT_DIR = process.cwd()
+// Resolve ROOT_DIR from script location, not cwd
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+const ROOT_DIR = resolve(__dirname, "..")
+
+/**
+ * Validates that a resolved path is safely within the allowed base directory.
+ * Prevents path traversal attacks (e.g., ../../../etc/passwd).
+ */
+function isPathSafe(resolvedPath: string, allowedBase: string): boolean {
+  const normalizedPath = resolve(resolvedPath)
+  const normalizedBase = resolve(allowedBase)
+  return normalizedPath.startsWith(normalizedBase + "/") || normalizedPath === normalizedBase
+}
 const REGISTRY_PATH = join(ROOT_DIR, "registry/registry.json")
 const OUTPUT_DIR = join(ROOT_DIR, "public/r")
 
@@ -57,7 +71,14 @@ function main() {
 
     // Read component file content
     const files = item.files.map((file) => {
-      const filePath = join(ROOT_DIR, file.path)
+      const filePath = resolve(ROOT_DIR, file.path)
+
+      // Security: Validate path is within project root
+      if (!isPathSafe(filePath, ROOT_DIR)) {
+        console.error(`     ❌ Path traversal blocked: ${file.path}`)
+        hasErrors = true
+        return null
+      }
 
       if (!existsSync(filePath)) {
         console.error(`     ❌ File not found: ${file.path}`)
