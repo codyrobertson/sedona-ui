@@ -6,7 +6,10 @@ import { cn } from "@/lib/utils"
 import {
   Dialog,
   DialogContent,
+  DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog"
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden"
 import { Button } from "@/components/ui/button"
 import { PixelBlast } from "@/components/ui/pixel-blast"
 import { Icon } from "@/components/ui/icon"
@@ -142,7 +145,13 @@ const AgentLaunchModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[95vw] sm:max-w-[680px] bg-zeus-surface-neutral border-zeus-border-alpha p-0 gap-0 rounded-lg overflow-hidden [&>button]:hidden max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-[95vw] sm:max-w-[680px] bg-zeus-surface-neutral border-zeus-border-alpha p-0 gap-0 rounded-lg overflow-hidden [&>button]:hidden max-h-[90vh] overflow-y-auto" aria-describedby={undefined}>
+        <VisuallyHidden.Root>
+          <DialogTitle>Launch AI Agent</DialogTitle>
+          <DialogDescription>
+            Connect your HuggingFace account and select a model to launch as an AI agent on Sedona.
+          </DialogDescription>
+        </VisuallyHidden.Root>
         {/* Two Column Layout - stacks on mobile */}
         <div className="grid grid-cols-1 md:grid-cols-[260px_1fr] min-h-[400px] md:min-h-[480px]">
           {/* Left Column - Repo List or Token Preview (hidden on mobile in form/creating view) */}
