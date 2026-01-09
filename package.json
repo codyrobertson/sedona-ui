@@ -56,7 +56,8 @@
     "analyze-components": "npx ts-node scripts/analyze-components.ts",
     "figma:install": "cd figma-plugin/sedona-sync && npm install",
     "figma:build": "cd figma-plugin/sedona-sync && npm run build",
-    "figma:dev": "cd figma-plugin/sedona-sync && npm run dev"
+    "figma:dev": "cd figma-plugin/sedona-sync && npm run dev",
+    "generate:press-kit": "npx ts-node scripts/generate-press-kit.ts"
   },
   "dependencies": {
     "@awesome.me/kit-1655babbde": "^1.0.2",
