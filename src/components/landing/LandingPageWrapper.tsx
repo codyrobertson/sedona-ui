@@ -45,16 +45,22 @@ export function LandingPageWrapper({
   onLaunchAgent,
   className,
 }: LandingPageWrapperProps) {
-  // Track if this is initial mount - skip animations on first render
-  const [hasHydrated, setHasHydrated] = React.useState(false)
+  // Track mount state for entry animation
+  const [hasMounted, setHasMounted] = React.useState(false)
 
   React.useEffect(() => {
-    // After first render, enable animations for subsequent toggles
-    setHasHydrated(true)
+    // Small delay to ensure initial state is rendered first
+    const timer = requestAnimationFrame(() => {
+      setHasMounted(true)
+    })
+    return () => cancelAnimationFrame(timer)
   }, [])
 
-  // Skip initial animations on first load for instant content
-  const shouldAnimate = hasHydrated
+  // Mockup should animate in after mount when in hero mode
+  const showMockupAnimated = hasMounted && isHeroMode
+
+  // Other elements always animate
+  const shouldAnimate = true
 
   return (
     <div className={cn("relative", className)}>
@@ -127,7 +133,7 @@ export function LandingPageWrapper({
 
         {/* Spacer for hero content - animates height */}
         <motion.div
-          initial={false}
+          initial={{ height: isHeroMode ? 0 : 0 }}
           animate={{
             height: isHeroMode ? 600 : 0,
           }}
@@ -137,11 +143,13 @@ export function LandingPageWrapper({
         {/* Dashboard with browser frame */}
         <div className="relative z-10">
           <motion.div
-            initial={false}
+            initial={isHeroMode ? { y: 100, opacity: 0 } : false}
             animate={{
               scale: isHeroMode ? SCALE : 1,
+              y: isHeroMode ? (showMockupAnimated ? 0 : 100) : 0,
+              opacity: isHeroMode ? (showMockupAnimated ? 1 : 0) : 1,
             }}
-            transition={transition}
+            transition={{ ...transition, duration: 0.8 }}
             style={{
               transformOrigin: "top center",
             }}
@@ -164,7 +172,7 @@ export function LandingPageWrapper({
 
             {/* Spacer for browser chrome height */}
             <motion.div
-              initial={false}
+              initial={{ height: isHeroMode ? 0 : 0 }}
               animate={{ height: isHeroMode ? 40 : 0 }}
               transition={transition}
             />
