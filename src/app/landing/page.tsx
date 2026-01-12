@@ -17,6 +17,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
+    site: SEO_CONFIG.twitter.site,
+    creator: SEO_CONFIG.twitter.creator,
     title: "Sedona - AI Agent Trading Platform on Solana",
     description: "Trade AI agents on Solana. Real-time charts, swap tokens, and track your portfolio with Sedona's modern trading interface.",
     images: [SEO_CONFIG.defaultImage],
