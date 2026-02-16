@@ -140,17 +140,19 @@ export function ShaderLab() {
       <div
         ref={canvasRef}
         className={cn(
-          "relative flex-1 rounded-lg border border-zeus-border-alpha overflow-hidden",
-          "min-h-[400px] lg:min-h-[600px]",
+          "relative rounded-lg border border-zeus-border-alpha overflow-hidden",
+          "h-[500px] lg:h-[700px]",
           shader === "PaperTexture" && "bg-white",
           shader === "GridScan" && "bg-zeus-surface-default",
+          shader === "PixelBlast" && "bg-black",
+          shader === "FaultyTerminal" && "bg-black",
         )}
       >
         {shaderElement}
       </div>
 
       {/* Controls sidebar */}
-      <div className="w-full lg:w-80 xl:w-96 space-y-4 shrink-0">
+      <div className="w-full lg:w-80 xl:w-96 space-y-4 shrink-0 lg:max-h-[700px] lg:overflow-y-auto">
         {/* Shader selector */}
         <div className="space-y-2">
           <label className="text-caption-s font-medium text-zeus-text-tertiary uppercase tracking-wider">
