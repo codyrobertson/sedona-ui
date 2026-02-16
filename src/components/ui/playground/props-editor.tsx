@@ -15,7 +15,8 @@ import { Checkbox } from "@/components/ui/checkbox"
 
 export type PropType =
   | { type: "text"; default?: string }
-  | { type: "number"; default?: number; min?: number; max?: number }
+  | { type: "number"; default?: number; min?: number; max?: number; step?: number }
+  | { type: "range"; default?: number; min: number; max: number; step?: number }
   | { type: "select"; options: string[]; default?: string }
   | { type: "boolean"; default?: boolean }
   | { type: "color"; default?: string }
@@ -112,6 +113,25 @@ export function PropsEditor<T extends PropDefinition>({
                   onChange={(e) => onChange(key, e.target.value)}
                   className="font-mono text-caption-l flex-1"
                 />
+              </div>
+            )}
+            {propDef.type === "range" && (
+              <div className="flex items-center gap-3">
+                <input
+                  id={key}
+                  type="range"
+                  min={propDef.min}
+                  max={propDef.max}
+                  step={propDef.step ?? 0.01}
+                  value={(values[key] as number) ?? propDef.default ?? propDef.min}
+                  onChange={(e) => onChange(key, Number(e.target.value))}
+                  className="flex-1 h-2 rounded-lg appearance-none cursor-pointer accent-zeus-accent-a"
+                />
+                <span className="text-caption-s text-zeus-text-tertiary font-mono min-w-[3rem] text-right">
+                  {((values[key] as number) ?? propDef.default ?? propDef.min).toFixed(
+                    propDef.step && propDef.step >= 1 ? 0 : 2
+                  )}
+                </span>
               </div>
             )}
           </div>
