@@ -1,6 +1,8 @@
 "use client"
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ShaderLab } from "@/components/playground/shader-lab"
+import { AsciiConverter } from "@/components/playground/ascii-converter"
 
 export default function PlaygroundClient() {
   return (
@@ -18,14 +20,10 @@ export default function PlaygroundClient() {
             <TabsTrigger value="ascii">ASCII Converter</TabsTrigger>
           </TabsList>
           <TabsContent value="shaders">
-            <div className="mt-4 p-8 rounded-lg border border-zeus-border-alpha text-zeus-text-tertiary text-center">
-              Shader Lab coming soon...
-            </div>
+            <ShaderLab />
           </TabsContent>
           <TabsContent value="ascii">
-            <div className="mt-4 p-8 rounded-lg border border-zeus-border-alpha text-zeus-text-tertiary text-center">
-              ASCII Converter coming soon...
-            </div>
+            <AsciiConverter />
           </TabsContent>
         </Tabs>
       </div>
