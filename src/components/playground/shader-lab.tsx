@@ -141,7 +141,7 @@ export function ShaderLab() {
         ref={canvasRef}
         className={cn(
           "relative rounded-lg border border-zeus-border-alpha overflow-hidden",
-          "h-[500px] lg:h-[700px]",
+          "flex-1 min-w-0 h-[500px] lg:h-[700px]",
           shader === "PaperTexture" && "bg-white",
           shader === "GridScan" && "bg-zeus-surface-default",
           shader === "PixelBlast" && "bg-black",
