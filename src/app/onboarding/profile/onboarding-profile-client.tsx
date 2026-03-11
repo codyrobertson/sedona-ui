@@ -26,7 +26,7 @@ const SOCIAL_CONFIG = [
 
 export default function OnboardingProfileClient() {
   const router = useRouter()
-  const { openCreateAgent, isHFAuthenticated, hfUsername, signOutHF } = useAgentLaunch()
+  const { connectHF, isHFAuthenticated, hfUsername, signOutHF } = useAgentLaunch()
   const { advance, skip } = useOnboardingV2()
   const {
     isLoading,
@@ -264,7 +264,7 @@ export default function OnboardingProfileClient() {
                         </p>
                       </div>
                     </div>
-                    <Button variant="outline" size="sm" onClick={openCreateAgent}>
+                    <Button variant="outline" size="sm" onClick={connectHF}>
                       Connect
                     </Button>
                   </div>

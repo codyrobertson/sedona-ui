@@ -11,7 +11,7 @@ const mocks = vi.hoisted(() => ({
   saveProfile: vi.fn().mockResolvedValue(true),
   loadProfile: vi.fn(),
   clearErrors: vi.fn(),
-  openCreateAgent: vi.fn(),
+  connectHF: vi.fn(),
   signOutHF: vi.fn(),
   trackOnboardingProfileCompleted: vi.fn(),
   trackOnboardingSkipped: vi.fn(),
@@ -46,7 +46,7 @@ vi.mock("@/contexts", () => ({
     clearErrors: mocks.clearErrors,
   }),
   useAgentLaunch: () => ({
-    openCreateAgent: mocks.openCreateAgent,
+    connectHF: mocks.connectHF,
     isHFAuthenticated: false,
     hfUsername: null,
     signOutHF: mocks.signOutHF,
