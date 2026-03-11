@@ -70,6 +70,7 @@ const Header = React.forwardRef<HTMLElement, HeaderProps>(
               <Button
                 variant="brand"
                 size="sm"
+                data-tour="launch-agent"
                 onClick={() => {
                   track("feature_used", { feature: "create_agent_cta", details: { surface: "header", authenticated: true } })
                   onCreateCoin?.()
@@ -94,6 +95,7 @@ const Header = React.forwardRef<HTMLElement, HeaderProps>(
               <Button
                 variant="secondary"
                 size="sm"
+                data-tour="launch-agent"
                 onClick={() => {
                   track("feature_used", { feature: "create_agent_cta", details: { surface: "header", authenticated: false } })
                   onCreateCoin?.()
@@ -104,6 +106,7 @@ const Header = React.forwardRef<HTMLElement, HeaderProps>(
               <Button
                 variant="brand"
                 size="sm"
+                data-tour="portfolio"
                 onClick={() => {
                   track("feature_used", { feature: "connect_wallet_cta", details: { surface: "header" } })
                   onConnect?.()

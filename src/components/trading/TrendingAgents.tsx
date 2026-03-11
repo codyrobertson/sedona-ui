@@ -98,6 +98,7 @@ const TrendingAgents = React.forwardRef<HTMLDivElement, TrendingAgentsProps>(
                 {...agent}
                 rank={index + 1}
                 onSelect={() => onAgentSelect?.(agent.ticker)}
+                {...(index === 0 ? { "data-tour": "agent-economics" } : {})}
               />
             ))}
           </div>

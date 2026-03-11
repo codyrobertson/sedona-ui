@@ -206,7 +206,7 @@ export default function TradingPageClient({ initialHeroMode = false }: TradingPa
         <h1 className="sr-only">AI Agent Trading</h1>
 
         {/* Platform Stats */}
-        <section aria-label="Platform Statistics">
+        <section aria-label="Platform Statistics" data-tour="competitions">
           <PlatformStats
             endsInSeconds={754}
             jackpotValue={2450}
@@ -226,7 +226,7 @@ export default function TradingPageClient({ initialHeroMode = false }: TradingPa
         )}
 
         {/* Main Content */}
-        <section className="px-6 py-8 pb-20" aria-label="Trending Agents">
+        <section className="px-6 py-8 pb-20" aria-label="Trending Agents" data-tour="market">
           {/* Trending Agents */}
           <TrendingAgents
             agents={displayAgents}
