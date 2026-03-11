@@ -53,6 +53,31 @@ describe("onboarding-storage-v2", () => {
       const state = getOnboardingV2State()
       expect(state.currentPhase).toBe("welcome")
     })
+
+    it("normalizes partial stored state by merging with defaults", () => {
+      localStorage.setItem(
+        "sedona_onboarding_v2",
+        JSON.stringify({ currentPhase: "tour" })
+      )
+      const state = getOnboardingV2State()
+      expect(state.currentPhase).toBe("tour")
+      expect(state.completedAt).toBeNull()
+      expect(state.skippedAt).toBeNull()
+      expect(state.skippedPhase).toBeNull()
+      expect(state.profileCompletedAt).toBeNull()
+      expect(state.tourStepsViewed).toEqual([])
+      expect(state.goalVariant).toBeNull()
+      expect(state.goalCompleted).toBe(false)
+    })
+
+    it("resets tourStepsViewed to empty array when stored value is not an array", () => {
+      localStorage.setItem(
+        "sedona_onboarding_v2",
+        JSON.stringify({ currentPhase: "tour", tourStepsViewed: "invalid" })
+      )
+      const state = getOnboardingV2State()
+      expect(state.tourStepsViewed).toEqual([])
+    })
   })
 
   describe("advancePhase", () => {
@@ -62,24 +87,30 @@ describe("onboarding-storage-v2", () => {
     })
 
     it("advances profile -> tour and sets profileCompletedAt", () => {
+      advancePhase("welcome") // -> profile
       const state = advancePhase("profile")
       expect(state.currentPhase).toBe("tour")
       expect(state.profileCompletedAt).toBeTruthy()
     })
 
     it("advances tour -> goal", () => {
+      advancePhase("welcome") // -> profile
+      advancePhase("profile") // -> tour
       const state = advancePhase("tour")
       expect(state.currentPhase).toBe("goal")
     })
 
     it("advances goal -> completed and sets completedAt", () => {
+      advancePhase("welcome") // -> profile
+      advancePhase("profile") // -> tour
+      advancePhase("tour") // -> goal
       const state = advancePhase("goal")
       expect(state.currentPhase).toBe("completed")
       expect(state.completedAt).toBeTruthy()
     })
 
     it("does nothing if already completed", () => {
-      advancePhase("goal") // -> completed
+      completeOnboarding() // -> completed
       const state = advancePhase("completed")
       expect(state.currentPhase).toBe("completed")
     })
@@ -88,6 +119,19 @@ describe("onboarding-storage-v2", () => {
       completeOnboarding() // state is now completed
       const state = advancePhase("welcome") // attempt to advance from welcome
       expect(state.currentPhase).toBe("completed")
+    })
+
+    it("is a no-op when fromPhase does not match current phase", () => {
+      // State is at "welcome", but caller tries to advance from "goal"
+      const state = advancePhase("goal")
+      expect(state.currentPhase).toBe("welcome")
+    })
+
+    it("is a no-op when trying to skip phases", () => {
+      advancePhase("welcome") // -> profile
+      // State is at "profile", but caller tries to advance from "tour"
+      const state = advancePhase("tour")
+      expect(state.currentPhase).toBe("profile")
     })
   })
 

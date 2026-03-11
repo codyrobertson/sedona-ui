@@ -30,7 +30,12 @@ export function getOnboardingV2State(): OnboardingV2State {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return { ...DEFAULT_STATE }
-    return JSON.parse(raw) as OnboardingV2State
+    const parsed = JSON.parse(raw)
+    return {
+      ...DEFAULT_STATE,
+      ...parsed,
+      tourStepsViewed: Array.isArray(parsed.tourStepsViewed) ? parsed.tourStepsViewed : [],
+    }
   } catch {
     return { ...DEFAULT_STATE }
   }
@@ -48,6 +53,10 @@ export function advancePhase(fromPhase: OnboardingPhase): OnboardingV2State {
     return state
   }
 
+  if (state.currentPhase !== fromPhase) {
+    return state
+  }
+
   const currentIndex = ONBOARDING_PHASES.indexOf(fromPhase)
   const nextIndex = currentIndex + 1
 
@@ -55,58 +64,70 @@ export function advancePhase(fromPhase: OnboardingPhase): OnboardingV2State {
     return state
   }
 
-  state.currentPhase = ONBOARDING_PHASES[nextIndex]
-
-  if (fromPhase === "profile") {
-    state.profileCompletedAt = new Date().toISOString()
+  const nextPhase = ONBOARDING_PHASES[nextIndex]
+  const next: OnboardingV2State = {
+    ...state,
+    currentPhase: nextPhase,
+    ...(fromPhase === "profile" ? { profileCompletedAt: new Date().toISOString() } : {}),
+    ...(nextPhase === "completed" ? { completedAt: new Date().toISOString() } : {}),
   }
-
-  if (state.currentPhase === "completed") {
-    state.completedAt = new Date().toISOString()
-  }
-
-  setOnboardingV2State(state)
-  return state
+  setOnboardingV2State(next)
+  return next
 }
 
 export function recordTourStep(stepIndex: number): OnboardingV2State {
   const state = getOnboardingV2State()
-  if (!state.tourStepsViewed.includes(stepIndex)) {
-    state.tourStepsViewed = [...state.tourStepsViewed, stepIndex]
+  const next: OnboardingV2State = {
+    ...state,
+    tourStepsViewed: state.tourStepsViewed.includes(stepIndex)
+      ? state.tourStepsViewed
+      : [...state.tourStepsViewed, stepIndex],
   }
-  setOnboardingV2State(state)
-  return state
+  setOnboardingV2State(next)
+  return next
 }
 
 export function setGoalVariant(variant: string): OnboardingV2State {
   const state = getOnboardingV2State()
-  state.goalVariant = variant
-  setOnboardingV2State(state)
-  return state
+  const next: OnboardingV2State = {
+    ...state,
+    goalVariant: variant,
+  }
+  setOnboardingV2State(next)
+  return next
 }
 
 export function completeGoal(): OnboardingV2State {
   const state = getOnboardingV2State()
-  state.goalCompleted = true
-  setOnboardingV2State(state)
-  return state
+  const next: OnboardingV2State = {
+    ...state,
+    goalCompleted: true,
+  }
+  setOnboardingV2State(next)
+  return next
 }
 
 export function skipOnboarding(): OnboardingV2State {
   const state = getOnboardingV2State()
-  state.skippedAt = new Date().toISOString()
-  state.skippedPhase = state.currentPhase
-  state.currentPhase = "completed"
-  setOnboardingV2State(state)
-  return state
+  const next: OnboardingV2State = {
+    ...state,
+    skippedAt: new Date().toISOString(),
+    skippedPhase: state.currentPhase,
+    currentPhase: "completed",
+  }
+  setOnboardingV2State(next)
+  return next
 }
 
 export function completeOnboarding(): OnboardingV2State {
   const state = getOnboardingV2State()
-  state.currentPhase = "completed"
-  state.completedAt = new Date().toISOString()
-  setOnboardingV2State(state)
-  return state
+  const next: OnboardingV2State = {
+    ...state,
+    currentPhase: "completed",
+    completedAt: new Date().toISOString(),
+  }
+  setOnboardingV2State(next)
+  return next
 }
 
 export function shouldShowOnboarding(): boolean {
