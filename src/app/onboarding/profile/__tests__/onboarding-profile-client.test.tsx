@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest"
-import { render, screen } from "@testing-library/react"
+import { render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 
 // Hoist stable function references to avoid infinite re-render loops
@@ -164,6 +164,20 @@ describe("OnboardingProfileClient", () => {
     render(<OnboardingProfileClient />)
     await user.click(screen.getByText(/skip for now/i))
     expect(mocks.skip).toHaveBeenCalled()
+    expect(mocks.trackOnboardingSkipped).toHaveBeenCalledWith("profile")
     expect(mocks.push).toHaveBeenCalledWith("/trading")
+  })
+
+  it("saves profile and advances on Save & Continue", async () => {
+    const user = userEvent.setup()
+    render(<OnboardingProfileClient />)
+    await user.click(screen.getByRole("button", { name: /save.*continue/i }))
+
+    await waitFor(() => {
+      expect(mocks.saveProfile).toHaveBeenCalled()
+      expect(mocks.advance).toHaveBeenCalledWith("profile")
+      expect(mocks.trackOnboardingProfileCompleted).toHaveBeenCalled()
+      expect(mocks.push).toHaveBeenCalledWith("/trading")
+    })
   })
 })
