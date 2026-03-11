@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Icon } from "@/components/ui/icon"
 import {
@@ -9,17 +10,54 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { ContactForm } from "@/components/contact/ContactForm"
+import { useOnboarding } from "@/contexts"
 import { SEO_CONFIG } from "@/lib/seo-config"
+import { track, trackExternalLink } from "@/lib/analytics"
 
 export interface FooterProps extends React.HTMLAttributes<HTMLElement> {}
 
 const Footer = React.forwardRef<HTMLElement, FooterProps>(
   ({ className, ...props }, ref) => {
-    const [contactOpen, setContactOpen] = React.useState(false)
+    const router = useRouter()
+    const [feedbackOpen, setFeedbackOpen] = React.useState(false)
+    const { state: onboardingState, completeStep, setSheetOpen } = useOnboarding()
+
+    const handleResumeSetup = () => {
+      setSheetOpen(true)
+      router.push("/trading")
+    }
 
     return (
       <>
-        <ContactForm open={contactOpen} onOpenChange={setContactOpen} />
+        <ContactForm
+          open={feedbackOpen}
+          onOpenChange={setFeedbackOpen}
+          mode="feedback"
+          source="footer"
+          onSubmitted={() => {
+            completeStep("give_feedback", "footer")
+          }}
+        />
+        <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 sm:hidden">
+          {!onboardingState.hasCompletedOnboarding && (
+            <button
+              type="button"
+              onClick={handleResumeSetup}
+              className="inline-flex items-center gap-2 rounded-full border border-sedona-500/30 bg-zeus-surface-elevated px-4 py-2 text-caption-m font-medium text-zeus-text-primary shadow-lg shadow-black/20"
+            >
+              <Icon icon="sparkles" className="h-4 w-4 text-sedona-400" aria-hidden="true" />
+              Resume Setup
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={() => setFeedbackOpen(true)}
+            className="inline-flex items-center gap-2 rounded-full border border-sedona-500/30 bg-zeus-surface-elevated px-4 py-2 text-caption-m font-medium text-zeus-text-primary shadow-lg shadow-black/20"
+          >
+            <Icon icon="comment-dots" className="h-4 w-4 text-sedona-400" aria-hidden="true" />
+            Feedback
+          </button>
+        </div>
       <footer
         ref={ref}
         className={cn(
@@ -32,12 +70,32 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
           <span className="text-zeus-text-primary text-caption-m font-medium">
             Sedona
           </span>
+          {!onboardingState.hasCompletedOnboarding && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={handleResumeSetup}
+                  className="inline-flex items-center gap-1.5 text-zeus-text-secondary hover:text-zeus-text-primary transition-colors text-caption-m ml-4"
+                >
+                  <Icon icon="sparkles" className="w-3.5 h-3.5" aria-hidden="true" />
+                  Resume Setup
+                </button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Reopen the first-run checklist</p>
+              </TooltipContent>
+            </Tooltip>
+          )}
           <Tooltip>
             <TooltipTrigger asChild>
               <a
                 href={SEO_CONFIG.social.twitter}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => {
+                  track("twitter_clicked", { source: "footer" })
+                  trackExternalLink(SEO_CONFIG.social.twitter, "footer_twitter")
+                }}
                 className="inline-flex items-center gap-1.5 text-zeus-text-secondary hover:text-zeus-text-primary transition-colors text-caption-m ml-4"
               >
                 <Icon icon={["fab", "x-twitter"]} className="w-3.5 h-3.5" aria-hidden="true" />
@@ -54,6 +112,10 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
                 href={SEO_CONFIG.social.discord}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => {
+                  track("discord_clicked", { source: "footer" })
+                  trackExternalLink(SEO_CONFIG.social.discord, "footer_discord")
+                }}
                 className="inline-flex items-center gap-1.5 text-zeus-text-secondary hover:text-zeus-text-primary transition-colors text-caption-m ml-4"
               >
                 <Icon icon={["fab", "discord"]} className="w-3.5 h-3.5" aria-hidden="true" />
@@ -70,6 +132,10 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
                 href="https://docs.sedona.io/api"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => {
+                  track("docs_clicked", { section: "footer_api" })
+                  trackExternalLink("https://docs.sedona.io/api", "footer_api")
+                }}
                 className="inline-flex items-center gap-1.5 text-zeus-text-secondary hover:text-zeus-text-primary transition-colors text-caption-m ml-4"
               >
                 <Icon icon="terminal" className="w-3.5 h-3.5" aria-hidden="true" />
@@ -86,6 +152,10 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
                 href="https://docs.sedona.io/methodology"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => {
+                  track("docs_clicked", { section: "footer_methodology" })
+                  trackExternalLink("https://docs.sedona.io/methodology", "footer_methodology")
+                }}
                 className="text-zeus-text-secondary hover:text-zeus-text-primary transition-colors text-caption-m ml-4"
               >
                 Methodology
@@ -98,15 +168,15 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
           <Tooltip>
             <TooltipTrigger asChild>
               <button
-                onClick={() => setContactOpen(true)}
+                onClick={() => setFeedbackOpen(true)}
                 className="inline-flex items-center gap-1.5 text-zeus-text-secondary hover:text-zeus-text-primary transition-colors text-caption-m ml-4"
               >
-                <Icon icon="envelope" className="w-3.5 h-3.5" aria-hidden="true" />
-                Contact
+                <Icon icon="comment-dots" className="w-3.5 h-3.5" aria-hidden="true" />
+                Feedback
               </button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Get in touch with us</p>
+              <p>Send product feedback</p>
             </TooltipContent>
           </Tooltip>
         </div>

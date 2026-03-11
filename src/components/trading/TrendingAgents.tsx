@@ -15,6 +15,7 @@ export interface TrendingAgentsProps extends React.HTMLAttributes<HTMLDivElement
   onSortChange?: (sort: string) => void
   onSearch?: (query: string) => void
   onAgentSelect?: (ticker: string) => void
+  onOpenFeedback?: () => void
 }
 
 const SORT_OPTIONS = [
@@ -34,6 +35,7 @@ const TrendingAgents = React.forwardRef<HTMLDivElement, TrendingAgentsProps>(
       onSortChange,
       onSearch,
       onAgentSelect,
+      onOpenFeedback,
       ...props
     },
     ref
@@ -102,8 +104,30 @@ const TrendingAgents = React.forwardRef<HTMLDivElement, TrendingAgentsProps>(
 
           {agents.length === 0 && (
             <EmptyState
+              eyebrow="Search"
               title="No agents found"
-              description="Try adjusting your search or filters"
+              description="Try clearing your search or tell us what you expected to find."
+              tone="warning"
+              analytics={{
+                surface: "trending_agents",
+                variant: "search_empty",
+              }}
+              actions={[
+                {
+                  label: "Clear Search",
+                  onClick: () => {
+                    setSearchQuery("")
+                    onSearch?.("")
+                  },
+                  analyticsAction: "clear_search",
+                },
+                {
+                  label: "Give Feedback",
+                  onClick: onOpenFeedback,
+                  variant: "outline",
+                  analyticsAction: "give_feedback",
+                },
+              ]}
             />
           )}
         </div>

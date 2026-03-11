@@ -154,7 +154,12 @@ export type AnalyticsEvent =
       properties: {
         source: string
         category?: string
+        delivery?: 'posthog' | 'mailto_fallback'
         rating?: number
+        name?: string
+        email?: string
+        subject?: string
+        message?: string
         has_email?: boolean
         message_length?: number
       }
@@ -510,20 +515,35 @@ export function trackFeedbackCancelled(source: string, mode: 'dialog' | 'survey'
 export function trackFeedbackSubmitted({
   source,
   category,
+  delivery,
   rating,
+  name,
+  email,
+  subject,
+  message,
   hasEmail,
   messageLength,
 }: {
   source: string
   category?: string
+  delivery?: 'posthog' | 'mailto_fallback'
   rating?: number
+  name?: string
+  email?: string
+  subject?: string
+  message?: string
   hasEmail?: boolean
   messageLength?: number
 }): void {
   track('feedback_submitted', {
     source,
     category,
+    delivery,
     rating,
+    name,
+    email,
+    subject,
+    message,
     has_email: hasEmail,
     message_length: messageLength,
   })

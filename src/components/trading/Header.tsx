@@ -6,13 +6,16 @@ import { cn } from "@/lib/utils"
 import { SedonaLogo } from "@/components/sedona/sedona-logo"
 import { Button } from "@/components/ui/button"
 import { WalletCard } from "@/components/ui/wallet-card"
+import { track } from "@/lib/analytics"
 
 export interface HeaderProps extends React.HTMLAttributes<HTMLElement> {
   onCreateCoin?: () => void
   onConnect?: () => void
   onDisconnect?: () => void
   onProfile?: () => void
+  onResumeSetup?: () => void
   isAuthenticated?: boolean
+  showResumeSetup?: boolean
   walletAddress?: string
   fullWalletAddress?: string
   balance?: string
@@ -26,7 +29,9 @@ const Header = React.forwardRef<HTMLElement, HeaderProps>(
     onConnect,
     onDisconnect,
     onProfile,
+    onResumeSetup,
     isAuthenticated = false,
+    showResumeSetup = false,
     walletAddress = "J181...U7Wi",
     fullWalletAddress = "J181xK2Df6672c6d19a2d56fc9d941e86da4f8c2a9b7e3U7Wi",
     balance = "0.00 SOL",
@@ -51,7 +56,11 @@ const Header = React.forwardRef<HTMLElement, HeaderProps>(
         <div className="flex items-center gap-1.5 sm:gap-2">
           <Link
             href="/docs"
-            className="text-zeus-text-primary underline hover:text-zeus-text-secondary transition-colors text-caption-s font-medium px-2 py-2"
+            onClick={() => {
+              track("nav_clicked", { item: "docs", location: "header" })
+              track("docs_clicked", { section: "header" })
+            }}
+            className="hidden sm:inline-flex text-zeus-text-primary underline hover:text-zeus-text-secondary transition-colors text-caption-s font-medium px-2 py-2"
           >
             Docs
           </Link>
@@ -61,7 +70,10 @@ const Header = React.forwardRef<HTMLElement, HeaderProps>(
               <Button
                 variant="brand"
                 size="sm"
-                onClick={onCreateCoin}
+                onClick={() => {
+                  track("feature_used", { feature: "create_agent_cta", details: { surface: "header", authenticated: true } })
+                  onCreateCoin?.()
+                }}
               >
                 Create Agent
               </Button>
@@ -73,6 +85,8 @@ const Header = React.forwardRef<HTMLElement, HeaderProps>(
                 balanceUsd={balanceUsd}
                 onDisconnect={onDisconnect}
                 onProfile={onProfile}
+                onResumeSetup={onResumeSetup}
+                showResumeSetup={showResumeSetup}
               />
             </>
           ) : (
@@ -80,14 +94,20 @@ const Header = React.forwardRef<HTMLElement, HeaderProps>(
               <Button
                 variant="secondary"
                 size="sm"
-                onClick={onCreateCoin}
+                onClick={() => {
+                  track("feature_used", { feature: "create_agent_cta", details: { surface: "header", authenticated: false } })
+                  onCreateCoin?.()
+                }}
               >
                 Create Agent
               </Button>
               <Button
                 variant="brand"
                 size="sm"
-                onClick={onConnect}
+                onClick={() => {
+                  track("feature_used", { feature: "connect_wallet_cta", details: { surface: "header" } })
+                  onConnect?.()
+                }}
               >
                 Connect
               </Button>

@@ -7,7 +7,6 @@ import {
   PlatformStats,
   TrendingAgents,
   AboutSedona,
-  Footer,
 } from "@/components/trading"
 import { LandingPageWrapper } from "@/components/landing"
 import {
@@ -15,8 +14,15 @@ import {
   formatMarketCap,
   searchAgents,
 } from "@/fixtures"
-import { useAgentLaunch } from "@/contexts"
+import { useAgentLaunch, useOnboarding } from "@/contexts"
+import type { OnboardingStep } from "@/lib/onboarding-storage"
 import type { AgentWithMetrics } from "@/types/agent"
+import { FirstRunSheet } from "@/components/onboarding/FirstRunSheet"
+import { ContactForm } from "@/components/contact/ContactForm"
+import {
+  trackFirstRunDismissed,
+  trackFirstRunViewed,
+} from "@/lib/analytics"
 
 // Map unified Agent to TrendingAgents format
 function mapAgentToListItem(agent: AgentWithMetrics) {
@@ -53,9 +59,18 @@ interface TradingPageClientProps {
 export default function TradingPageClient({ initialHeroMode = false }: TradingPageClientProps) {
   const router = useRouter()
   const { openCreateAgent } = useAgentLaunch()
+  const {
+    state: onboardingState,
+    isReady: isOnboardingReady,
+    isSheetOpen,
+    setSheetOpen,
+    completeStep,
+    dismissOnboarding,
+  } = useOnboarding()
   const [sortBy, setSortBy] = React.useState("Highest Market Capitalization")
   const [showHero, setShowHero] = React.useState(true)
   const [searchQuery, setSearchQuery] = React.useState("")
+  const [feedbackOpen, setFeedbackOpen] = React.useState(false)
 
   // Hero mode state - initialized from route, then state-controlled for animations
   const [isHeroMode, setIsHeroMode] = React.useState(initialHeroMode)
@@ -65,6 +80,29 @@ export default function TradingPageClient({ initialHeroMode = false }: TradingPa
     const newUrl = isHeroMode ? "/landing" : "/trading"
     window.history.replaceState({}, "", newUrl)
   }, [isHeroMode])
+
+  React.useEffect(() => {
+    if (!isOnboardingReady || isHeroMode) return
+    if (onboardingState.hasCompletedOnboarding || onboardingState.dismissedAt) return
+
+    setSheetOpen(true)
+  }, [
+    isHeroMode,
+    isOnboardingReady,
+    onboardingState.dismissedAt,
+    onboardingState.hasCompletedOnboarding,
+    setSheetOpen,
+  ])
+
+  React.useEffect(() => {
+    if (!isSheetOpen) return
+
+    trackFirstRunViewed(
+      "trading",
+      onboardingState.completedSteps.length,
+      onboardingState.dismissedAt
+    )
+  }, [isSheetOpen, onboardingState.completedSteps.length, onboardingState.dismissedAt])
 
   // Sort and filter agents
   const displayAgents = React.useMemo(() => {
@@ -99,11 +137,21 @@ export default function TradingPageClient({ initialHeroMode = false }: TradingPa
   }, [sortBy, searchQuery])
 
   const handleToggleMode = () => {
-    if (isHeroMode) {
-      // Exiting hero mode
-      localStorage.setItem("sedona_visited", "true")
-    }
     setIsHeroMode(!isHeroMode)
+  }
+
+  const handleOnboardingOpenChange = (open: boolean) => {
+    if (!open) {
+      trackFirstRunDismissed("trading", onboardingState.completedSteps)
+      dismissOnboarding()
+      return
+    }
+
+    setSheetOpen(true)
+  }
+
+  const handleCompleteStep = (step: OnboardingStep) => {
+    return completeStep(step, "trading")
   }
 
 
@@ -114,6 +162,33 @@ export default function TradingPageClient({ initialHeroMode = false }: TradingPa
       onLaunchAgent={openCreateAgent}
     >
       <div className="min-h-screen bg-zeus-surface-default">
+      <FirstRunSheet
+        open={isSheetOpen}
+        completedSteps={onboardingState.completedSteps}
+        onOpenChange={handleOnboardingOpenChange}
+        onExploreAgents={() => {
+          handleCompleteStep("explore_agents")
+          setSheetOpen(false)
+        }}
+        onOpenProfile={() => {
+          setSheetOpen(false)
+          router.push("/trading/profile")
+        }}
+        onGiveFeedback={() => {
+          setSheetOpen(false)
+          setFeedbackOpen(true)
+        }}
+        onSkip={() => {}}
+      />
+      <ContactForm
+        open={feedbackOpen}
+        onOpenChange={setFeedbackOpen}
+        mode="feedback"
+        source="trading_onboarding"
+        onSubmitted={() => {
+          handleCompleteStep("give_feedback")
+        }}
+      />
       {/* Header - hidden in hero mode (landing nav takes over) */}
       {!isHeroMode && (
         <Header
@@ -158,15 +233,13 @@ export default function TradingPageClient({ initialHeroMode = false }: TradingPa
             sortBy={sortBy}
             onSortChange={setSortBy}
             onSearch={setSearchQuery}
+            onOpenFeedback={() => setFeedbackOpen(true)}
             onAgentSelect={(ticker) => {
               router.push(`/trading/${ticker.toLowerCase()}`)
             }}
           />
         </section>
       </main>
-
-      {/* Footer */}
-      <Footer />
     </div>
     </LandingPageWrapper>
   )
