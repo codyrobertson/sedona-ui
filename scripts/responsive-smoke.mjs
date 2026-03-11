@@ -137,8 +137,9 @@ async function assertRoute(viewport, route) {
       throw new Error(`${viewport.name} ${route.name} missing marker "${route.marker}" in page HTML`)
     }
   } else {
-    await page.getByText(route.marker, { exact: false }).first().waitFor({
-      state: route.markerState ?? "visible",
+    await page.waitForFunction((marker) => {
+      return document.body?.innerText.includes(marker) ?? false
+    }, route.marker, {
       timeout: 10000,
     })
   }
