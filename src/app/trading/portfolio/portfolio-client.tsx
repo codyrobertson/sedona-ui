@@ -22,8 +22,7 @@ import { EmptyState } from "@/components/ui/empty-state"
 import { Button } from "@/components/ui/button"
 import { MOCK_MY_AGENTS, AGENTS, MY_WALLET, formatMarketCap } from "@/fixtures"
 import { ContactForm } from "@/components/contact/ContactForm"
-import { useAgentLaunch, useOnboarding } from "@/contexts"
-import { getWalletOnboardingScope } from "@/lib/onboarding-storage"
+import { useAgentLaunch } from "@/contexts"
 import type { MyAgent } from "@/types/evaluation"
 
 // Build marquee pools from unified agents
@@ -88,7 +87,6 @@ const agentStats = {
 export default function PortfolioClient() {
   const router = useRouter()
   const { openCreateAgent } = useAgentLaunch()
-  const { state: onboardingState, completeStep, setScope, setSheetOpen } = useOnboarding()
   const [sortBy, setSortBy] = React.useState("Highest Value")
   const [agentSortBy, setAgentSortBy] = React.useState("Best Score")
   const [currency, setCurrency] = React.useState<"USD" | "SOL">("USD")
@@ -97,10 +95,6 @@ export default function PortfolioClient() {
 
   const sortOptions = ["Highest Value", "Lowest Value", "Highest Gain", "Highest Loss", "Alphabetical"]
   const agentSortOptions = ["Best Score", "Most Recent", "Market Cap", "Alphabetical"]
-
-  React.useEffect(() => {
-    setScope(getWalletOnboardingScope(MY_WALLET))
-  }, [setScope])
 
   const handleDisconnect = () => {
     router.push("/trading")
@@ -123,11 +117,6 @@ export default function PortfolioClient() {
         balance="0.00 SOL"
         onCreateCoin={openCreateAgent}
         onDisconnect={handleDisconnect}
-        showResumeSetup={!onboardingState.hasCompletedOnboarding}
-        onResumeSetup={() => {
-          setSheetOpen(true)
-          router.push("/trading")
-        }}
       />
 
       <main>
@@ -140,36 +129,6 @@ export default function PortfolioClient() {
 
         {/* Portfolio Content */}
         <section className="px-3 sm:px-6 pt-4 pb-20" aria-label="Portfolio">
-          {!onboardingState.hasCompletedOnboarding && (
-            <EmptyState
-              className="mb-4 items-start text-left sm:items-center sm:text-center"
-              eyebrow="First Run"
-              tone="warning"
-              icon={<Icon icon="sparkles" className="h-6 w-6" />}
-              title="Finish setting up your Sedona workspace"
-              description="Your portfolio is live, but your first-run checklist is still open. Complete your profile and send feedback so we know what to improve next."
-              analytics={{
-                surface: "portfolio",
-                variant: "first_run_prompt",
-              }}
-              actions={[
-                {
-                  label: onboardingState.completedSteps.includes("open_profile")
-                    ? "Review Profile"
-                    : "Complete Profile",
-                  onClick: () => router.push("/trading/profile"),
-                  analyticsAction: "open_profile",
-                },
-                {
-                  label: "Give Feedback",
-                  onClick: () => setFeedbackOpen(true),
-                  variant: "outline",
-                  analyticsAction: "give_feedback",
-                },
-              ]}
-            />
-          )}
-
           {/* Unified Header */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 mb-4 sm:mb-6">
             {/* Tab Navigation + Sort */}
@@ -550,9 +509,6 @@ export default function PortfolioClient() {
           onOpenChange={setFeedbackOpen}
           mode="feedback"
           source={`portfolio_${activeTab}`}
-          onSubmitted={() => {
-            completeStep("give_feedback", `portfolio_${activeTab}`)
-          }}
         />
       </main>
     </div>

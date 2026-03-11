@@ -6,7 +6,7 @@ import { Footer } from "@/components/trading/Footer"
 import { JsonLd } from "@/components/seo"
 import { SEO_CONFIG } from "@/lib/seo-config"
 import { Suspense } from "react"
-import { AgentLaunchProvider, ProfileProvider, GPUDeployProvider, AnalyticsProvider, OnboardingProvider, OnboardingV2Provider } from "@/contexts"
+import { AgentLaunchProvider, ProfileProvider, GPUDeployProvider, AnalyticsProvider, OnboardingV2Provider } from "@/contexts"
 import { DeployModelModal, InstanceDetailsModal } from "@/components/trading"
 import { TooltipProvider } from "@/components/ui/tooltip"
 
@@ -120,22 +120,20 @@ export default function RootLayout({
       <body className={GeistSans.className}>
         <Suspense fallback={null}>
           <AnalyticsProvider>
-            <OnboardingProvider>
-              <OnboardingV2Provider>
-                <TooltipProvider delayDuration={300}>
-                  <AgentLaunchProvider>
-                    <ProfileProvider>
-                      <GPUDeployProvider>
-                        {children}
-                        <Footer />
-                        <DeployModelModal />
-                        <InstanceDetailsModal />
-                      </GPUDeployProvider>
-                    </ProfileProvider>
-                  </AgentLaunchProvider>
-                </TooltipProvider>
-              </OnboardingV2Provider>
-            </OnboardingProvider>
+            <OnboardingV2Provider>
+              <TooltipProvider delayDuration={300}>
+                <AgentLaunchProvider>
+                  <ProfileProvider>
+                    <GPUDeployProvider>
+                      {children}
+                      <Footer />
+                      <DeployModelModal />
+                      <InstanceDetailsModal />
+                    </GPUDeployProvider>
+                  </ProfileProvider>
+                </AgentLaunchProvider>
+              </TooltipProvider>
+            </OnboardingV2Provider>
           </AnalyticsProvider>
         </Suspense>
       </body>

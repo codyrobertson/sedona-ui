@@ -12,9 +12,8 @@ import { Icon } from "@/components/ui/icon"
 import { Switch } from "@/components/ui/switch"
 import { EmptyState } from "@/components/ui/empty-state"
 import { ContactForm } from "@/components/contact/ContactForm"
-import { useAgentLaunch, useOnboarding, useProfile } from "@/contexts"
+import { useAgentLaunch, useProfile } from "@/contexts"
 import { AGENTS, formatMarketCap, MY_WALLET } from "@/fixtures"
-import { getWalletOnboardingScope } from "@/lib/onboarding-storage"
 import { getFieldError } from "@/lib/profile-validation"
 import type { SocialPlatform } from "@/types/profile"
 
@@ -43,7 +42,6 @@ const SOCIAL_CONFIG = [
 export default function ProfileClient() {
   const router = useRouter()
   const { openCreateAgent, isHFAuthenticated, hfUsername, signOutHF } = useAgentLaunch()
-  const { state: onboardingState, completeStep, setScope, setSheetOpen } = useOnboarding()
   const {
     profile,
     isLoading,
@@ -85,10 +83,6 @@ export default function ProfileClient() {
     setMounted(true)
   }, [])
 
-  React.useEffect(() => {
-    setScope(getWalletOnboardingScope(MY_WALLET))
-  }, [setScope])
-
   // Load profile on mount
   React.useEffect(() => {
     if (mounted && !initialLoadDone) {
@@ -124,17 +118,13 @@ export default function ProfileClient() {
   }
 
   const handleSave = async () => {
-    const success = await saveProfile({
+    await saveProfile({
       displayName,
       email,
       bio,
       socials,
       preferences,
     })
-
-    if (success) {
-      completeStep("open_profile", "profile")
-    }
   }
 
   const handleCancel = () => {
@@ -170,11 +160,6 @@ export default function ProfileClient() {
         onCreateCoin={openCreateAgent}
         onDisconnect={handleDisconnect}
         onProfile={() => router.push("/trading/profile")}
-        showResumeSetup={!onboardingState.hasCompletedOnboarding}
-        onResumeSetup={() => {
-          setSheetOpen(true)
-          router.push("/trading")
-        }}
       />
 
       <main>
@@ -187,34 +172,6 @@ export default function ProfileClient() {
 
         {/* Profile Content */}
         <section className="px-3 sm:px-6 pt-4 pb-20" aria-label="Profile Settings">
-          {!onboardingState.completedSteps.includes("open_profile") && !isLoading && (
-            <EmptyState
-              className="mb-4 items-start text-left sm:items-center sm:text-center"
-              eyebrow="Onboarding"
-              tone="warning"
-              icon={<Icon icon="user-gear" className="h-6 w-6" />}
-              title="Complete your profile before you disappear into the market"
-              description="Add your name, socials, and notification preferences so the rest of the first-run experience can get out of your way."
-              analytics={{
-                surface: "profile",
-                variant: "profile_setup_prompt",
-              }}
-              actions={[
-                {
-                  label: "Save Profile",
-                  onClick: handleSave,
-                  analyticsAction: "save_profile",
-                },
-                {
-                  label: "Give Feedback",
-                  onClick: () => setFeedbackOpen(true),
-                  variant: "outline",
-                  analyticsAction: "give_feedback",
-                },
-              ]}
-            />
-          )}
-
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 mb-4 sm:mb-6">
             <h2 className="text-body-l sm:text-heading-md font-bold text-zeus-text-primary">
@@ -507,9 +464,6 @@ export default function ProfileClient() {
             onOpenChange={setFeedbackOpen}
             mode="feedback"
             source="profile"
-            onSubmitted={() => {
-              completeStep("give_feedback", "profile")
-            }}
           />
         </section>
       </main>
