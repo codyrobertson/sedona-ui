@@ -10,6 +10,8 @@ import {
 import { Button } from "@/components/ui/button"
 import { Icon } from "@/components/ui/icon"
 import { Switch } from "@/components/ui/switch"
+import { EmptyState } from "@/components/ui/empty-state"
+import { ContactForm } from "@/components/contact/ContactForm"
 import { useAgentLaunch, useProfile } from "@/contexts"
 import { AGENTS, formatMarketCap, MY_WALLET } from "@/fixtures"
 import { getFieldError } from "@/lib/profile-validation"
@@ -74,6 +76,7 @@ export default function ProfileClient() {
 
   // Track if we've loaded initial data
   const [initialLoadDone, setInitialLoadDone] = React.useState(false)
+  const [feedbackOpen, setFeedbackOpen] = React.useState(false)
 
   // Mount effect
   React.useEffect(() => {
@@ -115,17 +118,13 @@ export default function ProfileClient() {
   }
 
   const handleSave = async () => {
-    const success = await saveProfile({
+    await saveProfile({
       displayName,
       email,
       bio,
       socials,
       preferences,
     })
-
-    if (success) {
-      // Could show toast here
-    }
   }
 
   const handleCancel = () => {
@@ -195,9 +194,31 @@ export default function ProfileClient() {
 
           {/* Error Banner */}
           {error && (
-            <div className="mb-4 p-3 bg-zeus-status-error/10 border border-zeus-status-error/20 rounded-lg">
-              <p className="text-body-s text-zeus-status-error">{error}</p>
-            </div>
+            <EmptyState
+              className="mb-4 items-start px-4 py-5 text-left sm:items-center sm:text-center"
+              eyebrow="Profile Error"
+              tone="error"
+              icon={<Icon icon="triangle-exclamation" className="h-5 w-5" />}
+              title="Profile settings could not be saved"
+              description={error}
+              analytics={{
+                surface: "profile",
+                variant: "profile_save_error",
+              }}
+              actions={[
+                {
+                  label: "Try Again",
+                  onClick: handleSave,
+                  analyticsAction: "retry_save",
+                },
+                {
+                  label: "Give Feedback",
+                  onClick: () => setFeedbackOpen(true),
+                  variant: "outline",
+                  analyticsAction: "give_feedback",
+                },
+              ]}
+            />
           )}
 
           {isLoading ? (
@@ -206,7 +227,6 @@ export default function ProfileClient() {
             </div>
           ) : (
             <div className="space-y-4">
-              {/* GPU Instances Section */}
               <GPUInstancesSection />
 
               {/* Basic Info */}
@@ -271,35 +291,60 @@ export default function ProfileClient() {
                   <span className="text-body-m font-bold text-zeus-text-primary">Connections</span>
                 </div>
                 <div className="bg-zeus-surface-elevated border border-zeus-border-alpha border-t-0 rounded-b-xl p-4">
-                  <div className="flex items-center justify-between p-3 bg-zeus-surface-default rounded-lg border border-zeus-border-alpha">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-zeus-surface-elevated flex items-center justify-center">
-                        <span className="text-lg">🤗</span>
-                      </div>
-                      <div>
-                        <p className="text-body-s font-medium text-zeus-text-primary">
-                          Hugging Face
-                        </p>
-                        {mounted ? (
-                          isHFAuthenticated && hfUsername ? (
-                            <p className="text-caption-s text-zeus-text-tertiary">
-                              Connected as {hfUsername}
-                            </p>
+                  {mounted && !isHFAuthenticated ? (
+                    <EmptyState
+                      eyebrow="Connections"
+                      tone="default"
+                      icon="🤗"
+                      title="Connect Hugging Face when you are ready to deploy"
+                      description="You can keep exploring Sedona without it, but connecting your workspace unlocks a cleaner agent launch flow."
+                      analytics={{
+                        surface: "profile",
+                        variant: "huggingface_connection_empty",
+                      }}
+                      actions={[
+                        {
+                          label: "Connect",
+                          onClick: openCreateAgent,
+                          analyticsAction: "connect",
+                        },
+                        {
+                          label: "Give Feedback",
+                          onClick: () => setFeedbackOpen(true),
+                          variant: "outline",
+                          analyticsAction: "give_feedback",
+                        },
+                      ]}
+                    />
+                  ) : (
+                    <div className="flex items-center justify-between p-3 bg-zeus-surface-default rounded-lg border border-zeus-border-alpha">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-lg bg-zeus-surface-elevated flex items-center justify-center">
+                          <span className="text-lg">🤗</span>
+                        </div>
+                        <div>
+                          <p className="text-body-s font-medium text-zeus-text-primary">
+                            Hugging Face
+                          </p>
+                          {mounted ? (
+                            isHFAuthenticated && hfUsername ? (
+                              <p className="text-caption-s text-zeus-text-tertiary">
+                                Connected as {hfUsername}
+                              </p>
+                            ) : (
+                              <p className="text-caption-s text-zeus-text-tertiary">
+                                Not connected
+                              </p>
+                            )
                           ) : (
                             <p className="text-caption-s text-zeus-text-tertiary">
-                              Not connected
+                              Loading...
                             </p>
-                          )
-                        ) : (
-                          <p className="text-caption-s text-zeus-text-tertiary">
-                            Loading...
-                          </p>
-                        )}
+                          )}
+                        </div>
                       </div>
-                    </div>
 
-                    {mounted && (
-                      isHFAuthenticated ? (
+                      {mounted && isHFAuthenticated && (
                         <Button
                           variant="ghost"
                           size="sm"
@@ -308,17 +353,9 @@ export default function ProfileClient() {
                         >
                           Disconnect
                         </Button>
-                      ) : (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={openCreateAgent}
-                        >
-                          Connect
-                        </Button>
-                      )
-                    )}
-                  </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -422,6 +459,12 @@ export default function ProfileClient() {
               </div>
             </div>
           )}
+          <ContactForm
+            open={feedbackOpen}
+            onOpenChange={setFeedbackOpen}
+            mode="feedback"
+            source="profile"
+          />
         </section>
       </main>
     </div>

@@ -183,7 +183,7 @@ describe("PriceChart", () => {
       const trigger = screen.getByText("All Time")
       expect(trigger).toHaveAttribute("aria-expanded", "false")
 
-      fireEvent.click(trigger)
+      fireEvent.pointerDown(trigger)
       expect(trigger).toHaveAttribute("aria-expanded", "true")
     })
   })

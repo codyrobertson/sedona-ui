@@ -20,7 +20,8 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { TokenAvatar } from "@/components/ui/token-avatar"
 import { EmptyState } from "@/components/ui/empty-state"
 import { Button } from "@/components/ui/button"
-import { MOCK_MY_AGENTS, AGENTS, formatMarketCap } from "@/fixtures"
+import { MOCK_MY_AGENTS, AGENTS, MY_WALLET, formatMarketCap } from "@/fixtures"
+import { ContactForm } from "@/components/contact/ContactForm"
 import { useAgentLaunch } from "@/contexts"
 import type { MyAgent } from "@/types/evaluation"
 
@@ -90,6 +91,7 @@ export default function PortfolioClient() {
   const [agentSortBy, setAgentSortBy] = React.useState("Best Score")
   const [currency, setCurrency] = React.useState<"USD" | "SOL">("USD")
   const [activeTab, setActiveTab] = React.useState<"holdings" | "my-agents">("holdings")
+  const [feedbackOpen, setFeedbackOpen] = React.useState(false)
 
   const sortOptions = ["Highest Value", "Lowest Value", "Highest Gain", "Highest Loss", "Alphabetical"]
   const agentSortOptions = ["Best Score", "Most Recent", "Market Cap", "Alphabetical"]
@@ -316,8 +318,26 @@ export default function PortfolioClient() {
               ) : (
                 <EmptyState
                   icon="📊"
+                  eyebrow="Portfolio"
                   title="No holdings yet"
-                  description="Start trading to build your portfolio"
+                  description="Start trading to build your portfolio, or tell us what stopped you."
+                  analytics={{
+                    surface: "portfolio",
+                    variant: "holdings_empty",
+                  }}
+                  actions={[
+                    {
+                      label: "Explore Agents",
+                      onClick: () => router.push("/trading"),
+                      analyticsAction: "explore_agents",
+                    },
+                    {
+                      label: "Give Feedback",
+                      onClick: () => setFeedbackOpen(true),
+                      variant: "outline",
+                      analyticsAction: "give_feedback",
+                    },
+                  ]}
                 />
               )}
             </>
@@ -459,17 +479,37 @@ export default function PortfolioClient() {
               ) : (
                 <EmptyState
                   icon="🤖"
+                  eyebrow="My Agents"
                   title="No agents yet"
                   description="Create your first AI agent to get started"
-                  action={{
-                    label: "Create Agent",
-                    onClick: () => router.push("/trading/create")
+                  analytics={{
+                    surface: "portfolio",
+                    variant: "agents_empty",
                   }}
+                  actions={[
+                    {
+                      label: "Create Agent",
+                      onClick: openCreateAgent,
+                      analyticsAction: "create_agent",
+                    },
+                    {
+                      label: "Give Feedback",
+                      onClick: () => setFeedbackOpen(true),
+                      variant: "outline",
+                      analyticsAction: "give_feedback",
+                    },
+                  ]}
                 />
               )}
             </>
           )}
         </section>
+        <ContactForm
+          open={feedbackOpen}
+          onOpenChange={setFeedbackOpen}
+          mode="feedback"
+          source={`portfolio_${activeTab}`}
+        />
       </main>
     </div>
   )

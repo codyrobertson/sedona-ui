@@ -74,6 +74,123 @@ export type AnalyticsEvent =
   // Feature usage
   | { event: 'feature_used'; properties: { feature: string; details?: Record<string, unknown> } }
 
+  // Onboarding / first-run events
+  | {
+      event: 'first_run_step_completed'
+      properties: {
+        surface: string
+        step: string
+        completed_steps: string[]
+        has_completed_onboarding: boolean
+      }
+    }
+  | {
+      event: 'first_run_viewed'
+      properties: {
+        surface: string
+        completed_steps: number
+        dismissed_at?: string | null
+      }
+    }
+  | {
+      event: 'first_run_completed'
+      properties: {
+        surface: string
+        completed_steps: string[]
+      }
+    }
+  | {
+      event: 'first_run_dismissed'
+      properties: {
+        surface: string
+        completed_steps: string[]
+      }
+    }
+
+  // Empty and error state analytics
+  | {
+      event: 'empty_state_viewed'
+      properties: {
+        surface: string
+        variant: string
+        has_action?: boolean
+      }
+    }
+  | {
+      event: 'empty_state_cta_clicked'
+      properties: {
+        surface: string
+        variant: string
+        action: string
+      }
+    }
+  | {
+      event: 'error_state_viewed'
+      properties: {
+        surface: string
+        error_code?: string
+        recoverable?: boolean
+      }
+    }
+  | {
+      event: 'error_state_recovery_clicked'
+      properties: {
+        surface: string
+        action: string
+        error_code?: string
+      }
+    }
+
+  // Feedback collection
+  | {
+      event: 'feedback_opened'
+      properties: {
+        source: string
+        mode: 'dialog' | 'survey'
+      }
+    }
+  | {
+      event: 'feedback_submitted'
+      properties: {
+        source: string
+        category?: string
+        delivery?: 'posthog' | 'mailto_fallback'
+        rating?: number
+        name?: string
+        email?: string
+        subject?: string
+        message?: string
+        has_email?: boolean
+        message_length?: number
+      }
+    }
+  | {
+      event: 'feedback_cancelled'
+      properties: {
+        source: string
+        mode: 'dialog' | 'survey'
+      }
+    }
+  | {
+      event: 'feedback_mailto_opened'
+      properties: {
+        source: string
+        category?: string
+      }
+    }
+
+  // Onboarding v2 events
+  | { event: 'onboarding_started'; properties: Record<string, never> }
+  | { event: 'onboarding_skipped'; properties: { phase: string } }
+  | { event: 'onboarding_profile_completed'; properties: Record<string, never> }
+  | { event: 'onboarding_tour_started'; properties: Record<string, never> }
+  | { event: 'onboarding_tour_step_viewed'; properties: { step_index: number; step_name: string } }
+  | { event: 'onboarding_tour_skipped'; properties: { last_step_index: number } }
+  | { event: 'onboarding_tour_completed'; properties: Record<string, never> }
+  | { event: 'onboarding_goal_shown'; properties: { variant: string } }
+  | { event: 'onboarding_goal_completed'; properties: { variant: string; action: string } }
+  | { event: 'onboarding_completed'; properties: { path: 'full' | 'skipped' | 'partial' } }
+
   // Errors (for debugging)
   | { event: 'error_occurred'; properties: { error: string; context?: string; stack?: string } }
 
@@ -142,6 +259,8 @@ export function track<T extends AnalyticsEvent>(
   event: T['event'],
   properties: T['properties']
 ): void {
+  if (typeof window === 'undefined') return
+
   if (ANALYTICS_CONFIG.debug) {
     console.log('[Analytics] Track:', event, properties)
   }
@@ -158,6 +277,8 @@ export function identify(
   userId: string,
   properties?: Record<string, unknown>
 ): void {
+  if (typeof window === 'undefined') return
+
   if (ANALYTICS_CONFIG.debug) {
     console.log('[Analytics] Identify:', userId, properties)
   }
@@ -171,6 +292,8 @@ export function identify(
  * Reset user identity (call after wallet disconnect)
  */
 export function resetIdentity(): void {
+  if (typeof window === 'undefined') return
+
   if (ANALYTICS_CONFIG.debug) {
     console.log('[Analytics] Reset identity')
   }
@@ -184,6 +307,8 @@ export function resetIdentity(): void {
  * Set user properties without identifying
  */
 export function setUserProperties(properties: Record<string, unknown>): void {
+  if (typeof window === 'undefined') return
+
   if (ANALYTICS_CONFIG.debug) {
     console.log('[Analytics] Set properties:', properties)
   }
@@ -197,6 +322,7 @@ export function setUserProperties(properties: Record<string, unknown>): void {
  * Check if a feature flag is enabled
  */
 export function isFeatureEnabled(flag: string): boolean {
+  if (typeof window === 'undefined') return false
   if (!isAnalyticsEnabled()) return false
 
   return posthog.isFeatureEnabled(flag) ?? false
@@ -206,6 +332,7 @@ export function isFeatureEnabled(flag: string): boolean {
  * Get feature flag value
  */
 export function getFeatureFlag<T = unknown>(flag: string): T | undefined {
+  if (typeof window === 'undefined') return undefined
   if (!isAnalyticsEnabled()) return undefined
 
   return posthog.getFeatureFlag(flag) as T | undefined
@@ -281,6 +408,196 @@ export function trackTrade(
  */
 export function trackExternalLink(url: string, label?: string): void {
   track('external_link_clicked', { url, label })
+}
+
+export function trackFirstRunViewed(
+  surface: string,
+  completedSteps: number,
+  dismissedAt?: string | null
+): void {
+  track('first_run_viewed', {
+    surface,
+    completed_steps: completedSteps,
+    dismissed_at: dismissedAt,
+  })
+}
+
+export function trackFirstRunStepCompleted(
+  surface: string,
+  step: string,
+  completedSteps: string[],
+  hasCompletedOnboarding: boolean
+): void {
+  track('first_run_step_completed', {
+    surface,
+    step,
+    completed_steps: completedSteps,
+    has_completed_onboarding: hasCompletedOnboarding,
+  })
+}
+
+export function trackFirstRunCompleted(
+  surface: string,
+  completedSteps: string[]
+): void {
+  track('first_run_completed', {
+    surface,
+    completed_steps: completedSteps,
+  })
+}
+
+export function trackFirstRunDismissed(
+  surface: string,
+  completedSteps: string[]
+): void {
+  track('first_run_dismissed', {
+    surface,
+    completed_steps: completedSteps,
+  })
+}
+
+export function trackEmptyStateViewed(
+  surface: string,
+  variant: string,
+  hasAction = false
+): void {
+  track('empty_state_viewed', {
+    surface,
+    variant,
+    has_action: hasAction,
+  })
+}
+
+export function trackEmptyStateAction(
+  surface: string,
+  variant: string,
+  action: string
+): void {
+  track('empty_state_cta_clicked', {
+    surface,
+    variant,
+    action,
+  })
+}
+
+export function trackErrorStateViewed(
+  surface: string,
+  errorCode?: string,
+  recoverable?: boolean
+): void {
+  track('error_state_viewed', {
+    surface,
+    error_code: errorCode,
+    recoverable,
+  })
+}
+
+export function trackErrorStateRecovery(
+  surface: string,
+  action: string,
+  errorCode?: string
+): void {
+  track('error_state_recovery_clicked', {
+    surface,
+    action,
+    error_code: errorCode,
+  })
+}
+
+export function trackFeedbackOpened(source: string, mode: 'dialog' | 'survey' = 'dialog'): void {
+  track('feedback_opened', { source, mode })
+}
+
+export function trackFeedbackCancelled(source: string, mode: 'dialog' | 'survey' = 'dialog'): void {
+  track('feedback_cancelled', { source, mode })
+}
+
+export function trackFeedbackSubmitted({
+  source,
+  category,
+  delivery,
+  rating,
+  name,
+  email,
+  subject,
+  message,
+  hasEmail,
+  messageLength,
+}: {
+  source: string
+  category?: string
+  delivery?: 'posthog' | 'mailto_fallback'
+  rating?: number
+  name?: string
+  email?: string
+  subject?: string
+  message?: string
+  hasEmail?: boolean
+  messageLength?: number
+}): void {
+  track('feedback_submitted', {
+    source,
+    category,
+    delivery,
+    rating,
+    name,
+    email,
+    subject,
+    message,
+    has_email: hasEmail,
+    message_length: messageLength,
+  })
+}
+
+export function trackFeedbackMailtoOpened(source: string, category?: string): void {
+  track('feedback_mailto_opened', {
+    source,
+    category,
+  })
+}
+
+// =============================================================================
+// ONBOARDING V2 HELPERS
+// =============================================================================
+
+export function trackOnboardingStarted(): void {
+  track('onboarding_started', {})
+}
+
+export function trackOnboardingSkipped(phase: string): void {
+  track('onboarding_skipped', { phase })
+}
+
+export function trackOnboardingProfileCompleted(): void {
+  track('onboarding_profile_completed', {})
+}
+
+export function trackOnboardingTourStarted(): void {
+  track('onboarding_tour_started', {})
+}
+
+export function trackOnboardingTourStepViewed(stepIndex: number, stepName: string): void {
+  track('onboarding_tour_step_viewed', { step_index: stepIndex, step_name: stepName })
+}
+
+export function trackOnboardingTourSkipped(lastStepIndex: number): void {
+  track('onboarding_tour_skipped', { last_step_index: lastStepIndex })
+}
+
+export function trackOnboardingTourCompleted(): void {
+  track('onboarding_tour_completed', {})
+}
+
+export function trackOnboardingGoalShown(variant: string): void {
+  track('onboarding_goal_shown', { variant })
+}
+
+export function trackOnboardingGoalCompleted(variant: string, action: string): void {
+  track('onboarding_goal_completed', { variant, action })
+}
+
+export function trackOnboardingFlowCompleted(path: 'full' | 'skipped' | 'partial'): void {
+  track('onboarding_completed', { path })
 }
 
 /**

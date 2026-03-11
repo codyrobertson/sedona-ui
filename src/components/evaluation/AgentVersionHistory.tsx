@@ -6,6 +6,7 @@ import { Icon } from "@/components/ui/icon"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { EmptyState } from "@/components/ui/empty-state"
 import { EvaluationProgressCompact } from "./EvaluationProgress"
 import type { AgentVersion, VersionStatus } from "@/types/evaluation"
 
@@ -375,18 +376,29 @@ export function AgentVersionHistory({
 
       {/* Version list */}
       {versions.length === 0 ? (
-        <div className="p-8 text-center">
-          <p className="text-zeus-text-secondary">No versions yet</p>
-          {onAddVersion && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={onAddVersion}
-              className="mt-4"
-            >
-              Upload First Version
-            </Button>
-          )}
+        <div className="p-6">
+          <EmptyState
+            className="border-0 bg-transparent px-0 py-8"
+            eyebrow="Weights"
+            icon={<Icon icon="clock" className="h-6 w-6" />}
+            title="No agent versions uploaded yet"
+            description="Add a first checkpoint to start tracking evaluation history, re-runs, and score changes over time."
+            analytics={{
+              surface: "agent_version_history",
+              variant: "no_versions",
+            }}
+            actions={
+              onAddVersion
+                ? [
+                    {
+                      label: "Upload First Version",
+                      onClick: onAddVersion,
+                      analyticsAction: "upload_first_version",
+                    },
+                  ]
+                : undefined
+            }
+          />
         </div>
       ) : (
         <>

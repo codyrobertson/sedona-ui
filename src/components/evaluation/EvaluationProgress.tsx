@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { EmptyState } from "@/components/ui/empty-state"
 import type {
   EvaluationProgress as EvaluationProgressType,
   EvaluationStep,
@@ -282,9 +283,17 @@ export function EvaluationProgress({
                 style={{ maxHeight: logsMaxHeight }}
               >
                 {progress.logs.length === 0 ? (
-                  <p className="text-caption-m text-zeus-text-tertiary text-center py-4">
-                    No logs yet...
-                  </p>
+                  <EmptyState
+                    className="border-0 bg-transparent px-4 py-6"
+                    eyebrow="Logs"
+                    icon={<Icon icon="terminal" className="h-5 w-5" />}
+                    title="Evaluation logs will stream here"
+                    description="Initialization, benchmark progress, and attestation messages will appear here once the run starts talking back."
+                    analytics={{
+                      surface: "evaluation_progress",
+                      variant: "no_logs",
+                    }}
+                  />
                 ) : (
                   <div className="space-y-2">
                     {progress.logs.map((entry, index) => (
