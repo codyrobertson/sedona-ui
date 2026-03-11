@@ -3,6 +3,7 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Icon } from "@/components/ui/icon"
+import { EmptyState } from "@/components/ui/empty-state"
 import { GPUInstanceCard } from "./GPUInstanceCard"
 import { useGPUDeploy } from "@/contexts/gpu-deploy-context"
 
@@ -54,26 +55,20 @@ export function GPUInstancesSection({ className }: GPUInstancesSectionProps) {
               ))}
             </div>
           ) : (
-            <EmptyState />
+            <EmptyState
+              className="border-0 bg-transparent px-2 py-8"
+              eyebrow="Compute"
+              icon={<Icon icon="server" className="h-6 w-6" />}
+              title="No GPU instances running"
+              description="Deploy a model when you are ready to spin up inference infrastructure and monitor it here."
+              analytics={{
+                surface: "gpu_instances",
+                variant: "no_instances",
+              }}
+            />
           )}
         </div>
       </div>
-    </div>
-  )
-}
-
-function EmptyState() {
-  return (
-    <div className="py-8 text-center">
-      <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-zeus-surface-neutral flex items-center justify-center">
-        <Icon icon="server" className="w-6 h-6 text-zeus-text-tertiary" />
-      </div>
-      <p className="text-zeus-text-primary text-body-s font-medium mb-1">
-        No Active Instances
-      </p>
-      <p className="text-zeus-text-tertiary text-caption-l">
-        Deploy a model to start running inference on GPU
-      </p>
     </div>
   )
 }
