@@ -6,6 +6,9 @@ import {
   getOnboardingV2State,
   setOnboardingV2State,
   advancePhase,
+  recordTourStep,
+  setGoalVariant,
+  completeGoal,
   skipOnboarding,
   completeOnboarding,
   shouldShowOnboarding,
@@ -79,6 +82,75 @@ describe("onboarding-storage-v2", () => {
       advancePhase("goal") // -> completed
       const state = advancePhase("completed")
       expect(state.currentPhase).toBe("completed")
+    })
+
+    it("does not regress phase when stored state is already completed", () => {
+      completeOnboarding() // state is now completed
+      const state = advancePhase("welcome") // attempt to advance from welcome
+      expect(state.currentPhase).toBe("completed")
+    })
+  })
+
+  describe("recordTourStep", () => {
+    it("records a new tour step index", () => {
+      const state = recordTourStep(0)
+      expect(state.tourStepsViewed).toEqual([0])
+    })
+
+    it("appends additional step indices", () => {
+      recordTourStep(0)
+      const state = recordTourStep(1)
+      expect(state.tourStepsViewed).toEqual([0, 1])
+    })
+
+    it("does not duplicate an already-recorded step", () => {
+      recordTourStep(0)
+      const state = recordTourStep(0)
+      expect(state.tourStepsViewed).toEqual([0])
+    })
+
+    it("persists to localStorage", () => {
+      recordTourStep(2)
+      const stored = getOnboardingV2State()
+      expect(stored.tourStepsViewed).toContain(2)
+    })
+  })
+
+  describe("setGoalVariant", () => {
+    it("sets the goal variant string", () => {
+      const state = setGoalVariant("explorer")
+      expect(state.goalVariant).toBe("explorer")
+    })
+
+    it("overwrites a previously set variant", () => {
+      setGoalVariant("explorer")
+      const state = setGoalVariant("trader")
+      expect(state.goalVariant).toBe("trader")
+    })
+
+    it("persists to localStorage", () => {
+      setGoalVariant("explorer")
+      const stored = getOnboardingV2State()
+      expect(stored.goalVariant).toBe("explorer")
+    })
+  })
+
+  describe("completeGoal", () => {
+    it("sets goalCompleted to true", () => {
+      const state = completeGoal()
+      expect(state.goalCompleted).toBe(true)
+    })
+
+    it("persists to localStorage", () => {
+      completeGoal()
+      const stored = getOnboardingV2State()
+      expect(stored.goalCompleted).toBe(true)
+    })
+
+    it("is idempotent when called multiple times", () => {
+      completeGoal()
+      const state = completeGoal()
+      expect(state.goalCompleted).toBe(true)
     })
   })
 

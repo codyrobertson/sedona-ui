@@ -43,11 +43,15 @@ export function setOnboardingV2State(state: OnboardingV2State): void {
 
 export function advancePhase(fromPhase: OnboardingPhase): OnboardingV2State {
   const state = getOnboardingV2State()
+
+  if (state.currentPhase === "completed") {
+    return state
+  }
+
   const currentIndex = ONBOARDING_PHASES.indexOf(fromPhase)
   const nextIndex = currentIndex + 1
 
   if (nextIndex >= ONBOARDING_PHASES.length) {
-    setOnboardingV2State(state)
     return state
   }
 
