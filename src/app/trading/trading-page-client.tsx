@@ -14,14 +14,22 @@ import {
   formatMarketCap,
   searchAgents,
 } from "@/fixtures"
-import { useAgentLaunch, useOnboarding } from "@/contexts"
-import type { OnboardingStep } from "@/lib/onboarding-storage"
+import { useAgentLaunch, useOnboardingV2 } from "@/contexts"
 import type { AgentWithMetrics } from "@/types/agent"
-import { FirstRunSheet } from "@/components/onboarding/FirstRunSheet"
-import { ContactForm } from "@/components/contact/ContactForm"
+import { WelcomeSheet } from "@/components/onboarding/WelcomeSheet"
+import { SpotlightTour, TOUR_STEPS } from "@/components/onboarding/SpotlightTour"
+import { GoalAction } from "@/components/onboarding/GoalAction"
 import {
-  trackFirstRunDismissed,
-  trackFirstRunViewed,
+  trackOnboardingStarted,
+  trackOnboardingSkipped,
+  trackOnboardingTourStarted,
+  trackOnboardingTourStepViewed,
+  trackOnboardingTourSkipped,
+  trackOnboardingTourCompleted,
+  trackOnboardingGoalShown,
+  trackOnboardingGoalCompleted,
+  trackOnboardingFlowCompleted,
+  getFeatureFlag,
 } from "@/lib/analytics"
 
 // Map unified Agent to TrendingAgents format
@@ -60,17 +68,17 @@ export default function TradingPageClient({ initialHeroMode = false }: TradingPa
   const router = useRouter()
   const { openCreateAgent } = useAgentLaunch()
   const {
-    state: onboardingState,
-    isReady: isOnboardingReady,
-    isSheetOpen,
-    setSheetOpen,
-    completeStep,
-    dismissOnboarding,
-  } = useOnboarding()
+    state: obState,
+    isReady: isObReady,
+    advance,
+    skip,
+    complete,
+    trackTourStep,
+    setGoal,
+  } = useOnboardingV2()
   const [sortBy, setSortBy] = React.useState("Highest Market Capitalization")
   const [showHero, setShowHero] = React.useState(true)
   const [searchQuery, setSearchQuery] = React.useState("")
-  const [feedbackOpen, setFeedbackOpen] = React.useState(false)
 
   // Hero mode state - initialized from route, then state-controlled for animations
   const [isHeroMode, setIsHeroMode] = React.useState(initialHeroMode)
@@ -81,28 +89,13 @@ export default function TradingPageClient({ initialHeroMode = false }: TradingPa
     window.history.replaceState({}, "", newUrl)
   }, [isHeroMode])
 
-  React.useEffect(() => {
-    if (!isOnboardingReady || isHeroMode) return
-    if (onboardingState.hasCompletedOnboarding || onboardingState.dismissedAt) return
+  // Determine which v2 UI to show based on currentPhase
+  const showWelcome = isObReady && !isHeroMode && obState.currentPhase === "welcome"
+  const showTour = isObReady && !isHeroMode && obState.currentPhase === "tour"
+  const showGoal = isObReady && !isHeroMode && obState.currentPhase === "goal"
 
-    setSheetOpen(true)
-  }, [
-    isHeroMode,
-    isOnboardingReady,
-    onboardingState.dismissedAt,
-    onboardingState.hasCompletedOnboarding,
-    setSheetOpen,
-  ])
-
-  React.useEffect(() => {
-    if (!isSheetOpen) return
-
-    trackFirstRunViewed(
-      "trading",
-      onboardingState.completedSteps.length,
-      onboardingState.dismissedAt
-    )
-  }, [isSheetOpen, onboardingState.completedSteps.length, onboardingState.dismissedAt])
+  // Get goal variant from PostHog feature flag (with fallback)
+  const goalVariant = (getFeatureFlag("onboarding_goal_action") as string) || "trade"
 
   // Sort and filter agents
   const displayAgents = React.useMemo(() => {
@@ -140,20 +133,6 @@ export default function TradingPageClient({ initialHeroMode = false }: TradingPa
     setIsHeroMode(!isHeroMode)
   }
 
-  const handleOnboardingOpenChange = (open: boolean) => {
-    if (!open) {
-      trackFirstRunDismissed("trading", onboardingState.completedSteps)
-      dismissOnboarding()
-      return
-    }
-
-    setSheetOpen(true)
-  }
-
-  const handleCompleteStep = (step: OnboardingStep) => {
-    return completeStep(step, "trading")
-  }
-
 
   return (
     <LandingPageWrapper
@@ -162,31 +141,55 @@ export default function TradingPageClient({ initialHeroMode = false }: TradingPa
       onLaunchAgent={openCreateAgent}
     >
       <div className="min-h-screen bg-zeus-surface-default">
-      <FirstRunSheet
-        open={isSheetOpen}
-        completedSteps={onboardingState.completedSteps}
-        onOpenChange={handleOnboardingOpenChange}
-        onExploreAgents={() => {
-          handleCompleteStep("explore_agents")
-          setSheetOpen(false)
+      {/* Welcome Sheet */}
+      <WelcomeSheet
+        open={showWelcome}
+        onOpenChange={() => {}}
+        onGetStarted={() => {
+          trackOnboardingStarted()
+          advance("welcome")
+          router.push("/onboarding/profile")
         }}
-        onOpenProfile={() => {
-          setSheetOpen(false)
-          router.push("/trading/profile")
+        onSkip={() => {
+          trackOnboardingSkipped("welcome")
+          skip()
         }}
-        onGiveFeedback={() => {
-          setSheetOpen(false)
-          setFeedbackOpen(true)
-        }}
-        onSkip={() => {}}
       />
-      <ContactForm
-        open={feedbackOpen}
-        onOpenChange={setFeedbackOpen}
-        mode="feedback"
-        source="trading_onboarding"
-        onSubmitted={() => {
-          handleCompleteStep("give_feedback")
+
+      {/* Spotlight Tour */}
+      <SpotlightTour
+        active={showTour}
+        onStepViewed={(index) => {
+          trackTourStep(index)
+          trackOnboardingTourStepViewed(index, TOUR_STEPS[index].name)
+          if (index === 0) trackOnboardingTourStarted()
+        }}
+        onComplete={() => {
+          trackOnboardingTourCompleted()
+          advance("tour")
+          setGoal(goalVariant)
+          trackOnboardingGoalShown(goalVariant)
+        }}
+        onSkip={() => {
+          trackOnboardingTourSkipped(obState.tourStepsViewed.length - 1)
+          complete()
+          trackOnboardingFlowCompleted("partial")
+        }}
+      />
+
+      {/* Goal Action */}
+      <GoalAction
+        active={showGoal}
+        variant={goalVariant as any}
+        onAction={() => {
+          trackOnboardingGoalCompleted(goalVariant, goalVariant)
+          complete()
+          trackOnboardingFlowCompleted("full")
+          if (goalVariant === "create_agent") openCreateAgent()
+        }}
+        onDismiss={() => {
+          complete()
+          trackOnboardingFlowCompleted("partial")
         }}
       />
       {/* Header - hidden in hero mode (landing nav takes over) */}
@@ -233,7 +236,7 @@ export default function TradingPageClient({ initialHeroMode = false }: TradingPa
             sortBy={sortBy}
             onSortChange={setSortBy}
             onSearch={setSearchQuery}
-            onOpenFeedback={() => setFeedbackOpen(true)}
+
             onAgentSelect={(ticker) => {
               router.push(`/trading/${ticker.toLowerCase()}`)
             }}
