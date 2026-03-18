@@ -290,7 +290,9 @@
     const dP = opts.densityPower||1.3, dF = opts.densityFloor!==undefined?opts.densityFloor:0.08;
     const tt = toneTable(dP, dF);
     const sqSc = 1.08*cs, hc = cs*0.5;
-    const { bottom } = chart.chartArea;
+    const { left, right, bottom } = chart.chartArea;
+    const cw = right - left;
+    const emW = cw * 0.12, invEm = emW > 0 ? 1/emW : 1;
     let rs = seed || 12345;
 
     ctx.fillStyle = opts.color;
@@ -312,7 +314,16 @@
 
           const t = (bottom - py) / bh;
           const tc = t > 1 ? 1 : t;
-          const tone = tt[(tc*TT_SIZE)|0];
+          let tone = tt[(tc*TT_SIZE)|0];
+
+          // Emergence: smooth fade-in behind print head
+          if (phx !== undefined) {
+            let em = (phx - cx) * invEm;
+            if (em > 1) em = 1;
+            if (em <= 0) { rs=(rs*1664525+1013904223)&0x7fffffff; rs=(rs*1664525+1013904223)&0x7fffffff; continue; }
+            tone *= em;
+          }
+
           const r = maxD * tone;
           if (r < 0.12) { rs=(rs*1664525+1013904223)&0x7fffffff; rs=(rs*1664525+1013904223)&0x7fffffff; continue; }
 
@@ -345,6 +356,9 @@
     const tt = toneTable(dP, dF);
     let rs = seed || 12345;
     const pointRadius = 14;
+    const { left, right } = chart.chartArea;
+    const cw = right - left;
+    const emW = cw * 0.12;
 
     ctx.fillStyle = opts.color;
     ctx.beginPath();
@@ -352,7 +366,15 @@
     for (let pi = 0; pi < meta.data.length; pi++) {
       const pt = meta.data[pi];
       if (!pt) continue;
-      if (phx !== undefined && pt.x > phx) continue;
+      if (phx !== undefined && pt.x > phx + emW) continue;
+
+      // Per-point emergence: fade in as print head passes point center
+      let ptEm = 1;
+      if (phx !== undefined) {
+        ptEm = (phx - pt.x) / emW;
+        if (ptEm <= 0) continue;
+        if (ptEm > 1) ptEm = 1;
+      }
 
       const pcx = pt.x, pcy = pt.y;
 
@@ -367,7 +389,7 @@
 
           const t = dist / pointRadius; // 0 at center, 1 at edge
           const tc = t > 1 ? 1 : t;
-          const tone = tt[(tc*TT_SIZE)|0];
+          let tone = tt[(tc*TT_SIZE)|0] * ptEm;
           const r = maxD * tone;
           if (r < 0.12) continue;
 
@@ -394,9 +416,12 @@
     const dP = opts.densityPower||1.3, dF = opts.densityFloor!==undefined?opts.densityFloor:0.08;
     const tt = toneTable(dP, dF);
     let rs = seed || 54321;
-
-    // Each arc element has: x, y (center), innerRadius, outerRadius, startAngle, endAngle
-    const colors = ['#6b93d6', '#e8a040', '#d45d5d', '#5daa68', '#9b6bbf', '#d4883d'];
+    const defaultColors = ['#6b93d6', '#e8a040', '#d45d5d', '#5daa68', '#9b6bbf', '#d4883d'];
+    const colors = opts.sectorColors || defaultColors;
+    // Animation: clockwise sweep from top, 20% overshoot so emergence finishes before progress=1
+    const maxSweep = _a.progress >= 1 ? 100 : _a.progress * TAU * 1.2;
+    const emRad = 0.35; // emergence fade width in radians
+    const invEm = 1 / emRad;
 
     for (let ai = 0; ai < meta.data.length; ai++) {
       const arc = meta.data[ai];
@@ -415,14 +440,27 @@
           if (dist < ir - cs || dist > or + cs) continue;
 
           let angle = Math.atan2(dy, dx);
-          // Normalize angles
+          const rawAngle = angle;
+          // Normalize for sector check
           let nsa = sa, nea = ea;
           while (angle < nsa) angle += TAU;
           if (angle > nea) continue;
 
+          // Animation: sweep from top (-PI/2) clockwise
+          let sweepA = rawAngle + Math.PI * 0.5;
+          if (sweepA < 0) sweepA += TAU;
+          if (sweepA > maxSweep) { rs=(rs*1664525+1013904223)&0x7fffffff; rs=(rs*1664525+1013904223)&0x7fffffff; continue; }
+          // Emergence near sweep edge
+          let em = 1;
+          if (maxSweep < 100) {
+            em = (maxSweep - sweepA) * invEm;
+            if (em > 1) em = 1;
+            if (em <= 0) { rs=(rs*1664525+1013904223)&0x7fffffff; rs=(rs*1664525+1013904223)&0x7fffffff; continue; }
+          }
+
           const t = (dist - ir) / (or - ir);
           const tc = t < 0 ? 0 : t > 1 ? 1 : t;
-          const tone = tt[((1-Math.abs(tc-0.5)*2)*TT_SIZE)|0]; // dense at mid-ring
+          let tone = tt[((1-Math.abs(tc-0.5)*2)*TT_SIZE)|0] * em;
           const r = maxD * tone * 0.8;
           if (r < 0.12) continue;
 
@@ -454,12 +492,17 @@
     const { left, right, top, bottom } = chart.chartArea;
     const phx = getPrintHeadX(chart);
     const renderer = getRenderer(chart);
+    const ctype = chart.config.type;
 
     ctx.save();
-    ctx.beginPath(); ctx.rect(left, top-20, right-left, bottom-top+21); ctx.clip();
+    // Clip to chart area for line/bar/scatter (prevents baseline bleed)
+    // Skip clip for doughnut/pie — they're radial, confined by arc geometry
+    if (ctype !== 'doughnut' && ctype !== 'pie') {
+      ctx.beginPath(); ctx.rect(left, top-20, right-left, bottom-top+21); ctx.clip();
+    }
 
     // Paper texture under fill (line charts only — bars/scatter render on paper bg)
-    if (chart.config.type === 'line') {
+    if (ctype === 'line') {
       const pt = generatePaper(chart.width, chart.height, paperOpts);
       const cl = curveLookup(chart.data.datasets[0].data, chart.scales.x, chart.scales.y, left, right);
       ctx.save();
@@ -501,9 +544,55 @@
       const oc = getCanvas(W, H), ox = oc.getContext('2d');
       ox.fillStyle = '#fff'; ox.fillRect(0, 0, W, H);
       _ck = ''; // reset curve cache for each layer
-      renderHalftone(ox, chart, layer, di, 12345 + li*54321, phx);
+      getRenderer(chart)(ox, chart, layer, di, 12345 + li*54321, phx);
 
       // Diffuse during animation
+      if (_a.progress < 0.98 && _a.progress > 0.02) {
+        ox.save(); ox.filter = 'blur(1px)'; ox.globalAlpha = 0.05;
+        ox.drawImage(oc, 0, 0); ox.restore();
+      }
+
+      ctx.globalCompositeOperation = 'multiply';
+      ctx.drawImage(oc, 0, 0);
+      putCanvas(oc);
+    }
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.restore();
+  }
+
+  // ── Multi-series: each dataset as separate halftone layer ─────────
+  const SERIES_COLORS = ['#6b93d6', '#e8a040', '#d45d5d', '#5daa68', '#9b6bbf', '#d4883d'];
+
+  function drawMultiSeries(chart, opts, phx) {
+    const ctx = chart.ctx;
+    const { width: W, height: H } = chart;
+    const { left, right, top, bottom } = chart.chartArea;
+    const renderer = getRenderer(chart);
+    const selected = chart._risoSelected !== undefined ? chart._risoSelected : -1;
+
+    ctx.save();
+    ctx.beginPath(); ctx.rect(left, top-20, right-left, bottom-top+21); ctx.clip();
+
+    for (let i = 0; i < chart.data.datasets.length; i++) {
+      if (chart.data.datasets[i].hidden) continue;
+      const isSelected = selected === -1 || selected === i;
+      const color = chart.data.datasets[i]._risoColor || SERIES_COLORS[i % SERIES_COLORS.length];
+      const dsOpts = {
+        ...opts.halftone,
+        color: color,
+        dotSizeRange: isSelected
+          ? opts.halftone.dotSizeRange
+          : [opts.halftone.dotSizeRange[0], opts.halftone.dotSizeRange[1] * 0.55],
+        densityFloor: isSelected
+          ? (opts.halftone.densityFloor || 0.08)
+          : Math.min((opts.halftone.densityFloor || 0.08) + 0.2, 0.5),
+      };
+
+      const oc = getCanvas(W, H), ox = oc.getContext('2d');
+      ox.fillStyle = '#fff'; ox.fillRect(0, 0, W, H);
+      _ck = ''; // reset curve cache per dataset
+      renderer(ox, chart, dsOpts, i, 12345 + i * 54321, phx);
+
       if (_a.progress < 0.98 && _a.progress > 0.02) {
         ox.save(); ox.filter = 'blur(1px)'; ox.globalAlpha = 0.05;
         ox.drawImage(oc, 0, 0); ox.restore();
@@ -688,6 +777,11 @@
   const RisographPlugin = {
     id: 'risograph',
 
+    // ── Reset animation on new chart ─────────────────────────────────
+    afterInit(chart) {
+      _a.progress = 1; _a.active = false; _a.chart = chart;
+    },
+
     // ── Background: paper texture ────────────────────────────────────
     beforeDraw(chart) {
       const opts = merge(DEFAULTS, chart.options.plugins?.risograph);
@@ -704,9 +798,12 @@
       const opts = chart._risoOpts;
       if (!opts.halftone.enabled) return;
       const riso = chart.options.plugins?.risograph || {};
+      const phx = getPrintHeadX(chart);
 
       if (riso.layers?.length > 0) {
         drawMultiply(chart, riso.layers, opts.paper);
+      } else if (chart.data.datasets.length > 1) {
+        drawMultiSeries(chart, opts, phx);
       } else {
         drawDirect(chart, opts.halftone, opts.paper);
       }
@@ -731,16 +828,21 @@
       const riso = chart.options.plugins?.risograph || {};
       const phx = chart._phx;
       const opts = chart._risoOpts;
-
-      // Riso line only for line/scatter charts (not bar/doughnut)
       const ctype = chart.config.type;
-      if (ctype === 'line' || ctype === 'scatter') {
-        let lc;
-        if (riso.layers?.length > 1) lc = mixColors(riso.layers[0].color, riso.layers[1].color);
-        else lc = opts?.halftone?.color || '#5b7fc3';
+
+      // Riso line only for line charts (scatter/bar/doughnut get no connecting line)
+      if (ctype === 'line') {
         const bw = riso._lineWidth || 2.5;
         for (let i = 0; i < chart.data.datasets.length; i++) {
           if (chart.data.datasets[i].hidden) continue;
+          let lc;
+          if (chart.data.datasets.length === 1 && riso.layers?.length > 1) {
+            lc = mixColors(riso.layers[0].color, riso.layers[1].color);
+          } else {
+            const base = chart.data.datasets[i]._risoColor || SERIES_COLORS[i % SERIES_COLORS.length];
+            const rgb = hexToRgb(base);
+            lc = `rgb(${rgb[0]*0.7|0},${rgb[1]*0.7|0},${rgb[2]*0.7|0})`;
+          }
           drawRisoLine(chart.ctx, chart, i, lc, bw, phx);
         }
       }
@@ -801,6 +903,19 @@
       // Clear print head for next frame
       chart._phx = undefined;
     },
+
+    // ── Hover detection for multi-series opacity selection ──────────
+    afterEvent(chart, args) {
+      if (chart.data.datasets.length < 2) return;
+      const { event } = args;
+      if (event.type !== 'mousemove' && event.type !== 'click') return;
+      const elements = chart.getElementsAtEventForMode(event, 'nearest', { intersect: false }, false);
+      const newSel = elements.length > 0 ? elements[0].datasetIndex : -1;
+      if (chart._risoSelected !== newSel) {
+        chart._risoSelected = newSel;
+        if (!_a.active) chart.update('none');
+      }
+    },
   };
 
   // ═══════════════════════════════════════════════════════════════════
@@ -810,6 +925,13 @@
   global.RisographAnim = {
     play(chart, dur) { startAnim(chart, dur); },
     reset(chart) { _a.progress = 0; _a.active = false; _ms = ''; chart.update('none'); },
+    scrub(chart, progress) {
+      _a.progress = Math.max(0, Math.min(1, progress));
+      _a.active = false;
+      _a.chart = chart;
+      _ms = '';
+      chart.update('none');
+    },
     get progress() { return _a.progress; },
   };
 })(window);

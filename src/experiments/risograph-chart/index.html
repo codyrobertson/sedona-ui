@@ -75,8 +75,13 @@
       <div class="cr"><label>Y Offset</label><input type="range" id="l2-oy" min="-5" max="5" step="0.5" value="-0.5"><span class="v" id="l2-oy-v">-0.5</span></div>
     </div>
 
+    <div class="cs"><h3>Series</h3>
+      <div class="cr"><label>Multi-Series</label><input type="checkbox" id="ms-on"></div>
+    </div>
+
     <div class="cs"><h3>Animation</h3>
       <div class="cr"><label>Duration (s)</label><input type="range" id="a-dur" min="0.5" max="6" step="0.5" value="2.5"><span class="v" id="a-dur-v">2.5</span></div>
+      <div class="cr"><label>Scrub</label><input type="range" id="a-scrub" min="0" max="1" step="0.005" value="1"><span class="v" id="a-scrub-v">1.00</span></div>
       <div style="display:flex;gap:6px;margin-top:4px;">
         <button class="btn" id="btn-play" style="flex:1;background:#2a4a2a;border-color:#4a6a4a;">Play</button>
         <button class="btn" id="btn-reset" style="flex:1;">Reset</button>
@@ -92,9 +97,20 @@
   <script>
     // Data per chart type
     const lineData = []; for (let y = 0; y <= 24; y++) lineData.push({ x: y, y: 10000 * Math.pow(1.07, y) });
+    const lineData2 = []; for (let y = 0; y <= 24; y++) lineData2.push({ x: y, y: 10000 * Math.pow(1.05, y) });
+    const lineData3 = []; for (let y = 0; y <= 24; y++) lineData3.push({ x: y, y: 10000 * Math.pow(1.10, y) });
     const barData = { labels: ['Q1','Q2','Q3','Q4','Q1','Q2'], datasets: [{ data: [12,19,8,15,22,11], backgroundColor: 'rgba(0,0,0,0)', borderColor: 'rgba(0,0,0,0)', borderWidth: 0 }] };
-    const scatterData = { datasets: [{ data: Array.from({length:40}, (_,i) => ({ x: Math.random()*24, y: 10000+Math.random()*40000 })), backgroundColor: 'rgba(0,0,0,0)', borderColor: 'rgba(0,0,0,0)', pointRadius: 0 }] };
+    const barMultiData = { labels: ['Q1','Q2','Q3','Q4','Q1','Q2'], datasets: [
+      { data: [12,19,8,15,22,11], backgroundColor: 'rgba(0,0,0,0)', borderColor: 'rgba(0,0,0,0)', borderWidth: 0, _risoColor: '#6b93d6' },
+      { data: [8,14,12,10,18,15], backgroundColor: 'rgba(0,0,0,0)', borderColor: 'rgba(0,0,0,0)', borderWidth: 0, _risoColor: '#e8a040' },
+    ] };
+    const scatterData = { datasets: [{ data: Array.from({length:40}, (_,i) => ({ x: Math.random()*24, y: 10000+Math.random()*40000 })), backgroundColor: 'rgba(0,0,0,0)', borderColor: 'rgba(0,0,0,0)', pointRadius: 0, showLine: false }] };
+    const scatterMultiData = { datasets: [
+      { data: Array.from({length:25}, () => ({ x: Math.random()*24, y: 10000+Math.random()*20000 })), backgroundColor: 'rgba(0,0,0,0)', borderColor: 'rgba(0,0,0,0)', pointRadius: 0, showLine: false, _risoColor: '#6b93d6' },
+      { data: Array.from({length:25}, () => ({ x: Math.random()*24, y: 20000+Math.random()*25000 })), backgroundColor: 'rgba(0,0,0,0)', borderColor: 'rgba(0,0,0,0)', pointRadius: 0, showLine: false, _risoColor: '#d45d5d' },
+    ] };
     const doughnutData = { labels: ['Stocks','Bonds','Cash','Crypto','Real Estate'], datasets: [{ data: [35,25,15,15,10], backgroundColor: ['rgba(0,0,0,0)','rgba(0,0,0,0)','rgba(0,0,0,0)','rgba(0,0,0,0)','rgba(0,0,0,0)'], borderWidth: 0 }] };
+    let multiSeries = false;
 
     Chart.register(RisographPlugin);
     let chart, currentType = 'line';
@@ -132,8 +148,32 @@
     let _raf = false;
     function sched() { if (_raf) return; _raf = true; requestAnimationFrame(() => { _raf = false; apply(); }); }
 
-    document.getElementById('btn-play').onclick = () => RisographAnim.play(chart, V('a-dur') * 1000);
-    document.getElementById('btn-reset').onclick = () => RisographAnim.reset(chart);
+    document.getElementById('btn-play').onclick = () => {
+      document.getElementById('a-scrub').value = 0;
+      document.getElementById('a-scrub-v').textContent = '0.00';
+      RisographAnim.play(chart, V('a-dur') * 1000);
+      // Sync scrub slider during animation
+      const syncScrub = () => {
+        const s = document.getElementById('a-scrub');
+        s.value = RisographAnim.progress;
+        document.getElementById('a-scrub-v').textContent = RisographAnim.progress.toFixed(2);
+        if (RisographAnim.progress < 1) requestAnimationFrame(syncScrub);
+      };
+      requestAnimationFrame(syncScrub);
+    };
+    document.getElementById('btn-reset').onclick = () => {
+      document.getElementById('a-scrub').value = 0;
+      document.getElementById('a-scrub-v').textContent = '0.00';
+      RisographAnim.reset(chart);
+    };
+    document.getElementById('a-scrub').addEventListener('input', function() {
+      document.getElementById('a-scrub-v').textContent = parseFloat(this.value).toFixed(2);
+      RisographAnim.scrub(chart, parseFloat(this.value));
+    });
+    document.getElementById('ms-on').addEventListener('change', function() {
+      multiSeries = this.checked;
+      createChart(currentType);
+    });
     document.getElementById('btn-defaults').onclick = () => location.reload();
 
     const TRANS = 'rgba(0,0,0,0)';
@@ -161,15 +201,23 @@
     }
 
     function makeData(type) {
-      if (type === 'bar') return barData;
-      if (type === 'scatter') return scatterData;
+      if (type === 'bar') return multiSeries ? barMultiData : barData;
+      if (type === 'scatter') return multiSeries ? scatterMultiData : scatterData;
       if (type === 'doughnut') return doughnutData;
+      if (multiSeries) return { datasets: [
+        { data: lineData, borderColor: TRANS, borderWidth: 0, fill: false, pointRadius: 0, tension: 0, _risoColor: '#6b93d6' },
+        { data: lineData2, borderColor: TRANS, borderWidth: 0, fill: false, pointRadius: 0, tension: 0, _risoColor: '#e8a040' },
+        { data: lineData3, borderColor: TRANS, borderWidth: 0, fill: false, pointRadius: 0, tension: 0, _risoColor: '#d45d5d' },
+      ] };
       return { datasets: [{ data: lineData, borderColor: TRANS, borderWidth: 0, fill: false, pointRadius: 0, tension: 0 }] };
     }
 
     function createChart(type) {
       if (chart) chart.destroy();
       currentType = type;
+      // Sync scrub slider (afterInit resets animation to progress=1)
+      const scrubEl = document.getElementById('a-scrub');
+      if (scrubEl) { scrubEl.value = 1; document.getElementById('a-scrub-v').textContent = '1.00'; }
       const titles = { line: '$10,000 \u00B7 7% Annual \u00B7 24 Years', bar: 'Quarterly Revenue', scatter: 'Portfolio Distribution', doughnut: 'Asset Allocation' };
       const yTitles = { line: 'Balance', bar: 'Revenue', scatter: 'Value', doughnut: '' };
       const xTitles = { line: 'Years', bar: 'Quarter', scatter: 'Years', doughnut: '' };
@@ -201,13 +249,17 @@
     document.fonts.ready.then(() => {
       createChart('line');
 
-      // Wire all inputs
+      // Wire all inputs (skip scrub slider and multi-series toggle — they have custom handlers)
       document.querySelectorAll('.cr input[type="range"]').forEach(el => {
+        if (el.id === 'a-scrub') return;
         const vs = document.getElementById(el.id + '-v');
         el.addEventListener('input', () => { if (vs) vs.textContent = el.value; sched(); });
       });
       document.querySelectorAll('.cr input[type="color"]').forEach(el => el.addEventListener('input', sched));
-      document.querySelectorAll('.cr input[type="checkbox"]').forEach(el => el.addEventListener('change', sched));
+      document.querySelectorAll('.cr input[type="checkbox"]').forEach(el => {
+        if (el.id === 'ms-on') return;
+        el.addEventListener('change', sched);
+      });
     });
   </script>
 </body>
