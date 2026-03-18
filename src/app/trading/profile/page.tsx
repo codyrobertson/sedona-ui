@@ -16,12 +16,14 @@ export const metadata: Metadata = {
     type: 'profile',
     siteName: SEO_CONFIG.siteName,
     locale: SEO_CONFIG.locale,
+    images: [SEO_CONFIG.defaultImage],
   },
   twitter: {
     card: 'summary',
     site: SEO_CONFIG.twitter.site,
     title: "My Profile | Sedona",
     description: "Manage your profile and preferences on Sedona.",
+    images: [SEO_CONFIG.defaultImage],
   },
 }
 

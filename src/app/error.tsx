@@ -1,6 +1,9 @@
 'use client'
 
 import { useEffect } from 'react'
+import { EmptyState } from '@/components/ui/empty-state'
+import { Icon } from '@/components/ui/icon'
+import { trackErrorStateRecovery, trackErrorStateViewed } from '@/lib/analytics'
 
 export default function Error({
   error,
@@ -11,21 +14,34 @@ export default function Error({
 }) {
   useEffect(() => {
     console.error(error)
+    trackErrorStateViewed('route_error', error.digest, true)
   }, [error])
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-zeus-bg-base text-zeus-text-primary p-4">
-      <h1 className="text-6xl font-bold text-zeus-status-destructive mb-4">Error</h1>
-      <h2 className="text-2xl font-semibold mb-2">Something went wrong</h2>
-      <p className="text-zeus-text-secondary mb-8 text-center max-w-md">
-        An unexpected error occurred. Please try again.
-      </p>
-      <button
-        onClick={reset}
-        className="px-6 py-3 bg-sedona-500 text-white rounded-lg hover:bg-sedona-600 transition-colors"
-      >
-        Try Again
-      </button>
+    <main className="min-h-screen bg-zeus-surface-default px-4 py-8">
+      <div className="mx-auto flex min-h-[70vh] max-w-2xl items-center justify-center">
+        <EmptyState
+          icon={<Icon icon="triangle-exclamation" className="h-8 w-8" />}
+          eyebrow="Recoverable Error"
+          tone="error"
+          title="Something went wrong in this route"
+          description="The page hit an unexpected problem, but the rest of the app should still be recoverable. Try the action below to render it again."
+          actions={[
+            {
+              label: 'Try Again',
+              onClick: () => {
+                trackErrorStateRecovery('route_error', 'reset', error.digest)
+                reset()
+              },
+            },
+            {
+              label: 'Back to Trading',
+              href: '/trading',
+              variant: 'outline',
+            },
+          ]}
+        />
+      </div>
     </main>
   )
 }

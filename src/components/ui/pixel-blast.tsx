@@ -283,7 +283,7 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
     }
 
     // Create renderer
-    const renderer = new THREE.WebGLRenderer({ antialias, alpha: true, powerPreference: 'high-performance' });
+    const renderer = new THREE.WebGLRenderer({ antialias, alpha: true, powerPreference: 'high-performance', preserveDrawingBuffer: true });
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
     renderer.domElement.style.cssText = 'width:100%;height:100%';
     if (transparent) renderer.setClearAlpha(0);

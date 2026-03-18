@@ -7,7 +7,6 @@ import {
   PlatformStats,
   TrendingAgents,
   AboutSedona,
-  Footer,
 } from "@/components/trading"
 import { LandingPageWrapper } from "@/components/landing"
 import {
@@ -15,8 +14,23 @@ import {
   formatMarketCap,
   searchAgents,
 } from "@/fixtures"
-import { useAgentLaunch } from "@/contexts"
+import { useAgentLaunch, useOnboardingV2 } from "@/contexts"
 import type { AgentWithMetrics } from "@/types/agent"
+import { WelcomeSheet } from "@/components/onboarding/WelcomeSheet"
+import { SpotlightTour, TOUR_STEPS } from "@/components/onboarding/SpotlightTour"
+import { GoalAction } from "@/components/onboarding/GoalAction"
+import {
+  trackOnboardingStarted,
+  trackOnboardingSkipped,
+  trackOnboardingTourStarted,
+  trackOnboardingTourStepViewed,
+  trackOnboardingTourSkipped,
+  trackOnboardingTourCompleted,
+  trackOnboardingGoalShown,
+  trackOnboardingGoalCompleted,
+  trackOnboardingFlowCompleted,
+  getFeatureFlag,
+} from "@/lib/analytics"
 
 // Map unified Agent to TrendingAgents format
 function mapAgentToListItem(agent: AgentWithMetrics) {
@@ -53,6 +67,15 @@ interface TradingPageClientProps {
 export default function TradingPageClient({ initialHeroMode = false }: TradingPageClientProps) {
   const router = useRouter()
   const { openCreateAgent } = useAgentLaunch()
+  const {
+    state: obState,
+    isReady: isObReady,
+    advance,
+    skip,
+    complete,
+    trackTourStep,
+    setGoal,
+  } = useOnboardingV2()
   const [sortBy, setSortBy] = React.useState("Highest Market Capitalization")
   const [showHero, setShowHero] = React.useState(true)
   const [searchQuery, setSearchQuery] = React.useState("")
@@ -65,6 +88,14 @@ export default function TradingPageClient({ initialHeroMode = false }: TradingPa
     const newUrl = isHeroMode ? "/landing" : "/trading"
     window.history.replaceState({}, "", newUrl)
   }, [isHeroMode])
+
+  // Determine which v2 UI to show based on currentPhase
+  const showWelcome = isObReady && !isHeroMode && obState.currentPhase === "welcome"
+  const showTour = isObReady && !isHeroMode && obState.currentPhase === "tour"
+  const showGoal = isObReady && !isHeroMode && obState.currentPhase === "goal"
+
+  // Get goal variant from PostHog feature flag (with fallback)
+  const goalVariant = (getFeatureFlag("onboarding_goal_action") as string) || "trade"
 
   // Sort and filter agents
   const displayAgents = React.useMemo(() => {
@@ -99,10 +130,6 @@ export default function TradingPageClient({ initialHeroMode = false }: TradingPa
   }, [sortBy, searchQuery])
 
   const handleToggleMode = () => {
-    if (isHeroMode) {
-      // Exiting hero mode
-      localStorage.setItem("sedona_visited", "true")
-    }
     setIsHeroMode(!isHeroMode)
   }
 
@@ -114,6 +141,57 @@ export default function TradingPageClient({ initialHeroMode = false }: TradingPa
       onLaunchAgent={openCreateAgent}
     >
       <div className="min-h-screen bg-zeus-surface-default">
+      {/* Welcome Sheet */}
+      <WelcomeSheet
+        open={showWelcome}
+        onOpenChange={() => {}}
+        onGetStarted={() => {
+          trackOnboardingStarted()
+          advance("welcome")
+          router.push("/onboarding/profile")
+        }}
+        onSkip={() => {
+          trackOnboardingSkipped("welcome")
+          skip()
+        }}
+      />
+
+      {/* Spotlight Tour */}
+      <SpotlightTour
+        active={showTour}
+        onStepViewed={(index) => {
+          trackTourStep(index)
+          trackOnboardingTourStepViewed(index, TOUR_STEPS[index].name)
+          if (index === 0) trackOnboardingTourStarted()
+        }}
+        onComplete={() => {
+          trackOnboardingTourCompleted()
+          advance("tour")
+          setGoal(goalVariant)
+          trackOnboardingGoalShown(goalVariant)
+        }}
+        onSkip={() => {
+          trackOnboardingTourSkipped(obState.tourStepsViewed.length - 1)
+          complete()
+          trackOnboardingFlowCompleted("partial")
+        }}
+      />
+
+      {/* Goal Action */}
+      <GoalAction
+        active={showGoal}
+        variant={goalVariant as any}
+        onAction={() => {
+          trackOnboardingGoalCompleted(goalVariant, goalVariant)
+          complete()
+          trackOnboardingFlowCompleted("full")
+          if (goalVariant === "create_agent") openCreateAgent()
+        }}
+        onDismiss={() => {
+          complete()
+          trackOnboardingFlowCompleted("partial")
+        }}
+      />
       {/* Header - hidden in hero mode (landing nav takes over) */}
       {!isHeroMode && (
         <Header
@@ -131,7 +209,7 @@ export default function TradingPageClient({ initialHeroMode = false }: TradingPa
         <h1 className="sr-only">AI Agent Trading</h1>
 
         {/* Platform Stats */}
-        <section aria-label="Platform Statistics">
+        <section aria-label="Platform Statistics" data-tour="competitions">
           <PlatformStats
             endsInSeconds={754}
             jackpotValue={2450}
@@ -151,22 +229,20 @@ export default function TradingPageClient({ initialHeroMode = false }: TradingPa
         )}
 
         {/* Main Content */}
-        <section className="px-6 py-8 pb-20" aria-label="Trending Agents">
+        <section className="px-6 py-8 pb-20" aria-label="Trending Agents" data-tour="market">
           {/* Trending Agents */}
           <TrendingAgents
             agents={displayAgents}
             sortBy={sortBy}
             onSortChange={setSortBy}
             onSearch={setSearchQuery}
+
             onAgentSelect={(ticker) => {
               router.push(`/trading/${ticker.toLowerCase()}`)
             }}
           />
         </section>
       </main>
-
-      {/* Footer */}
-      <Footer />
     </div>
     </LandingPageWrapper>
   )

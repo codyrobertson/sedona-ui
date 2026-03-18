@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
+import { EmptyState } from '@/components/ui/empty-state'
+import { Icon } from '@/components/ui/icon'
 
 export const metadata: Metadata = {
   title: '404 - Page Not Found',
@@ -9,18 +10,26 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-zeus-bg-base text-zeus-text-primary p-4">
-      <h1 className="text-6xl font-bold text-sedona-500 mb-4">404</h1>
-      <h2 className="text-2xl font-semibold mb-2">Page Not Found</h2>
-      <p className="text-zeus-text-secondary mb-8 text-center max-w-md">
-        The page you are looking for doesn&apos;t exist or has been moved.
-      </p>
-      <Link
-        href="/trading"
-        className="px-6 py-3 bg-sedona-500 text-white rounded-lg hover:bg-sedona-600 transition-colors"
-      >
-        Go to Trading
-      </Link>
+    <main className="min-h-screen bg-zeus-surface-default px-4 py-8">
+      <div className="mx-auto flex min-h-[70vh] max-w-2xl items-center justify-center">
+        <EmptyState
+          icon={<Icon icon="compass" className="h-8 w-8" />}
+          eyebrow="404"
+          title="This trail does not lead anywhere"
+          description="The page you were trying to reach does not exist, or the route has moved while the interface was evolving."
+          actions={[
+            {
+              label: 'Go to Trading',
+              href: '/trading',
+            },
+            {
+              label: 'Open Landing',
+              href: '/landing',
+              variant: 'outline',
+            },
+          ]}
+        />
+      </div>
     </main>
   )
 }

@@ -11,6 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import { Icon } from "@/components/ui/icon"
 import { TokenAvatar } from "@/components/ui/token-avatar"
 import { EmptyState } from "@/components/ui/empty-state"
 
@@ -200,9 +201,21 @@ const YourPortfolio = React.forwardRef<HTMLDivElement, YourPortfolioProps>(
           </div>
         ) : (
           <EmptyState
-            icon="📊"
-            title="No holdings yet"
-            description="Start trading to build your portfolio"
+            eyebrow="Holdings"
+            icon={<Icon icon="chart-line" className="h-6 w-6" />}
+            title="No holdings in motion yet"
+            description="Buy your first agent token to start building a trackable portfolio with gains, losses, and allocation detail."
+            analytics={{
+              surface: "your_portfolio",
+              variant: "no_holdings",
+            }}
+            actions={[
+              {
+                label: "Explore Agents",
+                href: "/trading",
+                analyticsAction: "explore_agents",
+              },
+            ]}
           />
         )}
       </div>

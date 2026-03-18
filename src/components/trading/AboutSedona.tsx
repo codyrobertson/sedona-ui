@@ -4,6 +4,7 @@ import * as React from "react"
 import dynamic from "next/dynamic"
 import { cn } from "@/lib/utils"
 import { Icon } from "@/components/ui/icon"
+import { track, trackExternalLink } from "@/lib/analytics"
 
 const FaultyTerminal = dynamic(() => import("@/components/ui/faulty-terminal"), {
   ssr: false,
@@ -66,6 +67,10 @@ const AboutSedona = React.forwardRef<HTMLDivElement, AboutSedonaProps>(
                 href="https://docs.sedona.io"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => {
+                  track("docs_clicked", { section: "about_sedona" })
+                  trackExternalLink("https://docs.sedona.io", "about_sedona_docs")
+                }}
                 className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-zeus-border-alpha bg-zeus-surface-neutral hover:bg-zeus-surface-elevated text-zeus-text-primary text-caption-m font-medium transition-colors"
               >
                 View Docs
@@ -73,7 +78,10 @@ const AboutSedona = React.forwardRef<HTMLDivElement, AboutSedonaProps>(
               </a>
               <button
                 type="button"
-                onClick={onExplore}
+                onClick={() => {
+                  track("feature_used", { feature: "landing_mode_toggle", details: { source: "about_sedona" } })
+                  onExplore?.()
+                }}
                 className="group relative inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-sedona-500 hover:bg-sedona-600 text-white text-caption-m font-medium transition-colors overflow-hidden"
               >
                 {/* Shimmer overlay */}
@@ -91,7 +99,10 @@ const AboutSedona = React.forwardRef<HTMLDivElement, AboutSedonaProps>(
           {onDismiss && (
             <button
               type="button"
-              onClick={onDismiss}
+              onClick={() => {
+                track("feature_used", { feature: "about_sedona_dismissed", details: { source: "trading_page" } })
+                onDismiss?.()
+              }}
               className="absolute top-4 right-4 p-1.5 text-zeus-text-tertiary hover:text-zeus-text-secondary hover:bg-zeus-surface-neutral rounded-md transition-colors"
               aria-label="Dismiss"
             >

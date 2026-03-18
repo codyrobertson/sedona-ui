@@ -6,7 +6,7 @@ import { Footer } from "@/components/trading/Footer"
 import { JsonLd } from "@/components/seo"
 import { SEO_CONFIG } from "@/lib/seo-config"
 import { Suspense } from "react"
-import { AgentLaunchProvider, ProfileProvider, GPUDeployProvider, AnalyticsProvider } from "@/contexts"
+import { AgentLaunchProvider, ProfileProvider, GPUDeployProvider, AnalyticsProvider, OnboardingV2Provider } from "@/contexts"
 import { DeployModelModal, InstanceDetailsModal } from "@/components/trading"
 import { TooltipProvider } from "@/components/ui/tooltip"
 
@@ -17,8 +17,14 @@ const organizationSchema = {
   description: "AI Agent Trading Platform on Solana",
   url: SEO_CONFIG.baseUrl,
   logo: `${SEO_CONFIG.baseUrl}/icon.svg`,
+  contactPoint: {
+    "@type": "ContactPoint",
+    email: SEO_CONFIG.contact.email,
+    contactType: "customer service",
+  },
   sameAs: [
-    "https://twitter.com/SedonaAI",
+    SEO_CONFIG.social.twitter,
+    SEO_CONFIG.social.discord,
   ],
 }
 
@@ -114,18 +120,20 @@ export default function RootLayout({
       <body className={GeistSans.className}>
         <Suspense fallback={null}>
           <AnalyticsProvider>
-            <TooltipProvider delayDuration={300}>
-              <AgentLaunchProvider>
-                <ProfileProvider>
-                  <GPUDeployProvider>
-                    {children}
-                    <Footer />
-                    <DeployModelModal />
-                    <InstanceDetailsModal />
-                  </GPUDeployProvider>
-                </ProfileProvider>
-              </AgentLaunchProvider>
-            </TooltipProvider>
+            <OnboardingV2Provider>
+              <TooltipProvider delayDuration={300}>
+                <AgentLaunchProvider>
+                  <ProfileProvider>
+                    <GPUDeployProvider>
+                      {children}
+                      <Footer />
+                      <DeployModelModal />
+                      <InstanceDetailsModal />
+                    </GPUDeployProvider>
+                  </ProfileProvider>
+                </AgentLaunchProvider>
+              </TooltipProvider>
+            </OnboardingV2Provider>
           </AnalyticsProvider>
         </Suspense>
       </body>

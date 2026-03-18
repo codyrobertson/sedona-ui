@@ -30,6 +30,10 @@ export interface WalletCardProps extends Omit<React.HTMLAttributes<HTMLDivElemen
   onDisconnect?: () => void
   /** Callback when profile is clicked */
   onProfile?: () => void
+  /** Callback when onboarding resume is clicked */
+  onResumeSetup?: () => void
+  /** Whether to show setup resume action */
+  showResumeSetup?: boolean
   /** Callback when address is copied */
   onCopy?: (address: string) => void
 }
@@ -43,6 +47,8 @@ const WalletCard = React.forwardRef<HTMLDivElement, WalletCardProps>(
     balanceUsd,
     onDisconnect,
     onProfile,
+    onResumeSetup,
+    showResumeSetup = false,
     onCopy,
     ...props
   }, ref) => {
@@ -153,6 +159,15 @@ const WalletCard = React.forwardRef<HTMLDivElement, WalletCardProps>(
                 <Icon icon="user" className="w-4 h-4 mr-2" />
                 My Profile
               </DropdownMenuItem>
+              {showResumeSetup && (
+                <DropdownMenuItem
+                  onClick={() => onResumeSetup?.()}
+                  className="cursor-pointer"
+                >
+                  <Icon icon="sparkles" className="w-4 h-4 mr-2" />
+                  Resume Setup
+                </DropdownMenuItem>
+              )}
               <DropdownMenuItem
                 onClick={() => onDisconnect?.()}
                 className="text-zeus-status-destructive cursor-pointer"

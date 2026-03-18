@@ -40,6 +40,8 @@ interface AgentLaunchContextValue {
   hfUsername: string | null
   /** Sign out from HuggingFace */
   signOutHF: () => void
+  /** Connect to HuggingFace (auth only, no modal) */
+  connectHF: () => void
 }
 
 const AgentLaunchContext = React.createContext<AgentLaunchContextValue | null>(null)
@@ -218,8 +220,9 @@ export function AgentLaunchProvider({ children }: AgentLaunchProviderProps) {
       isHFAuthenticated,
       hfUsername: authState.username,
       signOutHF,
+      connectHF: handleSignIn,
     }),
-    [openCreateAgent, closeCreateAgent, isOpen, isHFAuthenticated, authState.username, signOutHF]
+    [openCreateAgent, closeCreateAgent, isOpen, isHFAuthenticated, authState.username, signOutHF, handleSignIn]
   )
 
   return (
