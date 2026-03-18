@@ -292,7 +292,8 @@
     const sqSc = 1.08*cs, hc = cs*0.5;
     const { left, right, bottom } = chart.chartArea;
     const cw = right - left;
-    const emW = cw * 0.12, invEm = emW > 0 ? 1/emW : 1;
+    // Emergence width for the growth animation (how fast bar fills after print head arrives)
+    const growW = cw * 0.18;
     let rs = seed || 12345;
 
     ctx.fillStyle = opts.color;
@@ -305,20 +306,31 @@
       const bw = bar.width, bh = bottom - bar.y;
       if (bh <= 0) continue;
 
-      for (let py = bottom; py > by; py -= cs) {
+      // Per-bar growth: bar grows upward as print head passes its center
+      // barGrow: 0 = not started, 1 = full height
+      let barGrow = 1;
+      if (phx !== undefined) {
+        barGrow = (phx - (bar.x - bw * 0.3)) / growW;
+        if (barGrow <= 0) continue; // print head hasn't reached this bar
+        if (barGrow > 1) barGrow = 1;
+      }
+      const animTop = bottom - bh * barGrow; // current top edge of growing bar
+      const emH = bh * 0.15; // emergence zone at the growth edge (top of bar)
+
+      for (let py = bottom; py > animTop; py -= cs) {
         const ri = (((bottom-py)/cs+0.5)|0);
         const rowSh = (ri&1) * hc;
         for (let px = bx; px < bx + bw; px += cs) {
           const cx = px + rowSh;
-          if (phx !== undefined && cx > phx) { rs=(rs*1664525+1013904223)&0x7fffffff; rs=(rs*1664525+1013904223)&0x7fffffff; continue; }
 
           const t = (bottom - py) / bh;
           const tc = t > 1 ? 1 : t;
           let tone = tt[(tc*TT_SIZE)|0];
 
-          // Emergence: smooth fade-in behind print head
-          if (phx !== undefined) {
-            let em = (phx - cx) * invEm;
+          // Emergence: fade at the growing top edge
+          if (barGrow < 1) {
+            const distFromTop = py - animTop;
+            let em = distFromTop / Math.max(emH, 4);
             if (em > 1) em = 1;
             if (em <= 0) { rs=(rs*1664525+1013904223)&0x7fffffff; rs=(rs*1664525+1013904223)&0x7fffffff; continue; }
             tone *= em;
