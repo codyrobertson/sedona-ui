@@ -44,7 +44,11 @@ const AgentListItem = React.forwardRef<HTMLDivElement, AgentListItemProps>(
     },
     ref
   ) => {
-    const isPositive = change24h >= 0
+    // Coerce change24h to a clean number — API may return strings like "-8.35%"
+    const safeChange = typeof change24h === "string"
+      ? parseFloat(String(change24h).replace("%", ""))
+      : change24h
+    const isPositive = safeChange >= 0
     const isVolumePositive = volumeChange >= 0
     const changeColor = isPositive ? "text-zeus-status-success" : "text-zeus-status-destructive"
     const volumeColor = volume ? (isVolumePositive ? "text-zeus-status-success" : "text-zeus-status-destructive") : "text-zeus-text-quaternary"
@@ -96,7 +100,7 @@ const AgentListItem = React.forwardRef<HTMLDivElement, AgentListItemProps>(
         {/* Change - always visible, shows MCap on mobile too */}
         <div className="text-right sm:hidden">
           <div className={cn("font-semibold text-caption-m", changeColor)}>
-            {changePrefix}{change24h.toFixed(2)}%
+            {changePrefix}{safeChange.toFixed(2)}%
           </div>
           <div className="text-zeus-text-secondary text-caption-s">
             {marketCap}
@@ -105,7 +109,7 @@ const AgentListItem = React.forwardRef<HTMLDivElement, AgentListItemProps>(
 
         {/* Change - desktop */}
         <div className={cn("text-right font-semibold hidden sm:block", changeColor)}>
-          {changePrefix}{change24h.toFixed(2)}%
+          {changePrefix}{safeChange.toFixed(2)}%
         </div>
 
         {/* Market Cap - hidden on mobile (shown in Change column) */}

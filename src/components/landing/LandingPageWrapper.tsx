@@ -229,13 +229,13 @@ export function LandingPageWrapper({
         {isHeroMode && <ProblemStatement />}
 
         {/* Features section */}
-        {isHeroMode && <FeaturesSection />}
+        {isHeroMode && <FeaturesSection onJoinCompetition={onToggle} />}
 
         {/* Trusted By marquee */}
         {isHeroMode && <TrustedByMarquee />}
 
         {/* In a Nutshell section */}
-        {isHeroMode && <NutshellSection />}
+        {isHeroMode && <NutshellSection onJoinCompetition={onToggle} />}
 
         {/* Developer Stats */}
         {isHeroMode && <DeveloperStats />}

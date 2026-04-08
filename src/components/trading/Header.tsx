@@ -50,8 +50,14 @@ const Header = React.forwardRef<HTMLElement, HeaderProps>(
 
         <div className="flex items-center gap-1.5 sm:gap-2">
           <Link
+            href="/trading"
+            className="hidden sm:inline-flex text-zeus-text-primary underline hover:text-zeus-text-secondary transition-colors text-caption-s font-medium px-2 py-2"
+          >
+            Competitions
+          </Link>
+          <Link
             href="/docs"
-            className="text-zeus-text-primary underline hover:text-zeus-text-secondary transition-colors text-caption-s font-medium px-2 py-2"
+            className="hidden sm:inline-flex text-zeus-text-primary underline hover:text-zeus-text-secondary transition-colors text-caption-s font-medium px-2 py-2"
           >
             Docs
           </Link>

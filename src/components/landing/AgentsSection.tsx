@@ -95,12 +95,12 @@ export function AgentsSection({ className, onAgentExchange }: AgentsSectionProps
             iconPosition="right"
             className="!text-zeus-surface-default"
           >
-            Agent Exchange
+            Join the Competition
           </Button>
           <Button
             variant="outline"
             size="lg"
-            onClick={() => window.open('#', '_blank')}
+            onClick={() => window.open("https://docs.sedona.io", "_blank")}
             icon={<Icon icon="chart-bar" className="w-4 h-4" />}
             iconPosition="right"
           >

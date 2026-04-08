@@ -77,6 +77,12 @@ export function LandingNav({ onLaunchAgent, className }: LandingNavProps) {
       {/* Nav Links */}
       <div className="hidden md:flex items-center gap-8">
         <a
+          href="/trading"
+          className="font-grotesk text-sm text-zeus-text-secondary hover:text-zeus-text-primary transition-colors"
+        >
+          Competitions
+        </a>
+        <a
           href="#features"
           className="font-grotesk text-sm text-zeus-text-secondary hover:text-zeus-text-primary transition-colors"
         >
