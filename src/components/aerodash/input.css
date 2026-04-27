@@ -1,0 +1,25 @@
+/* AeroDash Input — focus state. */
+
+[data-ad-input-control] {
+  outline: none !important;
+  box-shadow: none !important;
+}
+[data-ad-input-control]:focus,
+[data-ad-input-control]:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+[data-ad-input-control]::placeholder {
+  color: #c4cbd6;
+  opacity: 1;
+}
+
+[data-ad-input-root]:focus-within {
+  outline: 1.5px solid #00c8ff;
+  outline-offset: 2px;
+}
+
+[data-ad-input-root][data-invalid]:focus-within {
+  outline-color: #ff4d72;
+}

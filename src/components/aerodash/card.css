@@ -1,0 +1,35 @@
+/* AeroDash Card — loading state animation. */
+
+[data-ad-card][data-state="loading"] {
+  position: relative;
+  overflow: hidden;
+}
+
+[data-ad-card][data-state="loading"]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -40%;
+  height: 2px;
+  width: 40%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(5, 7, 11, 0.18) 35%,
+    rgba(5, 7, 11, 0.32) 50%,
+    rgba(5, 7, 11, 0.18) 65%,
+    transparent
+  );
+  animation: ad-card-loading 1.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  z-index: 5;
+  pointer-events: none;
+}
+
+@keyframes ad-card-loading {
+  0% {
+    left: -40%;
+  }
+  100% {
+    left: 100%;
+  }
+}

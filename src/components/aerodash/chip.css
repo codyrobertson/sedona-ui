@@ -1,0 +1,6 @@
+/* AeroDash Chip — interaction states. */
+
+[data-ad-chip-dismiss]:focus-visible {
+  outline: 1.5px solid #00c8ff;
+  outline-offset: 1px;
+}
