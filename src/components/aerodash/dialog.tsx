@@ -6,6 +6,7 @@ import * as RadixDialog from "@radix-ui/react-dialog"
 import { cn } from "@/lib/utils"
 
 import { colors, radii } from "./tokens"
+import "./aerodash.css"
 import "./dialog.css"
 
 /**
@@ -88,7 +89,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
             color: colors.ink,
             border: `2px solid ${colors.ink}`,
             borderRadius: radii.lg,
-            boxShadow: "4px 4px 0 #05070b",
+            boxShadow: `4px 4px 0 ${colors.ink}`,
             ...style,
           }}
           {...props}
@@ -152,7 +153,7 @@ export const DialogDescription = React.forwardRef<
     <RadixDialog.Description
       ref={ref}
       data-ad-dialog-description=""
-      className={cn(className)}
+      className={className}
       style={{ fontSize: 13, lineHeight: 1.5, color: "#5a5a5a", margin: 0, ...style }}
       {...props}
     />

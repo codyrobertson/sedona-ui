@@ -1,6 +1,3 @@
-/* AeroDash Chip — interaction states. */
-
-[data-ad-chip-dismiss]:focus-visible {
-  outline: 1.5px solid #00c8ff;
-  outline-offset: 1px;
-}
+/* AeroDash Chip — currently no chip-specific rules.
+ * Dismiss button focus ring lives in aerodash.css.
+ */

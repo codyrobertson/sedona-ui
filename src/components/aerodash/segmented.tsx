@@ -5,6 +5,7 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 import { colors, radii } from "./tokens"
+import "./aerodash.css"
 import "./segmented.css"
 
 /**
@@ -24,7 +25,7 @@ import "./segmented.css"
  */
 
 const SIZE_DIMS = {
-  sm: { h: 26, fontSize: 9, padX: 11, slant: 8 },
+  sm: { h: 26, fontSize: 9,  padX: 11, slant: 8 },
   md: { h: 30, fontSize: 10, padX: 14, slant: 10 },
   lg: { h: 36, fontSize: 11, padX: 18, slant: 12 },
 } as const
@@ -39,7 +40,7 @@ interface SegmentedCtx {
   variant: Variant
 }
 const SegmentedContext = React.createContext<SegmentedCtx | null>(null)
-const useSegmentedCtx = () => {
+function useSegmentedCtx() {
   const ctx = React.useContext(SegmentedContext)
   if (!ctx) throw new Error("Segmented.* must be used inside <SegmentedRoot>")
   return ctx
@@ -117,8 +118,9 @@ export const SegmentedItem = React.forwardRef<HTMLButtonElement, SegmentedItemPr
     const dim = SIZE_DIMS[ctx.size]
     const active = ctx.value === value
     const slanted = ctx.variant === "slanted"
+    const slantedActive = slanted && active
 
-    const slantClipPath = slanted && active
+    const slantClipPath = slantedActive
       ? `polygon(${dim.slant}px 0, 100% 0, calc(100% - ${dim.slant}px) 100%, 0 100%)`
       : undefined
 
@@ -139,7 +141,7 @@ export const SegmentedItem = React.forwardRef<HTMLButtonElement, SegmentedItemPr
         style={{
           height: "100%",
           // Extend padding when slanted to compensate for the clipped corners
-          padding: `0 ${dim.padX + (slanted && active ? dim.slant : 0)}px`,
+          padding: `0 ${dim.padX + (slantedActive ? dim.slant : 0)}px`,
           fontSize: dim.fontSize,
           background: active ? colors.cyan : "transparent",
           color: active ? "#001016" : colors.muted,

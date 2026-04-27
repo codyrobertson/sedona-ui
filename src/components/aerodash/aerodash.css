@@ -1,0 +1,73 @@
+/* AeroDash — shared interaction primitives.
+ *
+ * Selectors target the data-ad-* attributes set by every primitive. Keeping
+ * the focus ring + state-driven background colors in one place avoids drift
+ * across components and makes theme tweaks a single edit.
+ */
+
+/* ── Focus ring ───────────────────────────────────────────────────────────
+ * Cyan 1.5px outline with a 2px offset is the canonical AeroDash focus
+ * indicator. Used by every interactive primitive.
+ */
+[data-ad-checkbox]:focus-visible,
+[data-ad-radio]:focus-visible,
+[data-ad-switch]:focus-visible,
+[data-ad-dialog-close]:focus-visible,
+[data-ad-segmented-item]:focus-visible,
+[data-ad-chip-dismiss]:focus-visible,
+[data-ad-input-root]:focus-within,
+[data-ad-root]:focus-visible > [data-ad-inner] {
+  outline: 1.5px solid #00c8ff;
+  outline-offset: 2px;
+}
+
+/* Per-component overrides where the canonical offset doesn't apply. */
+[data-ad-segmented-item]:focus-visible {
+  outline-offset: -2px;
+  z-index: 2;
+}
+[data-ad-chip-dismiss]:focus-visible {
+  outline-offset: 1px;
+}
+[data-ad-input-root][data-invalid]:focus-within {
+  outline-color: #ff4d72;
+}
+
+/* ── Toggle backgrounds ───────────────────────────────────────────────────
+ * Checkbox, Radio, and Switch share the same on/off + hover palette since
+ * they're the same conceptual control: an inkable surface that flips state.
+ */
+[data-ad-checkbox],
+[data-ad-radio],
+[data-ad-switch] {
+  background: #ffffff;
+}
+
+[data-ad-checkbox]:not(:disabled):hover,
+[data-ad-radio]:not(:disabled):hover,
+[data-ad-switch]:not(:disabled):hover {
+  background: #f1f5f9;
+}
+
+[data-ad-checkbox][data-state="checked"],
+[data-ad-checkbox][data-state="indeterminate"],
+[data-ad-radio][data-state="checked"],
+[data-ad-switch][data-state="checked"] {
+  background: #05070b;
+}
+
+[data-ad-checkbox][data-state="checked"]:not(:disabled):hover,
+[data-ad-checkbox][data-state="indeterminate"]:not(:disabled):hover,
+[data-ad-radio][data-state="checked"]:not(:disabled):hover,
+[data-ad-switch][data-state="checked"]:not(:disabled):hover {
+  background: #1a1f29;
+}
+
+/* Press feedback shared by Checkbox, Radio, Switch. */
+[data-ad-checkbox]:active:not(:disabled),
+[data-ad-radio]:active:not(:disabled) {
+  transform: scale(0.95);
+}
+[data-ad-switch]:active:not(:disabled) {
+  transform: scale(0.96);
+}

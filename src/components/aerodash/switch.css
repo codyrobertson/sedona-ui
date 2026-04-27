@@ -1,31 +1,12 @@
-/* AeroDash Switch — track + thumb states. */
+/* AeroDash Switch — thumb translation only.
+ * Track background, hover, focus, and press states live in aerodash.css.
+ */
 
 [data-ad-switch] {
-  background: #ffffff;
   transition: background 150ms ease, transform 100ms ease;
 }
 
-[data-ad-switch][data-state="checked"] {
-  background: #05070b;
-}
-
-[data-ad-switch]:not(:disabled):hover {
-  background: #f1f5f9;
-}
-[data-ad-switch][data-state="checked"]:not(:disabled):hover {
-  background: #1a1f29;
-}
-
-[data-ad-switch]:active:not(:disabled) {
-  transform: scale(0.96);
-}
-
-[data-ad-switch]:focus-visible {
-  outline: 1.5px solid #00c8ff;
-  outline-offset: 2px;
-}
-
-/* Thumb — defaults to ink, inverts to white when track is checked */
+/* Thumb — ink at rest, paper when checked, translates by --ad-switch-travel. */
 [data-ad-switch-thumb] {
   background: #05070b;
   transform: translateX(0);

@@ -1,5 +1,6 @@
-/* AeroDash Button — interaction states.
+/* AeroDash Button — interaction polish.
  * Pressed and disabled handled inline via React state + style props.
+ * Focus ring lives in aerodash.css.
  */
 
 [data-ad-root] {
@@ -11,11 +12,6 @@
 
 [data-ad-root]:hover > [data-ad-inner] {
   filter: brightness(1.06);
-}
-
-[data-ad-root]:focus-visible > [data-ad-inner] {
-  outline: 1.5px solid #00c8ff;
-  outline-offset: 2px;
 }
 
 [data-ad-root][disabled] [data-ad-underlay] {

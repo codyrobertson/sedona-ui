@@ -1,36 +1,16 @@
-/* AeroDash RadioGroup — checked state. */
+/* AeroDash RadioGroup — indicator dot only.
+ * Box background, hover, focus, and press states live in aerodash.css.
+ */
 
 [data-ad-radio] {
-  background: #ffffff;
   transition: background 150ms ease, transform 100ms ease;
 }
 
+/* Inner dot — ink at rest, paper when the surrounding ring is checked. */
 [data-ad-radio-indicator] {
   background: #05070b;
   transition: background 150ms ease;
 }
-
-[data-ad-radio]:not(:disabled):hover {
-  background: #f1f5f9;
-}
-
-[data-ad-radio][data-state="checked"] {
-  background: #05070b;
-}
-[data-ad-radio][data-state="checked"]:not(:disabled):hover {
-  background: #1a1f29;
-}
-
-/* Inner dot inverts to white on checked */
 [data-ad-radio][data-state="checked"] [data-ad-radio-indicator] {
   background: #ffffff !important;
-}
-
-[data-ad-radio]:active:not(:disabled) {
-  transform: scale(0.95);
-}
-
-[data-ad-radio]:focus-visible {
-  outline: 1.5px solid #00c8ff;
-  outline-offset: 2px;
 }

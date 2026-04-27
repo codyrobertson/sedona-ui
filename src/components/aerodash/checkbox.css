@@ -1,40 +1,22 @@
-/* AeroDash Checkbox — state animations + interaction polish. */
+/* AeroDash Checkbox — glyph animation only.
+ * Box background, hover, focus, and press states live in aerodash.css.
+ */
 
 [data-ad-checkbox] {
   position: relative;
-  background: #ffffff;
+  transition: background 150ms ease, border-color 150ms ease, transform 100ms ease;
 }
 
-[data-ad-checkbox]:not(:disabled):hover {
-  background: #f1f5f9;
+/* Glyph color — ink at rest, paper when checked or indeterminate. */
+[data-ad-checkbox-glyph] {
+  color: #001016;
 }
-[data-ad-checkbox][data-state="checked"]:not(:disabled):hover,
-[data-ad-checkbox][data-state="indeterminate"]:not(:disabled):hover {
-  background: #1a1f29;
-}
-
-[data-ad-checkbox][data-state="checked"],
-[data-ad-checkbox][data-state="indeterminate"] {
-  background: #05070b;
-}
-
-/* Glyph color inverts with the checked fill */
 [data-ad-checkbox][data-state="checked"] [data-ad-checkbox-glyph],
 [data-ad-checkbox][data-state="indeterminate"] [data-ad-checkbox-glyph] {
   color: #ffffff;
 }
 
-[data-ad-checkbox]:focus-visible {
-  outline: 1.5px solid #00c8ff;
-  outline-offset: 2px;
-}
-
-/* Glyph color — defaults to ink, inverts to white when checked (rules above) */
-[data-ad-checkbox-glyph] {
-  color: #001016;
-}
-
-/* Glyph paths — base state (hidden) */
+/* Glyph paths — invisible until the matching state draws them in. */
 [data-ad-checkbox-tick],
 [data-ad-checkbox-dash] {
   stroke-dasharray: 1;
@@ -45,18 +27,8 @@
     opacity 100ms ease;
 }
 
-/* Checked → tick draws in */
-[data-ad-checkbox][data-state="checked"] [data-ad-checkbox-tick] {
-  stroke-dashoffset: 0;
-  opacity: 1;
-}
-
-/* Indeterminate → dash draws in */
+[data-ad-checkbox][data-state="checked"] [data-ad-checkbox-tick],
 [data-ad-checkbox][data-state="indeterminate"] [data-ad-checkbox-dash] {
   stroke-dashoffset: 0;
   opacity: 1;
-}
-
-[data-ad-checkbox]:active:not(:disabled) {
-  transform: scale(0.95);
 }

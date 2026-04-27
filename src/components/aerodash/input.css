@@ -1,4 +1,6 @@
-/* AeroDash Input — focus state. */
+/* AeroDash Input — placeholder + focus override.
+ * Root focus-within ring lives in aerodash.css.
+ */
 
 [data-ad-input-control] {
   outline: none !important;
@@ -13,13 +15,4 @@
 [data-ad-input-control]::placeholder {
   color: #c4cbd6;
   opacity: 1;
-}
-
-[data-ad-input-root]:focus-within {
-  outline: 1.5px solid #00c8ff;
-  outline-offset: 2px;
-}
-
-[data-ad-input-root][data-invalid]:focus-within {
-  outline-color: #ff4d72;
 }

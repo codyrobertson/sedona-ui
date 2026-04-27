@@ -2,10 +2,11 @@
 
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
-import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
+import { colors, radii } from "./tokens"
+import "./aerodash.css"
 import "./button.css"
 
 /**
@@ -41,12 +42,12 @@ const LIGHT_DIVIDER = "rgba(0,0,0,0.25)"
 const DARK_DIVIDER = "rgba(255,255,255,0.18)"
 
 const VARIANT_COLORS: Record<string, VariantTokens> = {
-  primary:   { bg: "#00c8ff", fg: "#001016", well: "#00a2d6", divider: LIGHT_DIVIDER, border: "#05070b" },
-  secondary: { bg: "#ffffff", fg: "#080c12", well: "#e5eaf0", divider: LIGHT_DIVIDER, border: "#05070b" },
-  dark:      { bg: "#05070b", fg: "#00c8ff", well: "#1a2332", divider: DARK_DIVIDER, border: "#1f2937" },
-  danger:    { bg: "#ff4d72", fg: "#090b10", well: "#db2e55", divider: LIGHT_DIVIDER, border: "#05070b" },
-  warn:      { bg: "#ffd51d", fg: "#090b10", well: "#e7bd00", divider: LIGHT_DIVIDER, border: "#05070b" },
-  success:   { bg: "#22d66f", fg: "#06100a", well: "#19b85b", divider: LIGHT_DIVIDER, border: "#05070b" },
+  primary:   { bg: colors.cyan,  fg: "#001016", well: colors.cyanDeep, divider: LIGHT_DIVIDER, border: colors.ink },
+  secondary: { bg: colors.paper, fg: "#080c12", well: "#e5eaf0",       divider: LIGHT_DIVIDER, border: colors.ink },
+  dark:      { bg: colors.ink,   fg: colors.cyan, well: "#1a2332",     divider: DARK_DIVIDER,  border: "#1f2937" },
+  danger:    { bg: colors.pink,  fg: "#090b10", well: "#db2e55",       divider: LIGHT_DIVIDER, border: colors.ink },
+  warn:      { bg: colors.warn,  fg: "#090b10", well: "#e7bd00",       divider: LIGHT_DIVIDER, border: colors.ink },
+  success:   { bg: colors.green, fg: "#06100a", well: "#19b85b",       divider: LIGHT_DIVIDER, border: colors.ink },
 }
 
 const SIZE_DIMS = {
@@ -61,37 +62,43 @@ type VariantKey = keyof typeof VARIANT_COLORS
 // ─── Internal context (Root → children) ─────────────────────────────────────
 
 interface ButtonCtx {
-  variant: VariantKey
   size: SizeKey
   pressed: boolean
 }
 const ButtonContext = React.createContext<ButtonCtx | null>(null)
-const useButtonCtx = () => {
+function useButtonCtx(): ButtonCtx {
   const ctx = React.useContext(ButtonContext)
   if (!ctx) throw new Error("Button.* must be used inside <ButtonRoot>")
   return ctx
 }
 
+const ROOT_CLASS = [
+  "relative inline-grid cursor-pointer select-none border-0 bg-transparent p-0",
+  "font-[950] uppercase leading-none tracking-[0.02em]",
+  "disabled:pointer-events-none disabled:opacity-[0.45]",
+].join(" ")
+
 // ─── Root ───────────────────────────────────────────────────────────────────
 
-const rootVariants = cva(
-  [
-    "relative inline-grid cursor-pointer select-none border-0 bg-transparent p-0",
-    "font-[950] uppercase leading-none tracking-[0.02em]",
-    "disabled:pointer-events-none disabled:opacity-[0.45]",
-  ].join(" "),
-)
-
-export interface ButtonRootProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "size">,
-    VariantProps<typeof rootVariants> {
+export interface ButtonRootProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "size"> {
   variant?: VariantKey
   size?: SizeKey
   asChild?: boolean
 }
 
 export const ButtonRoot = React.forwardRef<HTMLButtonElement, ButtonRootProps>(function ButtonRoot(
-  { className, variant = "primary", size = "md", asChild = false, style, children, ...props },
+  {
+    className,
+    variant = "primary",
+    size = "md",
+    asChild = false,
+    style,
+    children,
+    onPointerDown,
+    onPointerUp,
+    onPointerLeave,
+    ...props
+  },
   ref,
 ) {
   const Comp: React.ElementType = asChild ? Slot : "button"
@@ -100,11 +107,11 @@ export const ButtonRoot = React.forwardRef<HTMLButtonElement, ButtonRootProps>(f
   const dim = SIZE_DIMS[size]
 
   return (
-    <ButtonContext.Provider value={{ variant, size, pressed }}>
+    <ButtonContext.Provider value={{ size, pressed }}>
       <Comp
         ref={ref}
         data-ad-root=""
-        className={cn(rootVariants(), className)}
+        className={cn(ROOT_CLASS, className)}
         style={{
           minHeight: dim.minH,
           fontSize: dim.fontSize,
@@ -118,15 +125,15 @@ export const ButtonRoot = React.forwardRef<HTMLButtonElement, ButtonRootProps>(f
         }}
         onPointerDown={(e) => {
           setPressed(true)
-          props.onPointerDown?.(e)
+          onPointerDown?.(e)
         }}
         onPointerUp={(e) => {
           setPressed(false)
-          props.onPointerUp?.(e)
+          onPointerUp?.(e)
         }}
         onPointerLeave={(e) => {
           setPressed(false)
-          props.onPointerLeave?.(e)
+          onPointerLeave?.(e)
         }}
         {...props}
       >
@@ -154,11 +161,10 @@ export const ButtonUnderlay = React.forwardRef<HTMLSpanElement, ButtonUnderlayPr
           right: pressed ? -1 : -2,
           bottom: pressed ? -1 : -2,
           left: pressed ? 1 : 2,
-          background: "#05070b",
-          borderRadius: 6,
+          background: colors.ink,
+          borderRadius: radii.md,
           pointerEvents: "none",
-          transition:
-            "top 100ms ease, right 100ms ease, bottom 100ms ease, left 100ms ease",
+          transition: "top 100ms ease, right 100ms ease, bottom 100ms ease, left 100ms ease",
           ...style,
         }}
         {...props}
@@ -188,8 +194,8 @@ export const ButtonInner = React.forwardRef<HTMLSpanElement, ButtonInnerProps>(f
         gridTemplateColumns: `${dim.cap}px 1fr ${dim.well}px`,
         minHeight: dim.minH,
         background: "var(--ad-bg)",
-        border: "2px solid var(--ad-border, #05070b)",
-        borderRadius: 6,
+        border: `2px solid var(--ad-border, ${colors.ink})`,
+        borderRadius: radii.md,
         overflow: "hidden",
         transition: "filter 100ms ease, box-shadow 100ms ease",
         ...style,
@@ -217,7 +223,7 @@ export const ButtonCap = React.forwardRef<HTMLSpanElement, ButtonCapProps>(funct
       style={{
         display: "grid",
         placeItems: "center",
-        borderRight: "1px solid var(--ad-divider, rgba(0,0,0,0.25))",
+        borderRight: `1px solid var(--ad-divider, ${LIGHT_DIVIDER})`,
         ...style,
       }}
       {...props}
@@ -273,7 +279,7 @@ export const ButtonWell = React.forwardRef<HTMLSpanElement, ButtonWellProps>(fun
         display: "grid",
         placeItems: "center",
         background: "var(--ad-well)",
-        borderLeft: "1px solid var(--ad-divider, rgba(0,0,0,0.28))",
+        borderLeft: `1px solid var(--ad-divider, ${LIGHT_DIVIDER})`,
         clipPath: "polygon(18% 0, 100% 0, 100% 100%, 0 100%)",
         ...style,
       }}
@@ -301,13 +307,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function 
     <ButtonRoot ref={ref} {...rootProps}>
       <ButtonUnderlay />
       <ButtonInner>
-        {icon !== null && icon !== undefined ? <ButtonCap>{icon}</ButtonCap> : <span aria-hidden />}
+        {icon != null ? <ButtonCap>{icon}</ButtonCap> : <span aria-hidden />}
         <ButtonLabel>{children}</ButtonLabel>
-        {endIcon !== null && endIcon !== undefined ? (
-          <ButtonWell>{endIcon}</ButtonWell>
-        ) : (
-          <span aria-hidden />
-        )}
+        {endIcon != null ? <ButtonWell>{endIcon}</ButtonWell> : <span aria-hidden />}
       </ButtonInner>
     </ButtonRoot>
   )

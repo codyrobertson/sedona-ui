@@ -4,6 +4,8 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+import { colors, radii } from "./tokens"
+import "./aerodash.css"
 import "./input.css"
 
 /**
@@ -31,7 +33,7 @@ const SIZE_DIMS = {
 type SizeKey = keyof typeof SIZE_DIMS
 
 const InputContext = React.createContext<{ size: SizeKey } | null>(null)
-const useInputCtx = () => {
+function useInputCtx() {
   const ctx = React.useContext(InputContext)
   if (!ctx) throw new Error("Input.* must be used inside <InputRoot>")
   return ctx
@@ -39,7 +41,7 @@ const useInputCtx = () => {
 
 // ─── Root ───────────────────────────────────────────────────────────────────
 
-export interface InputRootProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface InputRootProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "size"> {
   size?: SizeKey
   invalid?: boolean
 }
@@ -59,9 +61,9 @@ export const InputRoot = React.forwardRef<HTMLDivElement, InputRootProps>(functi
         style={{
           minHeight: dim.h,
           gridTemplateColumns: "auto 1fr auto",
-          background: "#ffffff",
-          border: `1.5px solid ${invalid ? "#ff4d72" : "#05070b"}`,
-          borderRadius: 6,
+          background: colors.paper,
+          border: `1.5px solid ${invalid ? colors.pink : colors.ink}`,
+          borderRadius: radii.md,
           fontSize: dim.fontSize,
           ...style,
         }}
@@ -86,10 +88,7 @@ export const InputControl = React.forwardRef<HTMLInputElement, InputControlProps
       <input
         ref={ref}
         data-ad-input-control=""
-        className={cn(
-          "min-w-0 border-0 bg-transparent font-medium text-[#05070b]",
-          className,
-        )}
+        className={cn("min-w-0 border-0 bg-transparent font-medium text-[#05070b]", className)}
         style={{
           paddingLeft: dim.padX,
           paddingRight: dim.padX,
@@ -124,7 +123,7 @@ export const InputAddon = React.forwardRef<HTMLSpanElement, InputAddonProps>(fun
       style={{
         width: dim.addonW,
         height: "100%",
-        background: "#f7f9fc",
+        background: colors.canvas,
         ...style,
       }}
       {...props}
@@ -150,13 +149,13 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(function Inp
 ) {
   return (
     <InputRoot size={rootSize} invalid={invalid} className={rootClassName}>
-      {leadingIcon !== null && leadingIcon !== undefined ? (
+      {leadingIcon != null ? (
         <InputAddon side="leading">{leadingIcon}</InputAddon>
       ) : (
         <span aria-hidden />
       )}
       <InputControl ref={ref} {...props} />
-      {trailingIcon !== null && trailingIcon !== undefined ? (
+      {trailingIcon != null ? (
         <InputAddon side="trailing">{trailingIcon}</InputAddon>
       ) : (
         <span aria-hidden />

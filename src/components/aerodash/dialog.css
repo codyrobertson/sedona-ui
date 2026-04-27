@@ -1,4 +1,6 @@
-/* AeroDash Dialog — open/close animations. */
+/* AeroDash Dialog — open/close animations.
+ * Close button focus ring lives in aerodash.css.
+ */
 
 [data-ad-dialog-backdrop] {
   animation: ad-dialog-backdrop-in 150ms ease-out;
@@ -12,11 +14,6 @@
 }
 [data-ad-dialog-content][data-state="closed"] {
   animation: ad-dialog-content-out 120ms ease-in forwards;
-}
-
-[data-ad-dialog-close]:focus-visible {
-  outline: 1.5px solid #00c8ff;
-  outline-offset: 2px;
 }
 
 @keyframes ad-dialog-backdrop-in {

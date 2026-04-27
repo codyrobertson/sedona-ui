@@ -37,16 +37,16 @@ import "./card.css"
 
 type VariantTokens = { bg: string; fg: string; border: string; borderStyle: string }
 const VARIANT_COLORS: Record<string, VariantTokens> = {
-  solid:    { bg: "#ffffff",     fg: "#05070b", border: "#05070b", borderStyle: "solid" },
-  dashed:   { bg: "transparent", fg: "#05070b", border: "#05070b", borderStyle: "dashed" },
-  dark:     { bg: "#05070b",     fg: "#ffffff", border: "#05070b", borderStyle: "solid" },
+  solid:  { bg: colors.paper,   fg: colors.ink, border: colors.ink, borderStyle: "solid" },
+  dashed: { bg: "transparent",  fg: colors.ink, border: colors.ink, borderStyle: "dashed" },
+  dark:   { bg: colors.ink,     fg: colors.paper, border: colors.ink, borderStyle: "solid" },
 }
 type VariantKey = keyof typeof VARIANT_COLORS
 
 type StateKey = "default" | "selected" | "disabled" | "loading"
 
 const CardContext = React.createContext<{ variant: VariantKey; state: StateKey } | null>(null)
-const useCardCtx = () => {
+function useCardCtx() {
   const ctx = React.useContext(CardContext)
   if (!ctx) throw new Error("Card.* must be used inside <CardRoot>")
   return ctx
@@ -66,6 +66,11 @@ export const CardRoot = React.forwardRef<HTMLDivElement, CardRootProps>(function
   ref,
 ) {
   const tokens = VARIANT_COLORS[variant]
+
+  let boxShadow = "none"
+  if (state === "selected") boxShadow = `0 0 0 2px ${colors.cyan}`
+  else if (elevated) boxShadow = `3px 3px 0 ${colors.ink}`
+
   return (
     <CardContext.Provider value={{ variant, state }}>
       <div
@@ -81,12 +86,7 @@ export const CardRoot = React.forwardRef<HTMLDivElement, CardRootProps>(function
           borderRadius: radii.lg,
           overflow: "hidden",
           opacity: state === "disabled" ? 0.45 : 1,
-          boxShadow:
-            state === "selected"
-              ? `0 0 0 2px ${colors.cyan}`
-              : elevated
-                ? `3px 3px 0 ${colors.ink}`
-                : "none",
+          boxShadow,
           ...style,
         }}
         {...props}
@@ -113,8 +113,8 @@ export const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(func
       style={{
         gridTemplateColumns: "auto 1fr auto",
         minHeight: 32,
-        background: "#05070b",
-        color: "#ffffff",
+        background: colors.ink,
+        color: colors.paper,
         ...style,
       }}
       {...props}
@@ -130,12 +130,12 @@ export interface CardHeaderIdProps extends React.HTMLAttributes<HTMLSpanElement>
   tone?: "cyan" | "pink" | "warn" | "green" | "white"
 }
 
-const ID_TONES = {
-  cyan:  { bg: "#00c8ff", fg: "#001016" },
-  pink:  { bg: "#ff4d72", fg: "#090b10" },
-  warn:  { bg: "#ffd51d", fg: "#090b10" },
-  green: { bg: "#22d66f", fg: "#06100a" },
-  white: { bg: "#ffffff", fg: "#05070b" },
+const ID_TONES: Record<NonNullable<CardHeaderIdProps["tone"]>, { bg: string; fg: string }> = {
+  cyan:  { bg: colors.cyan,  fg: "#001016" },
+  pink:  { bg: colors.pink,  fg: "#090b10" },
+  warn:  { bg: colors.warn,  fg: "#090b10" },
+  green: { bg: colors.green, fg: "#06100a" },
+  white: { bg: colors.paper, fg: colors.ink },
 }
 
 export const CardHeaderId = React.forwardRef<HTMLSpanElement, CardHeaderIdProps>(
@@ -197,12 +197,12 @@ export interface CardHeaderStatusProps extends React.HTMLAttributes<HTMLSpanElem
   tone?: "green" | "cyan" | "pink" | "warn" | "muted"
 }
 
-const STATUS_TONES = {
-  green: { bg: "#22d66f", fg: "#06100a" },
-  cyan:  { bg: "#00c8ff", fg: "#001016" },
-  pink:  { bg: "#ff4d72", fg: "#ffffff" },
-  warn:  { bg: "#ffd51d", fg: "#090b10" },
-  muted: { bg: "#1e2532", fg: "#9aa3af" },
+const STATUS_TONES: Record<NonNullable<CardHeaderStatusProps["tone"]>, { bg: string; fg: string }> = {
+  green: { bg: colors.green, fg: "#06100a" },
+  cyan:  { bg: colors.cyan,  fg: "#001016" },
+  pink:  { bg: colors.pink,  fg: colors.paper },
+  warn:  { bg: colors.warn,  fg: "#090b10" },
+  muted: { bg: "#1e2532",    fg: "#9aa3af" },
 }
 
 export const CardHeaderStatus = React.forwardRef<HTMLSpanElement, CardHeaderStatusProps>(
@@ -218,7 +218,7 @@ export const CardHeaderStatus = React.forwardRef<HTMLSpanElement, CardHeaderStat
           fontSize: 9,
           letterSpacing: "0.06em",
           padding: "3px 8px",
-          borderRadius: 999,
+          borderRadius: radii.pill,
           background: t.bg,
           color: t.fg,
           ...style,
@@ -243,7 +243,7 @@ export const CardBody = React.forwardRef<HTMLDivElement, CardBodyProps>(function
     <div
       ref={ref}
       data-ad-card-body=""
-      className={cn(className)}
+      className={className}
       style={{ padding: 12, ...style }}
       {...props}
     >
@@ -285,8 +285,8 @@ export const CardMeta = React.forwardRef<HTMLDivElement, CardMetaProps>(function
     <div
       ref={ref}
       data-ad-card-meta=""
-      className={cn(className)}
-      style={{ fontSize: 11, color: "#657282", marginTop: 4, ...style }}
+      className={className}
+      style={{ fontSize: 11, color: colors.muted, marginTop: 4, ...style }}
       {...props}
     >
       {children}
@@ -312,7 +312,7 @@ export const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(func
       style={{
         padding: "8px 12px",
         background: isDark ? "#0d1218" : "#f5f7fa",
-        borderTop: `1px solid ${isDark ? "rgba(255,255,255,0.08)" : "#e3e9f1"}`,
+        borderTop: `1px solid ${isDark ? "rgba(255,255,255,0.08)" : colors.line}`,
         fontSize: 11,
         textTransform: "uppercase",
         fontWeight: 950,

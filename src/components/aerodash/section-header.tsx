@@ -2,12 +2,12 @@
 
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
-import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
 import { Chrome } from "./chrome"
 import { IconTile } from "./icon-tile"
+import { colors } from "./tokens"
 
 /**
  * SectionHeader — y2k arrow-pill bar. Used as a panel/section header.
@@ -35,18 +35,20 @@ import { IconTile } from "./icon-tile"
 // ─── Variant tokens ─────────────────────────────────────────────────────────
 
 type VariantKey = "default" | "active" | "dark" | "dotted"
-type VariantTokens = { fg: string; tile: { tone: "invert" | "match" | "outline" } }
-const VARIANT_FG: Record<VariantKey, VariantTokens> = {
-  default: { fg: "#05070b", tile: { tone: "invert" } },
-  active:  { fg: "#05070b", tile: { tone: "invert" } },
-  dark:    { fg: "#ffffff", tile: { tone: "invert" } },
-  dotted:  { fg: "#5a5a5a", tile: { tone: "outline" } },
+type TileTone = "invert" | "match" | "outline"
+type VariantTokens = { fg: string; tileTone: TileTone }
+
+const VARIANT_TOKENS: Record<VariantKey, VariantTokens> = {
+  default: { fg: colors.ink,   tileTone: "invert" },
+  active:  { fg: colors.ink,   tileTone: "invert" },
+  dark:    { fg: colors.paper, tileTone: "invert" },
+  dotted:  { fg: "#5a5a5a",    tileTone: "outline" },
 }
 
 const SIZE_DIMS = {
-  sm: { h: 32, tipLen: 14, fontSize: 10, tile: "sm" as const, padL: 8, padR: 18 },
+  sm: { h: 32, tipLen: 14, fontSize: 10,   tile: "sm" as const, padL: 8,  padR: 18 },
   md: { h: 40, tipLen: 18, fontSize: 11.5, tile: "md" as const, padL: 10, padR: 22 },
-  lg: { h: 48, tipLen: 22, fontSize: 13, tile: "lg" as const, padL: 12, padR: 26 },
+  lg: { h: 48, tipLen: 22, fontSize: 13,   tile: "lg" as const, padL: 12, padR: 26 },
 }
 type SizeKey = keyof typeof SIZE_DIMS
 
@@ -58,21 +60,18 @@ interface SectionHeaderCtx {
   rootRef: React.MutableRefObject<HTMLElement | null>
 }
 const SectionHeaderContext = React.createContext<SectionHeaderCtx | null>(null)
-const useSectionHeaderCtx = () => {
+function useSectionHeaderCtx() {
   const ctx = React.useContext(SectionHeaderContext)
   if (!ctx) throw new Error("SectionHeader.* must be used inside <SectionHeaderRoot>")
   return ctx
 }
 
+const ROOT_CLASS =
+  "relative isolate inline-grid items-center cursor-default select-none font-[950] uppercase leading-none"
+
 // ─── Root ───────────────────────────────────────────────────────────────────
 
-const rootVariants = cva(
-  "relative isolate inline-grid items-center cursor-default select-none font-[950] uppercase leading-none",
-)
-
-export interface SectionHeaderRootProps
-  extends Omit<React.HTMLAttributes<HTMLElement>, "children">,
-    VariantProps<typeof rootVariants> {
+export interface SectionHeaderRootProps extends Omit<React.HTMLAttributes<HTMLElement>, "children"> {
   variant?: VariantKey
   size?: SizeKey
   /** Render as a different element via Radix Slot (default: div). */
@@ -87,20 +86,27 @@ export const SectionHeaderRoot = React.forwardRef<HTMLElement, SectionHeaderRoot
   ) {
     const Comp: React.ElementType = asChild ? Slot : "div"
     const localRef = React.useRef<HTMLElement | null>(null)
-    React.useImperativeHandle(ref, () => localRef.current as HTMLElement, [])
-    const setRefs = (node: HTMLElement | null) => {
-      localRef.current = node
-    }
+
+    // Single callback ref forwards the node to both the local ref (for Chrome's
+    // ResizeObserver) and the consumer's forwarded ref.
+    const setRefs = React.useCallback(
+      (node: HTMLElement | null) => {
+        localRef.current = node
+        if (typeof ref === "function") ref(node)
+        else if (ref) ref.current = node
+      },
+      [ref],
+    )
 
     const dim = SIZE_DIMS[size]
-    const tokens = VARIANT_FG[variant]
+    const tokens = VARIANT_TOKENS[variant]
 
     return (
       <SectionHeaderContext.Provider value={{ variant, size, rootRef: localRef }}>
         <Comp
           ref={setRefs}
           data-ad-section-header=""
-          className={cn(rootVariants(), className)}
+          className={cn(ROOT_CLASS, className)}
           style={{
             height: dim.h,
             fontSize: dim.fontSize,
@@ -136,7 +142,7 @@ export const SectionHeaderChrome = React.forwardRef<SVGSVGElement, SectionHeader
         targetRef={rootRef}
         variant={variant}
         tipLen={SIZE_DIMS[size].tipLen}
-        className={cn(className)}
+        className={className}
       />
     )
   },
@@ -156,7 +162,7 @@ export const SectionHeaderIcon = React.forwardRef<HTMLSpanElement, SectionHeader
       <IconTile
         ref={ref}
         size={SIZE_DIMS[size].tile}
-        tone={VARIANT_FG[variant].tile.tone}
+        tone={VARIANT_TOKENS[variant].tileTone}
         className={cn("relative z-10", className)}
       >
         {children}
@@ -224,17 +230,9 @@ export const SectionHeader = React.forwardRef<HTMLElement, SectionHeaderProps>(f
   return (
     <SectionHeaderRoot ref={ref} {...rootProps}>
       <SectionHeaderChrome />
-      {icon !== null && icon !== undefined ? (
-        <SectionHeaderIcon>{icon}</SectionHeaderIcon>
-      ) : (
-        <span aria-hidden />
-      )}
+      {icon != null ? <SectionHeaderIcon>{icon}</SectionHeaderIcon> : <span aria-hidden />}
       <SectionHeaderLabel>{children}</SectionHeaderLabel>
-      {end !== null && end !== undefined ? (
-        <SectionHeaderEnd>{end}</SectionHeaderEnd>
-      ) : (
-        <span aria-hidden />
-      )}
+      {end != null ? <SectionHeaderEnd>{end}</SectionHeaderEnd> : <span aria-hidden />}
     </SectionHeaderRoot>
   )
 })

@@ -1,10 +1,11 @@
 "use client"
 
 import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
+import { colors, radii } from "./tokens"
+import "./aerodash.css"
 import "./chip.css"
 
 /**
@@ -19,38 +20,35 @@ import "./chip.css"
 
 type VariantTokens = { bg: string; fg: string; border: string }
 const VARIANT_COLORS: Record<string, VariantTokens> = {
-  default: { bg: "#ffffff", fg: "#05070b", border: "#05070b" },
-  cyan:    { bg: "#d9f7ff", fg: "#0a3a48", border: "#0a3a48" },
-  pink:    { bg: "#ffd8e2", fg: "#71132a", border: "#71132a" },
-  warn:    { bg: "#fff3b8", fg: "#5a4400", border: "#5a4400" },
-  green:   { bg: "#dffdec", fg: "#0c4924", border: "#0c4924" },
-  dark:    { bg: "#05070b", fg: "#ffffff", border: "#05070b" },
+  default: { bg: colors.paper,    fg: colors.ink, border: colors.ink },
+  cyan:    { bg: colors.cyanSoft, fg: "#0a3a48",  border: "#0a3a48" },
+  pink:    { bg: colors.pinkSoft, fg: "#71132a",  border: "#71132a" },
+  warn:    { bg: colors.warnSoft, fg: "#5a4400",  border: "#5a4400" },
+  green:   { bg: colors.greenSoft, fg: "#0c4924", border: "#0c4924" },
+  dark:    { bg: colors.ink,      fg: colors.paper, border: colors.ink },
 }
 type VariantKey = keyof typeof VARIANT_COLORS
 
 const SIZE_DIMS = {
-  sm: { h: 20, fontSize: 9, padX: 7, gap: 5 },
-  md: { h: 24, fontSize: 10, padX: 9, gap: 6 },
-  lg: { h: 28, fontSize: 11, padX: 11, gap: 7 },
+  sm: { h: 20, fontSize: 9,  padX: 7,  gap: 5, dismiss: 12 },
+  md: { h: 24, fontSize: 10, padX: 9,  gap: 6, dismiss: 14 },
+  lg: { h: 28, fontSize: 11, padX: 11, gap: 7, dismiss: 16 },
 } as const
 type SizeKey = keyof typeof SIZE_DIMS
 
 const ChipContext = React.createContext<{ size: SizeKey; variant: VariantKey } | null>(null)
-const useChipCtx = () => {
+function useChipCtx() {
   const ctx = React.useContext(ChipContext)
   if (!ctx) throw new Error("Chip.* must be used inside <ChipRoot>")
   return ctx
 }
 
+const ROOT_CLASS =
+  "inline-flex items-center font-[950] uppercase leading-none tracking-[0.06em] cursor-default select-none"
+
 // ─── Root ───────────────────────────────────────────────────────────────────
 
-const rootVariants = cva(
-  "inline-flex items-center font-[950] uppercase leading-none tracking-[0.06em] cursor-default select-none",
-)
-
-export interface ChipRootProps
-  extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children">,
-    VariantProps<typeof rootVariants> {
+export interface ChipRootProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children"> {
   variant?: VariantKey
   size?: SizeKey
   children?: React.ReactNode
@@ -67,7 +65,7 @@ export const ChipRoot = React.forwardRef<HTMLSpanElement, ChipRootProps>(functio
       <span
         ref={ref}
         data-ad-chip=""
-        className={cn(rootVariants(), className)}
+        className={cn(ROOT_CLASS, className)}
         style={{
           height: dim.h,
           fontSize: dim.fontSize,
@@ -76,7 +74,7 @@ export const ChipRoot = React.forwardRef<HTMLSpanElement, ChipRootProps>(functio
           background: tokens.bg,
           color: tokens.fg,
           border: `1.5px solid ${tokens.border}`,
-          borderRadius: 999,
+          borderRadius: radii.pill,
           ...style,
         }}
         {...props}
@@ -109,7 +107,7 @@ export interface ChipDismissProps extends React.ButtonHTMLAttributes<HTMLButtonE
 export const ChipDismiss = React.forwardRef<HTMLButtonElement, ChipDismissProps>(
   function ChipDismiss({ className, style, children, ...props }, ref) {
     const { size } = useChipCtx()
-    const sz = size === "sm" ? 12 : size === "lg" ? 16 : 14
+    const sz = SIZE_DIMS[size].dismiss
     return (
       <button
         ref={ref}

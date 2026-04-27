@@ -1,19 +1,15 @@
-/* AeroDash SegmentedControl — interaction states + first-item divider reset. */
+/* AeroDash SegmentedControl — divider reset + hover.
+ * Item focus ring lives in aerodash.css.
+ */
 
+/* Suppress the inset divider on the first item. */
 [data-ad-segmented] > [data-ad-segmented-item]:first-child {
-  /* Suppress the inset divider on the first item */
   box-shadow: none !important;
 }
 
 [data-ad-segmented-item]:hover:not([data-active]) {
   background: #f1f5f9;
   color: #05070b;
-}
-
-[data-ad-segmented-item]:focus-visible {
-  outline: 1.5px solid #00c8ff;
-  outline-offset: -2px;
-  z-index: 2;
 }
 
 [data-ad-segmented-item][data-active] {

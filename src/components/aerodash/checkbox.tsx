@@ -6,6 +6,7 @@ import * as RadixCheckbox from "@radix-ui/react-checkbox"
 import { cn } from "@/lib/utils"
 
 import { colors, radii } from "./tokens"
+import "./aerodash.css"
 import "./checkbox.css"
 
 /**
