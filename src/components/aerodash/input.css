@@ -1,0 +1,18 @@
+/* AeroDash Input — placeholder + focus override.
+ * Root focus-within ring lives in aerodash.css.
+ */
+
+[data-ad-input-control] {
+  outline: none !important;
+  box-shadow: none !important;
+}
+[data-ad-input-control]:focus,
+[data-ad-input-control]:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+[data-ad-input-control]::placeholder {
+  color: #c4cbd6;
+  opacity: 1;
+}

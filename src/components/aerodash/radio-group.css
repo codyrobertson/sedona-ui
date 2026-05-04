@@ -1,0 +1,16 @@
+/* AeroDash RadioGroup — indicator dot only.
+ * Box background, hover, focus, and press states live in aerodash.css.
+ */
+
+[data-ad-radio] {
+  transition: background 150ms ease, transform 100ms ease;
+}
+
+/* Inner dot — ink at rest, paper when the surrounding ring is checked. */
+[data-ad-radio-indicator] {
+  background: #05070b;
+  transition: background 150ms ease;
+}
+[data-ad-radio][data-state="checked"] [data-ad-radio-indicator] {
+  background: #ffffff !important;
+}

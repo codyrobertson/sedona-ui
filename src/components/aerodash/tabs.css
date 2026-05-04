@@ -1,0 +1,82 @@
+/* AeroDash Tabs — y2k slanted-parallelogram active state on a dark bar.
+   Mirrors aerodash_preview/01-shell.html .top-tabs pattern. */
+
+[data-ad-tabs-list] {
+  position: relative;
+  /* Mobile: list scrolls horizontally if too many triggers. Hide scrollbar
+     while keeping native iOS momentum scroll. */
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  flex-wrap: nowrap;
+}
+[data-ad-tabs-list]::-webkit-scrollbar {
+  display: none;
+}
+
+[data-ad-tabs-trigger] {
+  position: relative;
+  flex-shrink: 0;
+  white-space: nowrap;
+  background: transparent;
+  color: #e7edf5;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: color 140ms ease, background 140ms ease;
+}
+
+@media (hover: hover) {
+  [data-ad-tabs-trigger]:hover:not([data-state="active"]):not([data-disabled]) {
+    color: #ffffff;
+    background: rgba(0, 200, 255, 0.08);
+  }
+}
+
+@media (hover: none) {
+  [data-ad-tabs-trigger]:active:not([data-state="active"]):not([data-disabled]) {
+    background: rgba(0, 200, 255, 0.16);
+  }
+}
+
+[data-ad-tabs-trigger][data-state="active"] {
+  background: #00c8ff;
+  color: #001016;
+  clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+  z-index: 2;
+  /* Top inner highlight — matches the cyan-LED tag treatment in StatsBar. */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -2px 0 rgba(0, 60, 80, 0.32);
+}
+
+[data-ad-tabs-trigger][data-state="active"]:first-child {
+  clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+}
+
+[data-ad-tabs-trigger][data-state="active"]:last-child {
+  clip-path: polygon(12px 0, 100% 0, 100% 100%, 0 100%);
+}
+
+[data-ad-tabs-trigger][data-state="active"]:only-child {
+  clip-path: none;
+}
+
+[data-ad-tabs-trigger][data-disabled] {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+[data-ad-tabs-trigger]:focus-visible {
+  outline: 1.5px dotted #00c8ff !important;
+  outline-offset: -3px;
+  box-shadow: none !important;
+  z-index: 3;
+}
+
+/* Mobile: 44px minimum touch target. */
+@media (max-width: 640px) {
+  [data-ad-tabs-trigger] {
+    min-height: 44px;
+  }
+}

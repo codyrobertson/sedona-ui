@@ -17,8 +17,14 @@ const organizationSchema = {
   description: "AI Agent Trading Platform on Solana",
   url: SEO_CONFIG.baseUrl,
   logo: `${SEO_CONFIG.baseUrl}/icon.svg`,
+  contactPoint: {
+    "@type": "ContactPoint",
+    email: SEO_CONFIG.contact.email,
+    contactType: "customer service",
+  },
   sameAs: [
-    "https://twitter.com/SedonaAI",
+    SEO_CONFIG.social.twitter,
+    SEO_CONFIG.social.discord,
   ],
 }
 

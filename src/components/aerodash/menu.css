@@ -1,0 +1,59 @@
+/* AeroDash Menu — shared interaction states for dropdown/select/context items. */
+
+[data-ad-menu-item] {
+  transition: background 120ms ease, color 120ms ease;
+}
+
+[data-ad-menu-item]:focus,
+[data-ad-menu-item]:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+[data-ad-menu-content] :focus-visible,
+[data-ad-select-content] :focus-visible,
+[data-ad-combobox-content] :focus-visible {
+  outline: 1.5px dotted #00c8ff !important;
+  outline-offset: 2px;
+  box-shadow: none !important;
+}
+
+[data-ad-menu-item][data-highlighted],
+[data-ad-menu-item]:hover:not([data-disabled]) {
+  background: #05070b;
+  color: #ffffff !important;
+  outline: none;
+}
+
+[data-ad-menu-item][data-variant="danger"][data-highlighted],
+[data-ad-menu-item][data-variant="danger"]:hover:not([data-disabled]) {
+  background: #71132a;
+  color: #ffffff !important;
+}
+
+[data-ad-menu-item][data-disabled] {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+[data-ad-menu-content],
+[data-ad-select-content] {
+  animation: ad-menu-in 120ms ease-out;
+  transform-origin: var(--radix-dropdown-menu-content-transform-origin, var(--radix-select-content-transform-origin, top center));
+}
+
+@keyframes ad-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-2px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+[data-ad-menu-item][data-checkbox] [data-state="checked"],
+[data-ad-menu-item][data-radio] [data-state="checked"] {
+  color: inherit;
+}

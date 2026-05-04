@@ -332,7 +332,9 @@ export function formatMarketCap(value: number): string {
     return `$${(value / 1_000_000).toFixed(2)}M`
   }
   if (value >= 1_000) {
-    return `$${(value / 1_000).toFixed(1)}K`
+    const k = value / 1_000
+    // Ensure leading zero for values like 0.66K → "$0.66K"
+    return `$${k < 1 ? k.toFixed(2) : k.toFixed(1)}K`
   }
   return `$${value.toFixed(0)}`
 }

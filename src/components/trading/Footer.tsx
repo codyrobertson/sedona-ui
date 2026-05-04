@@ -8,12 +8,18 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { ContactForm } from "@/components/contact/ContactForm"
+import { SEO_CONFIG } from "@/lib/seo-config"
 
 export interface FooterProps extends React.HTMLAttributes<HTMLElement> {}
 
 const Footer = React.forwardRef<HTMLElement, FooterProps>(
   ({ className, ...props }, ref) => {
+    const [contactOpen, setContactOpen] = React.useState(false)
+
     return (
+      <>
+        <ContactForm open={contactOpen} onOpenChange={setContactOpen} />
       <footer
         ref={ref}
         className={cn(
@@ -29,7 +35,23 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
           <Tooltip>
             <TooltipTrigger asChild>
               <a
-                href="https://discord.gg/sedona"
+                href={SEO_CONFIG.social.twitter}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-zeus-text-secondary hover:text-zeus-text-primary transition-colors text-caption-m ml-4"
+              >
+                <Icon icon={["fab", "x-twitter"]} className="w-3.5 h-3.5" aria-hidden="true" />
+                Twitter
+              </a>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Follow us on X (opens in new tab)</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <a
+                href={SEO_CONFIG.social.discord}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 text-zeus-text-secondary hover:text-zeus-text-primary transition-colors text-caption-m ml-4"
@@ -73,12 +95,27 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
               <p>Evaluation methodology (opens in new tab)</p>
             </TooltipContent>
           </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                onClick={() => setContactOpen(true)}
+                className="inline-flex items-center gap-1.5 text-zeus-text-secondary hover:text-zeus-text-primary transition-colors text-caption-m ml-4"
+              >
+                <Icon icon="envelope" className="w-3.5 h-3.5" aria-hidden="true" />
+                Contact
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Get in touch with us</p>
+            </TooltipContent>
+          </Tooltip>
         </div>
 
         <span className="text-zeus-text-tertiary text-caption-s">
           Not affiliated with any third party
         </span>
       </footer>
+      </>
     )
   }
 )

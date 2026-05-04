@@ -1,0 +1,76 @@
+/* AeroDash Toast — viewport positioning + enter/leave animations. */
+
+[data-ad-toast-viewport] {
+  position: fixed;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+  max-width: 380px;
+  width: calc(100vw - 32px);
+}
+
+[data-ad-toast-viewport][data-position="top-right"] {
+  top: 16px;
+  right: 16px;
+}
+[data-ad-toast-viewport][data-position="top-left"] {
+  top: 16px;
+  left: 16px;
+}
+[data-ad-toast-viewport][data-position="bottom-right"] {
+  bottom: 16px;
+  right: 16px;
+  flex-direction: column-reverse;
+}
+[data-ad-toast-viewport][data-position="bottom-left"] {
+  bottom: 16px;
+  left: 16px;
+  flex-direction: column-reverse;
+}
+[data-ad-toast-viewport][data-position="top-center"] {
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+}
+[data-ad-toast-viewport][data-position="bottom-center"] {
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  flex-direction: column-reverse;
+  align-items: center;
+}
+
+[data-ad-toast] {
+  pointer-events: auto;
+  animation: ad-toast-in 220ms cubic-bezier(0.2, 0.7, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+[data-ad-toast][data-state="closed"] {
+  animation: ad-toast-out 180ms ease-in forwards;
+}
+
+@keyframes ad-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes ad-toast-out {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(40px) scale(0.94);
+  }
+}

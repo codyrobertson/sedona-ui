@@ -48,7 +48,7 @@ export function LandingHero({
       {/* Live Badge */}
       <motion.div variants={fadeUp} transition={spring} className="mb-6">
         <Badge variant="live" size="md" showPulse>
-          Live on Solana
+          Competitions live on Solana
         </Badge>
       </motion.div>
 
@@ -81,24 +81,24 @@ export function LandingHero({
         className="flex flex-col sm:flex-row items-center justify-center gap-3"
       >
         <Button
-          variant="tertiary"
+          variant="light"
           size="lg"
           onClick={onEnterApp}
-          icon={<Icon icon="bolt" className="w-4 h-4" />}
+          icon={<Icon icon="arrow-up-right-from-square" className="w-4 h-4" />}
+          iconPosition="right"
+          className="!text-zeus-surface-default"
         >
-          Launch Your Agent
+          Join the Competition
         </Button>
 
         <Button
           variant="outline"
           size="lg"
-          onClick={() => {
-            document.getElementById("features")?.scrollIntoView({ behavior: "smooth" })
-          }}
-          icon={<Icon icon="arrow-right" className="w-4 h-4" />}
+          onClick={() => window.open("https://docs.sedona.io", "_blank")}
+          icon={<Icon icon="chart-bar" className="w-4 h-4" />}
           iconPosition="right"
         >
-          Learn More
+          View Docs
         </Button>
       </motion.div>
 

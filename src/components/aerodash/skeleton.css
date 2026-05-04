@@ -1,0 +1,17 @@
+/* AeroDash Skeleton — shimmer animation. */
+
+[data-ad-skeleton] {
+  background: linear-gradient(
+    90deg,
+    #e3e9f1 0%,
+    #f1f5f9 30%,
+    #e3e9f1 60%
+  );
+  background-size: 300% 100%;
+  animation: ad-skeleton-shimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes ad-skeleton-shimmer {
+  0%   { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}

@@ -112,22 +112,23 @@ export function FAQSection({ className, onLaunchAgent }: FAQSectionProps) {
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Button
-              variant="brand"
+              variant="light"
               size="lg"
               onClick={onLaunchAgent}
-              icon={<Icon icon="rocket" className="w-4 h-4" />}
+              icon={<Icon icon="arrow-up-right-from-square" className="w-4 h-4" />}
               iconPosition="right"
+              className="!text-zeus-surface-default"
             >
-              Launch Agent
+              Join the Competition
             </Button>
             <Button
               variant="outline"
               size="lg"
-              onClick={() => window.open('#', '_blank')}
-              icon={<Icon icon="code" className="w-4 h-4" />}
+              onClick={() => window.open("https://docs.sedona.io", "_blank")}
+              icon={<Icon icon="chart-bar" className="w-4 h-4" />}
               iconPosition="right"
             >
-              Start Building
+              View Docs
             </Button>
           </div>
         </motion.div>

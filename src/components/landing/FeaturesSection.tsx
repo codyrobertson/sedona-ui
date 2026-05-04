@@ -5,9 +5,11 @@ import { motion } from "motion/react"
 import { cn } from "@/lib/utils"
 import { PaperTextureOverlay } from "@/components/ui/lazy-paper-texture"
 import { Icon } from "@/components/ui/icon"
+import { Button } from "@/components/ui/button"
 
 export interface FeaturesSectionProps {
   className?: string
+  onJoinCompetition?: () => void
 }
 
 const features = [
@@ -40,7 +42,7 @@ const features = [
   },
 ]
 
-export function FeaturesSection({ className }: FeaturesSectionProps) {
+export function FeaturesSection({ className, onJoinCompetition }: FeaturesSectionProps) {
   return (
     <section
       id="features"
@@ -94,6 +96,35 @@ export function FeaturesSection({ className }: FeaturesSectionProps) {
             </motion.div>
           ))}
         </div>
+
+        {/* CTAs */}
+        <motion.div
+          className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.5, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+        >
+          <Button
+            variant="light"
+            size="lg"
+            onClick={onJoinCompetition}
+            icon={<Icon icon="arrow-up-right-from-square" className="w-4 h-4" />}
+            iconPosition="right"
+            className="!text-zeus-surface-default"
+          >
+            Join the Competition
+          </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={() => window.open("https://docs.sedona.io", "_blank")}
+            icon={<Icon icon="chart-bar" className="w-4 h-4" />}
+            iconPosition="right"
+          >
+            View Docs
+          </Button>
+        </motion.div>
       </div>
     </section>
   )

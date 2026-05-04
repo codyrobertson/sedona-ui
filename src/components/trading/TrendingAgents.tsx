@@ -15,6 +15,7 @@ export interface TrendingAgentsProps extends React.HTMLAttributes<HTMLDivElement
   onSortChange?: (sort: string) => void
   onSearch?: (query: string) => void
   onAgentSelect?: (ticker: string) => void
+  competitionName?: string
 }
 
 const SORT_OPTIONS = [
@@ -34,6 +35,7 @@ const TrendingAgents = React.forwardRef<HTMLDivElement, TrendingAgentsProps>(
       onSortChange,
       onSearch,
       onAgentSelect,
+      competitionName = "Diplomacy",
       ...props
     },
     ref
@@ -53,6 +55,12 @@ const TrendingAgents = React.forwardRef<HTMLDivElement, TrendingAgentsProps>(
 
     return (
       <div ref={ref} className={cn("flex-1", className)} {...props}>
+        {/* Active Competition Header */}
+        <div className="mb-6">
+          <p className="text-zeus-status-success text-caption-m font-semibold mb-1">Active Competitions</p>
+          <h2 className="text-zeus-text-primary text-heading-l font-bold">{competitionName}</h2>
+        </div>
+
         {/* Top 5 Market Cap Chart with Title & Sorting */}
         {topAgentsHistory.length > 0 && (
           <TopAgentsChart
