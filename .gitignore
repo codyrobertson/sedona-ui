@@ -94,6 +94,12 @@ temp/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+.playwright-mcp/
+
+# Local build/design exports
+.next_backup_*/
+aerodash_preview/
+sedona_ui_v2/
 
 # Local tasks/planning (untracked)
 /tasks/

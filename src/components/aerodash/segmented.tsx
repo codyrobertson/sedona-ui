@@ -4,6 +4,7 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+import { useControllableState } from "./use-controllable-state"
 import { colors, radii } from "./tokens"
 import "./aerodash.css"
 import "./segmented.css"
@@ -71,17 +72,20 @@ export const SegmentedRoot = React.forwardRef<HTMLDivElement, SegmentedRootProps
     },
     ref,
   ) {
-    const [internal, setInternal] = React.useState(defaultValue)
-    const isControlled = controlledValue !== undefined
-    const value = isControlled ? controlledValue : internal
-    const setValue = (v: string) => {
-      if (!isControlled) setInternal(v)
-      onChange?.(v)
-    }
+    const [value, setValue] = useControllableState({
+      value: controlledValue,
+      defaultValue,
+      onChange,
+    })
 
     const dim = SIZE_DIMS[size]
+    const contextValue = React.useMemo<SegmentedCtx>(
+      () => ({ value, setValue, size, variant }),
+      [setValue, size, value, variant],
+    )
+
     return (
-      <SegmentedContext.Provider value={{ value, setValue, size, variant }}>
+      <SegmentedContext.Provider value={contextValue}>
         <div
           ref={ref}
           data-ad-segmented=""

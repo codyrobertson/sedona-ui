@@ -89,7 +89,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
             color: colors.ink,
             border: `2px solid ${colors.ink}`,
             borderRadius: radii.lg,
-            boxShadow: `4px 4px 0 ${colors.ink}`,
+            boxShadow: `1px 1px 0 ${colors.ink}`,
             ...style,
           }}
           {...props}

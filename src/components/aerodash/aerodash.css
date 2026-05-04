@@ -5,8 +5,126 @@
  * across components and makes theme tweaks a single edit.
  */
 
+/* ── Typography tokens ────────────────────────────────────────────────────
+ * CSS custom props mirror the TS tokens in tokens.ts so consumers can
+ * theme via either side. Monument Grotesk leads the sans chain because it
+ * is bundled in /public/fonts; Boing stays as an optional local upgrade
+ * when a machine has it installed. font-display: swap means no FOIT.
+ *
+ * `--ad-font-display` is the y2k mechanical voice — Arial Narrow /
+ * Roboto Condensed / Impact — used for chevron tags, stats values, KPIs.
+ */
+[data-ad-page],
+[data-ad-headerbar],
+[data-ad-statsbar],
+[data-ad-shell],
+[data-ad-titleblock],
+[data-ad-topnav],
+[data-ad-side-rail],
+[data-ad-card],
+[data-ad-alert],
+[data-ad-tabs-list],
+[data-ad-root],
+[data-ad-input-root],
+[data-ad-segmented],
+[data-ad-chip],
+[data-ad-section-header] {
+  --ad-font-sans:
+    "Monument Grotesk", "Boing", "PP Boing", "Boing Test", ui-sans-serif,
+    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI Variable",
+    "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --ad-font-display:
+    "Monument Grotesk", "Arial Narrow", "Roboto Condensed", Impact,
+    "Helvetica Inserat", "Bebas Neue", ui-sans-serif, sans-serif;
+  --ad-font-mono:
+    "JetBrains Mono", "Source Code Pro", ui-monospace, "SF Mono", Menlo,
+    Consolas, monospace;
+
+  /* Modular type scale (1.25 from 13px base) */
+  --ad-text-micro: 10px;
+  --ad-text-xs:    11px;
+  --ad-text-sm:    12px;
+  --ad-text-base:  13px;
+  --ad-text-md:    15px;
+  --ad-text-lg:    19px;
+  --ad-text-xl:    24px;
+  --ad-text-2xl:   32px;
+  --ad-text-3xl:   44px;
+
+  font-family: var(--ad-font-sans);
+  /* Monument ships up to medium in this repo; allow browser weight synthesis
+     so 800/950 chrome labels still read like heavy UI type. */
+  font-synthesis: weight;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ── Focus reset ───────────────────────────────────────────────────────────
+ * The host app has a global Tailwind :focus-visible ring. AeroDash owns its
+ * own focus language, so strip inherited ring shadows inside the component
+ * island and its portaled overlays before applying the cyan dotted outline.
+ */
+:where(
+  [data-ad-page],
+  [data-ad-menu-content],
+  [data-ad-select-content],
+  [data-ad-combobox-content],
+  [data-ad-dialog-content],
+  [data-ad-toast-viewport]
+) :focus {
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  outline: none;
+  box-shadow: none !important;
+}
+
+:where(
+  [data-ad-page],
+  [data-ad-menu-content],
+  [data-ad-select-content],
+  [data-ad-combobox-content],
+  [data-ad-dialog-content],
+  [data-ad-toast-viewport]
+) :focus-visible {
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  outline: 1.5px dotted #00c8ff !important;
+  outline-offset: 2px;
+  box-shadow: none !important;
+}
+
+[data-ad-page] > h1,
+[data-ad-page] > p,
+[data-ad-page] section > h2 {
+  font-family: var(--ad-font-display);
+}
+
+/* Display-class elements that should consciously break out of the body
+ * font and use the condensed mechanical voice. These selectors are
+ * additive to the data-ad-* roots above. */
+[data-ad-display],
+[data-ad-statsbar-section-label],
+[data-ad-statsbar-item] [data-ad-display],
+[data-ad-card] [data-ad-display] {
+  font-family: var(--ad-font-display);
+  font-feature-settings: "tnum" 1, "ss01" 1;
+}
+
+/* Tabular numerals everywhere a number renders inside a metric. The
+ * `font-variant-numeric` is the modern hook; `font-feature-settings`
+ * is the wider-supported fallback. */
+[data-ad-card-value],
+[data-ad-statsbar-item],
+[data-ad-statsbar-ticker],
+[data-ad-table] td,
+[data-ad-progress-value] {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
 /* ── Focus ring ───────────────────────────────────────────────────────────
- * Cyan 1.5px outline with a 2px offset is the canonical AeroDash focus
+ * Cyan 1.5px dotted outline with a 2px offset is the canonical AeroDash focus
  * indicator. Used by every interactive primitive.
  */
 [data-ad-checkbox]:focus-visible,
@@ -17,8 +135,14 @@
 [data-ad-chip-dismiss]:focus-visible,
 [data-ad-input-root]:focus-within,
 [data-ad-root]:focus-visible > [data-ad-inner] {
-  outline: 1.5px solid #00c8ff;
+  outline: 1.5px dotted #00c8ff !important;
   outline-offset: 2px;
+  box-shadow: none !important;
+}
+
+[data-ad-root]:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 /* Per-component overrides where the canonical offset doesn't apply. */

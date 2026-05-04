@@ -53,6 +53,7 @@
     "test:registry": "vitest run --config vitest.config.node.ts",
     "test:all": "vitest run && vitest run --config vitest.config.node.ts",
     "test:coverage": "vitest run --coverage",
+    "design-system:audit": "node scripts/audit-aerodash.mjs",
     "analyze-components": "npx ts-node scripts/analyze-components.ts",
     "figma:install": "cd figma-plugin/sedona-sync && npm install",
     "figma:build": "cd figma-plugin/sedona-sync && npm run build",

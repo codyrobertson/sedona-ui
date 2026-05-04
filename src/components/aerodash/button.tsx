@@ -42,12 +42,13 @@ const LIGHT_DIVIDER = "rgba(0,0,0,0.25)"
 const DARK_DIVIDER = "rgba(255,255,255,0.18)"
 
 const VARIANT_COLORS: Record<string, VariantTokens> = {
-  primary:   { bg: colors.cyan,  fg: "#001016", well: colors.cyanDeep, divider: LIGHT_DIVIDER, border: colors.ink },
-  secondary: { bg: colors.paper, fg: "#080c12", well: "#e5eaf0",       divider: LIGHT_DIVIDER, border: colors.ink },
-  dark:      { bg: colors.ink,   fg: colors.cyan, well: "#1a2332",     divider: DARK_DIVIDER,  border: "#1f2937" },
-  danger:    { bg: colors.pink,  fg: "#090b10", well: "#db2e55",       divider: LIGHT_DIVIDER, border: colors.ink },
-  warn:      { bg: colors.warn,  fg: "#090b10", well: "#e7bd00",       divider: LIGHT_DIVIDER, border: colors.ink },
-  success:   { bg: colors.green, fg: "#06100a", well: "#19b85b",       divider: LIGHT_DIVIDER, border: colors.ink },
+  primary:   { bg: colors.cyan,   fg: "#001016", well: colors.cyanDeep, divider: LIGHT_DIVIDER, border: colors.ink },
+  secondary: { bg: colors.paper,  fg: "#080c12", well: "#e5eaf0",       divider: LIGHT_DIVIDER, border: colors.ink },
+  dark:      { bg: colors.ink,    fg: colors.cyan, well: "#1a2332",     divider: DARK_DIVIDER,  border: "#1f2937" },
+  danger:    { bg: colors.pink,   fg: "#090b10", well: "#db2e55",       divider: LIGHT_DIVIDER, border: colors.ink },
+  warn:      { bg: colors.warn,   fg: "#090b10", well: "#e7bd00",       divider: LIGHT_DIVIDER, border: colors.ink },
+  success:   { bg: colors.green,  fg: "#06100a", well: "#19b85b",       divider: LIGHT_DIVIDER, border: colors.ink },
+  orange:    { bg: colors.orange, fg: "#180a00", well: colors.orangeDeep, divider: LIGHT_DIVIDER, border: colors.ink },
 }
 
 const SIZE_DIMS = {
@@ -63,7 +64,6 @@ type VariantKey = keyof typeof VARIANT_COLORS
 
 interface ButtonCtx {
   size: SizeKey
-  pressed: boolean
 }
 const ButtonContext = React.createContext<ButtonCtx | null>(null)
 function useButtonCtx(): ButtonCtx {
@@ -87,54 +87,36 @@ export interface ButtonRootProps extends Omit<React.ButtonHTMLAttributes<HTMLBut
 }
 
 export const ButtonRoot = React.forwardRef<HTMLButtonElement, ButtonRootProps>(function ButtonRoot(
-  {
-    className,
-    variant = "primary",
-    size = "md",
-    asChild = false,
-    style,
-    children,
-    onPointerDown,
-    onPointerUp,
-    onPointerLeave,
-    ...props
-  },
+  { className, variant = "primary", size = "md", asChild = false, style, children, ...props },
   ref,
 ) {
   const Comp: React.ElementType = asChild ? Slot : "button"
-  const [pressed, setPressed] = React.useState(false)
   const tokens = VARIANT_COLORS[variant] ?? VARIANT_COLORS.primary
   const dim = SIZE_DIMS[size]
 
   return (
-    <ButtonContext.Provider value={{ size, pressed }}>
+    <ButtonContext.Provider value={{ size }}>
       <Comp
         ref={ref}
         data-ad-root=""
+        data-variant={variant}
+        data-size={size}
         className={cn(ROOT_CLASS, className)}
-        style={{
-          minHeight: dim.minH,
-          fontSize: dim.fontSize,
-          color: tokens.fg,
-          ["--ad-bg" as string]: tokens.bg,
-          ["--ad-fg" as string]: tokens.fg,
-          ["--ad-well" as string]: tokens.well,
-          ["--ad-divider" as string]: tokens.divider,
-          ["--ad-border" as string]: tokens.border,
-          ...style,
-        }}
-        onPointerDown={(e) => {
-          setPressed(true)
-          onPointerDown?.(e)
-        }}
-        onPointerUp={(e) => {
-          setPressed(false)
-          onPointerUp?.(e)
-        }}
-        onPointerLeave={(e) => {
-          setPressed(false)
-          onPointerLeave?.(e)
-        }}
+        style={
+          {
+            minHeight: dim.minH,
+            fontSize: dim.fontSize,
+            color: tokens.fg,
+            ["--ad-bg" as string]: tokens.bg,
+            ["--ad-fg" as string]: tokens.fg,
+            ["--ad-well" as string]: tokens.well,
+            ["--ad-divider" as string]: tokens.divider,
+            ["--ad-border" as string]: tokens.border,
+            // Underlay offset becomes a CSS variable so :active can override it.
+            ["--ad-offset" as string]: "1px",
+            ...style,
+          } as React.CSSProperties
+        }
         {...props}
       >
         {children}
@@ -149,7 +131,6 @@ export interface ButtonUnderlayProps extends React.HTMLAttributes<HTMLSpanElemen
 
 export const ButtonUnderlay = React.forwardRef<HTMLSpanElement, ButtonUnderlayProps>(
   function ButtonUnderlay({ style, ...props }, ref) {
-    const { pressed } = useButtonCtx()
     return (
       <span
         ref={ref}
@@ -157,14 +138,17 @@ export const ButtonUnderlay = React.forwardRef<HTMLSpanElement, ButtonUnderlayPr
         aria-hidden
         style={{
           position: "absolute",
-          top: pressed ? 1 : 3,
-          right: pressed ? -1 : -2,
-          bottom: pressed ? -1 : -2,
-          left: pressed ? 1 : 2,
+          // top + left match each other; right + bottom = negative-of (extends past).
+          // CSS vars let :active override without React state.
+          top: "var(--ad-underlay-tl, 1px)",
+          left: "var(--ad-underlay-tl, 1px)",
+          right: "var(--ad-underlay-br, -1px)",
+          bottom: "var(--ad-underlay-br, -1px)",
           background: colors.ink,
           borderRadius: radii.md,
           pointerEvents: "none",
-          transition: "top 100ms ease, right 100ms ease, bottom 100ms ease, left 100ms ease",
+          transition:
+            "top 140ms cubic-bezier(0.16, 1, 0.3, 1), left 140ms cubic-bezier(0.16, 1, 0.3, 1), right 140ms cubic-bezier(0.16, 1, 0.3, 1), bottom 140ms cubic-bezier(0.16, 1, 0.3, 1)",
           ...style,
         }}
         {...props}
@@ -175,23 +159,40 @@ export const ButtonUnderlay = React.forwardRef<HTMLSpanElement, ButtonUnderlayPr
 
 // ─── Inner (the bordered, colored body) ─────────────────────────────────────
 
-export interface ButtonInnerProps extends React.HTMLAttributes<HTMLSpanElement> {}
+export interface ButtonInnerProps extends React.HTMLAttributes<HTMLSpanElement> {
+  /** When true, collapses to a single-column label-only inner (no cap/well grid). */
+  bare?: boolean
+  /** Slot configuration: which sides have content. Default both. */
+  hasCap?: boolean
+  hasWell?: boolean
+}
 
 export const ButtonInner = React.forwardRef<HTMLSpanElement, ButtonInnerProps>(function ButtonInner(
-  { className, style, children, ...props },
+  { className, style, children, bare = false, hasCap = true, hasWell = true, ...props },
   ref,
 ) {
   const { size } = useButtonCtx()
   const dim = SIZE_DIMS[size]
+  let gridTemplateColumns: string
+  if (bare || (!hasCap && !hasWell)) {
+    gridTemplateColumns = "1fr"
+  } else if (!hasCap) {
+    gridTemplateColumns = `1fr ${dim.well}px`
+  } else if (!hasWell) {
+    gridTemplateColumns = `${dim.cap}px 1fr`
+  } else {
+    gridTemplateColumns = `${dim.cap}px 1fr ${dim.well}px`
+  }
   return (
     <span
       ref={ref}
       data-ad-inner=""
+      data-bare={bare || (!hasCap && !hasWell) ? "" : undefined}
       className={cn("grid", className)}
       style={{
         position: "relative",
         zIndex: 1,
-        gridTemplateColumns: `${dim.cap}px 1fr ${dim.well}px`,
+        gridTemplateColumns,
         minHeight: dim.minH,
         background: "var(--ad-bg)",
         border: `2px solid var(--ad-border, ${colors.ink})`,
@@ -251,8 +252,14 @@ export const ButtonLabel = React.forwardRef<HTMLSpanElement, ButtonLabelProps>(f
       style={{
         display: "grid",
         placeItems: "center",
+        // When the inner is bare (no cap/well), give the label more breathing room.
         paddingLeft: padX,
         paddingRight: padX,
+        // Edge case: very long labels get an ellipsis instead of breaking
+        // out of the chrome rectangle. min-width:0 lets the grid shrink.
+        minWidth: 0,
+        overflow: "hidden",
+        textOverflow: "ellipsis",
         ...style,
       }}
       {...props}
@@ -303,13 +310,15 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function 
   { icon, endIcon = <Chevron />, children, ...rootProps },
   ref,
 ) {
+  const hasCap = icon != null
+  const hasWell = endIcon != null
   return (
     <ButtonRoot ref={ref} {...rootProps}>
       <ButtonUnderlay />
-      <ButtonInner>
-        {icon != null ? <ButtonCap>{icon}</ButtonCap> : <span aria-hidden />}
+      <ButtonInner hasCap={hasCap} hasWell={hasWell}>
+        {hasCap ? <ButtonCap>{icon}</ButtonCap> : null}
         <ButtonLabel>{children}</ButtonLabel>
-        {endIcon != null ? <ButtonWell>{endIcon}</ButtonWell> : <span aria-hidden />}
+        {hasWell ? <ButtonWell>{endIcon}</ButtonWell> : null}
       </ButtonInner>
     </ButtonRoot>
   )

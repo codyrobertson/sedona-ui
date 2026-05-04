@@ -58,7 +58,7 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
             fontSize: 10,
             letterSpacing: "0.06em",
             lineHeight: 1.2,
-            boxShadow: `2px 2px 0 ${colors.cyan}`,
+            boxShadow: `1px 1px 0 ${colors.cyan}`,
             ...style,
           }}
           {...props}

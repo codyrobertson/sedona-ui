@@ -1,0 +1,131 @@
+/* AeroDash HeaderBar — chrome polish + delight microinteractions. */
+
+/* HeaderBar overflow rules — narrow viewports must let the nav scroll
+   horizontally rather than stack onto a second row (which breaks the
+   chrome rule + cyan inset shadow). */
+[data-ad-headerbar] {
+  overflow: hidden;
+}
+
+[data-ad-headerbar]::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.24) 18%,
+    rgba(255, 255, 255, 0.12) 62%,
+    rgba(255, 255, 255, 0.28)
+  );
+  pointer-events: none;
+}
+
+[data-ad-headerbar-brand] {
+  position: relative;
+}
+
+[data-ad-headerbar-brand]::after {
+  content: "";
+  position: absolute;
+  left: -20px;
+  right: -24px;
+  bottom: -13px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  pointer-events: none;
+}
+
+[data-ad-headerbar-actions]::before {
+  content: "";
+  width: 1px;
+  height: 24px;
+  margin-right: 4px;
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: 1px 0 0 rgba(0, 0, 0, 0.55);
+}
+
+[data-ad-headerbar-nav] {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  flex-wrap: nowrap;
+}
+[data-ad-headerbar-nav]::-webkit-scrollbar {
+  display: none;
+}
+
+/* Logo SVG/img inside HeaderBrand inherits the configured height. */
+[data-ad-headerbar-brand] > svg,
+[data-ad-headerbar-brand] > img,
+[data-ad-headerbar-brand] > span > svg,
+[data-ad-headerbar-brand] > span > img {
+  height: var(--ad-logo-h, 28px);
+  width: auto;
+  display: block;
+}
+
+/* ─── Nav links ────────────────────────────────────────────────────────────
+ * Cyan underline grows from left to right on hover (hover-capable devices)
+ * and on focus-visible (keyboard). Touch devices get a tap-tint instead.
+ */
+[data-ad-headerbar-link] {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.55);
+  transition: color 120ms ease, background 120ms ease;
+}
+
+[data-ad-headerbar-link]:not([data-active])::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: -2px;
+  height: 2px;
+  background: #00c8ff;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  [data-ad-headerbar-link]:hover::after,
+  [data-ad-headerbar-link]:focus-visible::after {
+    transform: scaleX(1);
+  }
+}
+
+/* Touch devices: brief tap-tint feedback (the underline animation is too subtle to see). */
+@media (hover: none) {
+  [data-ad-headerbar-link]:active {
+    background: rgba(0, 200, 255, 0.12);
+  }
+}
+
+[data-ad-headerbar-link]:focus-visible {
+  outline: 1.5px dotted #00c8ff !important;
+  outline-offset: 2px;
+  box-shadow: none !important;
+  border-radius: 3px;
+}
+
+/* ─── Tap targets on mobile ────────────────────────────────────────────────
+ * Below 640px the nav sometimes wraps and links must hit 44px minimum.
+ */
+@media (max-width: 640px) {
+  [data-ad-headerbar-link] {
+    height: 36px;
+    padding: 0 12px;
+  }
+}

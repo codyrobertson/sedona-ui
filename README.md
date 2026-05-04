@@ -1,13 +1,32 @@
 # Sedona UI Kit
 
-A production-ready UI component library built with **Next.js 14**, **Tailwind CSS**, **shadcn/ui**, and the **Zeus design system**. Optimized for AI agent trading platforms with comprehensive theming support.
+A production-ready UI component library built with **Next.js 14**, **Tailwind CSS**, Radix UI, and the active **AeroDash** design system. AeroDash is the current Sedona product UI surface for chrome-heavy trading, competition, and dashboard experiences.
 
 [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3-38bdf8)](https://tailwindcss.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## ✨ Features
+## Design-System Source Of Truth
+
+The active design system is documented in [`docs/AERODASH_DESIGN_SYSTEM.md`](docs/AERODASH_DESIGN_SYSTEM.md).
+
+Key files:
+
+- `src/components/aerodash/index.ts` - public AeroDash API
+- `src/components/aerodash/manifest.ts` - component/source/CSS/export inventory
+- `src/components/aerodash/tokens.ts` - runtime token source
+- `src/app/aerodash/page.tsx` - live component playground
+
+Run the design-system gate before PRs:
+
+```bash
+npm run design-system:audit
+npm run test:run -- src/components/aerodash
+npm run type-check
+```
+
+## Features
 
 - 🎨 **Complete Zeus Design System** integration with 100+ design tokens
 - 🌗 **Full Light/Dark Theme Support** with automatic persistence

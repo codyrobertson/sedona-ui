@@ -1,0 +1,42 @@
+/* AeroDash Table — row hover + sortable header. */
+
+[data-ad-table-row][data-interactive]:hover {
+  background: #f1f5f9;
+}
+
+[data-ad-table-row][data-selected="true"] {
+  background: #d9f7ff;
+}
+
+[data-ad-table-sort] {
+  cursor: pointer;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+
+[data-ad-table-sort]:hover {
+  color: #05070b;
+}
+
+[data-ad-table-sort] [data-ad-table-sort-icon] {
+  opacity: 0.3;
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+[data-ad-table-sort][data-direction="asc"] [data-ad-table-sort-icon],
+[data-ad-table-sort][data-direction="desc"] [data-ad-table-sort-icon] {
+  opacity: 1;
+}
+
+[data-ad-table-sort][data-direction="desc"] [data-ad-table-sort-icon] {
+  transform: rotate(180deg);
+}

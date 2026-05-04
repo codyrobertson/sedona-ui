@@ -4,7 +4,7 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-import { colors, radii } from "./tokens"
+import { colors, radii, fontSize, fontWeight, letterSpacing } from "./tokens"
 import "./card.css"
 
 /**
@@ -57,7 +57,7 @@ function useCardCtx() {
 export interface CardRootProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: VariantKey
   state?: StateKey
-  /** Adds an offset 3px black underlay slab matching Button language. */
+  /** Adds a restrained offset underlay slab matching Button language. */
   elevated?: boolean
 }
 
@@ -68,8 +68,8 @@ export const CardRoot = React.forwardRef<HTMLDivElement, CardRootProps>(function
   const tokens = VARIANT_COLORS[variant]
 
   let boxShadow = "none"
-  if (state === "selected") boxShadow = `0 0 0 2px ${colors.cyan}`
-  else if (elevated) boxShadow = `3px 3px 0 ${colors.ink}`
+  if (state === "selected") boxShadow = `0 0 0 1px ${colors.cyan}`
+  else if (elevated) boxShadow = `1px 1px 0 ${colors.ink}`
 
   return (
     <CardContext.Provider value={{ variant, state }}>
@@ -145,16 +145,17 @@ export const CardHeaderId = React.forwardRef<HTMLSpanElement, CardHeaderIdProps>
       <span
         ref={ref}
         data-ad-card-header-id=""
-        className={cn(
-          "grid place-items-center font-[950] text-[11px] tracking-[0.04em]",
-          className,
-        )}
+        className={cn("grid place-items-center uppercase", className)}
         style={{
           minWidth: 42,
           padding: "0 14px 0 8px",
           height: "100%",
           background: t.bg,
           color: t.fg,
+          fontSize: fontSize.xs,
+          fontWeight: fontWeight.heavy,
+          letterSpacing: letterSpacing.wide,
+          fontVariantNumeric: "tabular-nums",
           clipPath: "polygon(0 0, 84% 0, 100% 50%, 84% 100%, 0 100%)",
           ...style,
         }}
@@ -176,11 +177,18 @@ export const CardHeaderTitle = React.forwardRef<HTMLSpanElement, CardHeaderTitle
       <span
         ref={ref}
         data-ad-card-header-title=""
-        className={cn("font-[950] uppercase", className)}
+        className={cn("uppercase", className)}
         style={{
           padding: "0 9px",
-          fontSize: 11,
-          letterSpacing: "0.04em",
+          fontSize: fontSize.xs,
+          fontWeight: fontWeight.heavy,
+          letterSpacing: letterSpacing.wide,
+          // Long titles inside the cyan-clipped header bar must not
+          // break the row — single-line ellipsis.
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+          minWidth: 0,
           ...style,
         }}
         {...props}
@@ -212,11 +220,12 @@ export const CardHeaderStatus = React.forwardRef<HTMLSpanElement, CardHeaderStat
       <span
         ref={ref}
         data-ad-card-header-status=""
-        className={cn("font-[950] uppercase", className)}
+        className={cn("uppercase", className)}
         style={{
           marginRight: 8,
-          fontSize: 9,
-          letterSpacing: "0.06em",
+          fontSize: fontSize.micro,
+          fontWeight: fontWeight.heavy,
+          letterSpacing: letterSpacing.wider,
           padding: "3px 8px",
           borderRadius: radii.pill,
           background: t.bg,
@@ -264,8 +273,16 @@ export const CardValue = React.forwardRef<HTMLDivElement, CardValueProps>(functi
     <div
       ref={ref}
       data-ad-card-value=""
-      className={cn("font-[900] leading-none", className)}
-      style={{ fontSize: 28, ...style }}
+      className={cn("leading-none", className)}
+      style={{
+        fontSize: 28,
+        fontWeight: fontWeight.black,
+        fontVariantNumeric: "tabular-nums",
+        letterSpacing: letterSpacing.tight,
+        // Wrap-aware: long string values shouldn't break out of the body.
+        overflowWrap: "anywhere",
+        ...style,
+      }}
       {...props}
     >
       {children}
@@ -286,7 +303,7 @@ export const CardMeta = React.forwardRef<HTMLDivElement, CardMetaProps>(function
       ref={ref}
       data-ad-card-meta=""
       className={className}
-      style={{ fontSize: 11, color: colors.muted, marginTop: 4, ...style }}
+      style={{ fontSize: fontSize.xs, color: colors.muted, marginTop: 4, ...style }}
       {...props}
     >
       {children}
@@ -313,10 +330,10 @@ export const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(func
         padding: "8px 12px",
         background: isDark ? "#0d1218" : "#f5f7fa",
         borderTop: `1px solid ${isDark ? "rgba(255,255,255,0.08)" : colors.line}`,
-        fontSize: 11,
+        fontSize: fontSize.xs,
         textTransform: "uppercase",
-        fontWeight: 950,
-        letterSpacing: "0.06em",
+        fontWeight: fontWeight.heavy,
+        letterSpacing: letterSpacing.wider,
         ...style,
       }}
       {...props}

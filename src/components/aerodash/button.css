@@ -1,19 +1,143 @@
-/* AeroDash Button — interaction polish.
- * Pressed and disabled handled inline via React state + style props.
- * Focus ring lives in aerodash.css.
+/* AeroDash Button — interactions.
+ *
+ * Design notes:
+ *  - All interactive feedback driven by CSS (no React state). This means the
+ *    same code paths fire on hover, focus, active, and touch.
+ *  - Hover effects gated behind @media (hover: hover) so they don't get
+ *    "stuck" on touch devices that emulate :hover briefly.
+ *  - touch-action + -webkit-tap-highlight-color silence iOS click flash.
+ *  - --ad-underlay-tl / --ad-underlay-br are the chrome-slab offsets and the
+ *    only thing that changes on :active (CSS-driven press).
  */
 
 [data-ad-root] {
   outline: none !important;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  letter-spacing: var(--ad-button-tracking, 0.06em);
 }
+
 [data-ad-root]:focus {
   outline: none !important;
 }
 
-[data-ad-root]:hover > [data-ad-inner] {
-  filter: brightness(1.06);
+/* Focus ring — keyboard only, never mouse. */
+[data-ad-root]:focus-visible > [data-ad-inner] {
+  outline: 1.5px dotted #00c8ff !important;
+  outline-offset: 2px;
+  box-shadow: none !important;
 }
 
+/* Hover: subtle brighten — only on hover-capable devices. */
+@media (hover: hover) {
+  [data-ad-root]:hover:not([disabled]) > [data-ad-inner] {
+    filter: brightness(1.06);
+  }
+}
+
+/* Disabled: no chrome slab, dim, no pointer. */
+[data-ad-root][disabled] {
+  cursor: not-allowed;
+}
 [data-ad-root][disabled] [data-ad-underlay] {
   display: none;
+}
+
+/* Bare inner (no cap, no well): give label more breathing room. */
+[data-ad-inner][data-bare] > [data-ad-label] {
+  padding-left: 18px;
+  padding-right: 18px;
+}
+
+/* ─── HeaderCta lift ───────────────────────────────────────────────────────
+ * Arcade-button feel: inner lifts off the slab on hover, snaps onto it on
+ * press. Mobile: only press behavior (no hover lift). Underlay offset shifts
+ * via CSS vars so the slab "compresses" under the press.
+ */
+
+.ad-cta-lift > [data-ad-inner] {
+  /* Top inset highlight — gives the body chromatic depth without a gradient. */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.42),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.18);
+  transition:
+    transform 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 120ms ease;
+  will-change: transform;
+}
+
+[data-ad-inner]::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 1px;
+  right: 1px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.48),
+    transparent
+  );
+  pointer-events: none;
+}
+
+[data-ad-well] {
+  position: relative;
+}
+
+[data-ad-well]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 18%;
+  right: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.28);
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .ad-cta-lift:hover:not([disabled]) > [data-ad-inner] {
+    transform: translate(-1px, -1px);
+  }
+}
+
+.ad-cta-lift:active:not([disabled]) > [data-ad-inner] {
+  transform: translate(1px, 1px);
+  transition-duration: 60ms;
+}
+
+/* On press, the slab compresses inward — driven by underlay CSS vars. */
+.ad-cta-lift:active:not([disabled]) {
+  --ad-underlay-tl: 1px;
+  --ad-underlay-br: 0px;
+}
+
+/* ─── Touch target floor (mobile) ──────────────────────────────────────────
+ * Below 640px viewports, ensure all chrome buttons hit at least 44×44 px
+ * for thumb-friendly use. Padding only — preserves visual heights when
+ * the parent gives room.
+ */
+@media (max-width: 640px) {
+  [data-ad-root] {
+    min-height: 44px;
+  }
+  [data-ad-root][data-size="sm"] {
+    min-height: 40px;
+  }
+}
+
+/* Reduced-motion: kill the lift, keep the visual states. */
+@media (prefers-reduced-motion: reduce) {
+  .ad-cta-lift > [data-ad-inner],
+  [data-ad-underlay] {
+    transition-duration: 0ms !important;
+  }
+  .ad-cta-lift:hover:not([disabled]) > [data-ad-inner],
+  .ad-cta-lift:active:not([disabled]) > [data-ad-inner] {
+    transform: none;
+  }
 }

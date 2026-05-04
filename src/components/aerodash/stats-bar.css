@@ -1,0 +1,58 @@
+/* StatsBar remains horizontally scrollable on narrow widths, but the native
+   scrollbar is hidden so the chrome ticker keeps its clean rail. */
+[data-ad-statsbar] {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+
+[data-ad-statsbar]::before,
+[data-ad-statsbar]::after {
+  content: "";
+  position: sticky;
+  z-index: 3;
+  flex: 0 0 1px;
+  align-self: stretch;
+  pointer-events: none;
+}
+
+[data-ad-statsbar]::before {
+  left: 0;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+[data-ad-statsbar]::after {
+  right: 0;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+[data-ad-statsbar-section],
+[data-ad-statsbar-item],
+[data-ad-statsbar-ticker] {
+  position: relative;
+}
+
+[data-ad-statsbar-item]::before,
+[data-ad-statsbar-ticker]::before {
+  content: "";
+  position: absolute;
+  top: 7px;
+  bottom: 7px;
+  left: -9px;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.11);
+  box-shadow: 1px 0 0 rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+
+[data-ad-statsbar-section] > div > :first-child [data-ad-statsbar-item]::before,
+[data-ad-statsbar-section] > div > :first-child [data-ad-statsbar-ticker]::before {
+  display: none;
+}
+
+[data-ad-statsbar]::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
